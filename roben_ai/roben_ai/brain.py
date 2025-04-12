@@ -5,7 +5,7 @@ from message_filters import ApproximateTimeSynchronizer, Subscriber
 
 from std_msgs.msg import Float32
 from sensor_msgs.msg import Image, PointCloud2, NavSatFix, Imu
-from carla_msgs.msg import CarlaEgoVehicleStatus
+from carla_msgs.msg import CarlaEgoVehicleStatus, CarlaLaneInvasionEvent, CarlaCollisionEvent
 
 from cv_bridge import CvBridge, CvBridgeError
 from sensor_msgs_py import point_cloud2
@@ -46,11 +46,29 @@ class Brain(Node):
         self.create_subscription(
             Float32, "/carla/ego_vehicle/speedometer", self.speed_cb, 10
         )
+        
+        # event driven
+        self.lane_invaded = np.array([0])
+        self.create_subscription(CarlaLaneInvasionEvent, '/carla/ego_vehicle/lane_invasion', self.lane_invaded_cb, 10)
+
+        self.collision_detected = np.array([0])
+        self.create_subscription(CarlaLaneInvasionEvent, '/carla/ego_vehicle/collision', self.collision_detected_cb, 10)
 
         self.get_logger().info("brain started...")
 
     def speed_cb(self, speed_msg: Float32):
         self.speed = np.array([speed_msg.data], dtype=np.float32)
+
+    def lane_invaded_cb(self, lane_invaded_msg: CarlaLaneInvasionEvent):
+        # Check if the vehicle has invaded a lane
+        print('what the hell did we just get?')
+        self.lane_invaded = np.array(lane_invaded_msg.crossed_lane_markings)
+
+    def collision_detected_cb(self, collision_msg: CarlaCollisionEvent):
+        print('what the hell did we just get?')
+        self.collision_detected = np.array([collision_msg.normal_impulse.x, collision_msg.normal_impulse.y, collision_msg.normal_impulse.z])
+
+
 
     def sync_sensors_callback(
         self,

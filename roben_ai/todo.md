@@ -11,14 +11,15 @@ look at the following sensors
   * indicates integrated already but not sure if will be used or not
   x indicates looked at but won't be integrated
   -> indicates looked at but integration in progress
+  ? indicates what the hell is this
 
   !! /carla/ego_vehicle/rgb_front/image          - Front camera (RGB)
   * /carla/ego_vehicle/depth_middle/image       - Depth camera
   ! /carla/ego_vehicle/vlp16_1                  - LiDAR (PointCloud2)
   !! /carla/ego_vehicle/gnss                     - GPS coordinates
-  * /carla/ego_vehicle/imu                      - Acceleration/Orientation
+  -> /carla/ego_vehicle/imu                      - Acceleration/Orientation
   /carla/ego_vehicle/odometry                 - Position/Velocity
-  /carla/ego_vehicle/collision                - Collision detection
-  /carla/ego_vehicle/lane_invasion            - Lane departure
+  !! /carla/ego_vehicle/collision                - Collision detection
+  !! /carla/ego_vehicle/lane_invasion            - Lane departure (LANE_MARKING_OTHER=0 LANE_MARKING_BROKEN=1 (legal) LANE_MARKING_SOLID=2 (illegal))
   !! /carla/ego_vehicle/speedometer              - Current speed
-  * /carla/ego_vehicle/vehicle_status           - Gear, control status, etc. (will neglect control status from here tho)
+  -> /carla/ego_vehicle/vehicle_status           - Gear, control status, etc. (will neglect control status from here tho)
