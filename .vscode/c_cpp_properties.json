@@ -1,0 +1,25 @@
+{
+  "configurations": [
+    {
+      "browse": {
+        "databaseFilename": "${default}",
+        "limitSymbolsToIncludedHeaders": false
+      },
+      "includePath": [
+        "/home/zeyadcode_jammy/shell_ws/install/carla_waypoint_types/include/**",
+        "/home/zeyadcode_jammy/shell_ws/install/carla_ros_scenario_runner_types/include/**",
+        "/home/zeyadcode_jammy/shell_ws/install/carla_ackermann_msgs/include/**",
+        "/home/zeyadcode_jammy/shell_ws/install/carla_msgs/include/**",
+        "/opt/ros/humble/include/**",
+        "/home/zeyadcode_jammy/shell_ws/src/sem-apc-ros-bridge/pcl_recorder/include/**",
+        "/usr/include/**"
+      ],
+      "name": "ROS",
+      "intelliSenseMode": "gcc-x64",
+      "compilerPath": "/usr/bin/gcc",
+      "cStandard": "gnu11",
+      "cppStandard": "c++14"
+    }
+  ],
+  "version": 4
+}
