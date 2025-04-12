@@ -1,8 +1,12 @@
 import rclpy
 from rclpy.node import Node
 import numpy as np
+from message_filters import ApproximateTimeSynchronizer, Subscriber
 
-from sensor_msgs.msg import Image, PointCloud2
+from std_msgs.msg import Float32
+from sensor_msgs.msg import Image, PointCloud2, NavSatFix, Imu
+from carla_msgs.msg import CarlaEgoVehicleStatus
+
 from cv_bridge import CvBridge, CvBridgeError
 from sensor_msgs_py import point_cloud2
 
@@ -20,73 +24,83 @@ class Brain(Node):
         """
         super().__init__("brain")
 
-        # sensor topics
-        rgb_camera_topic = "/carla/ego_vehicle/rgb_front/image"
-        depth_camera_topic = "/carla/ego_vehicle/depth_middle/image"
-        lidar_topic = "/carla/ego_vehicle/vlp16_1"
+        rgb_sub = Subscriber(self, Image, "/carla/ego_vehicle/rgb_front/image")
+        depth_sub = Subscriber(self, Image, "/carla/ego_vehicle/depth_middle/image")
+        lidar_sub = Subscriber(self, PointCloud2, "/carla/ego_vehicle/vlp16_1")
+        gps_sub = Subscriber(self, NavSatFix, "/carla/ego_vehicle/gnss")
+        status_sub = Subscriber(self, CarlaEgoVehicleStatus, "/carla/ego_vehicle/vehicle_status")
+        imu_sub = Subscriber(self, Imu, "/carla/ego_vehicle/imu")
+        
 
-        self.rgb_cam_subscriber_ = self.create_subscription(
-            Image,
-            rgb_camera_topic,
-            self.rgb_cam_cb,
-            10,
+        # Sync messages within 0.1s window
+        ats = ApproximateTimeSynchronizer(
+            [rgb_sub, depth_sub, lidar_sub, gps_sub, status_sub, imu_sub],
+            queue_size=30,
+            slop=0.1,  # 100ms tolerance
         )
+        ats.registerCallback(self.sync_sensors_callback)
+        self.cv_bridge = CvBridge()
 
-        self.depth_cam_subscriber_ = self.create_subscription(
-            Image,
-            depth_camera_topic,
-            self.depth_cam_cb,
-            10,
+        # headerless sensors
+        self.speed = np.array([0])
+        self.create_subscription(
+            Float32, "/carla/ego_vehicle/speedometer", self.speed_cb, 10
         )
-
-        self.lidar_subscriber_ = self.create_subscription(
-            PointCloud2,
-            lidar_topic,
-            self.lidar_cb,
-            10,
-        )
-
-        self.cv_bridge_ = CvBridge()
 
         self.get_logger().info("brain started...")
 
-    def rgb_cam_cb(self, img_msg: Image):
-        try:
-            cv_image = self.cv_bridge_.imgmsg_to_cv2(
-                img_msg, desired_encoding="passthrough"
-            )
-            img_np = np.array(cv_image)[:, :, :3]  # HxWxC
+    def speed_cb(self, speed_msg: Float32):
+        self.speed = np.array([speed_msg.data], dtype=np.float32)
 
-            cv2.imshow("img_rgb", img_np)
-            cv2.waitKey(1)
+    def sync_sensors_callback(
+        self,
+        rgb_msg: Image,
+        depth_msg: Image,
+        lidar_msg: PointCloud2,
+        gps_msg: NavSatFix,
+        status_msg: CarlaEgoVehicleStatus,
+        imu_msg: Imu,
+    ):
+        # parse images
+        try:
+            rgb_img = self.cv_bridge.imgmsg_to_cv2(
+                rgb_msg, desired_encoding="passthrough"
+            )
+            rgb_img = np.array(rgb_img)[:, :, :3]  # HxWxC
+
+            depth_img = self.cv_bridge.imgmsg_to_cv2(
+                depth_msg, desired_encoding="passthrough"
+            )
+            depth_img = np.array(depth_img)  # HxWxC
+
+            # cv2.imshow("img_depth", rgb_img)
+            # cv2.imshow("img_rgb", depth_img)
+            # cv2.waitKey(1)
+
         except CvBridgeError as e:
             self.get_logger().error(f"Failed to convert image {e}")
 
-    def depth_cam_cb(self, img_msg: Image):
-        try:
-            cv_image = self.cv_bridge_.imgmsg_to_cv2(
-                img_msg, desired_encoding="passthrough"
-            )
-            img_np = np.array(cv_image)  # HxWxC
-
-            cv2.imshow("img_depth", img_np)
-            cv2.waitKey(1)
-        except CvBridgeError as e:
-            self.get_logger().error(f"Failed to convert image {e}")
-
-    def lidar_cb(self, msg: PointCloud2):
-        points = np.array(
-            list(point_cloud2.read_points(msg, field_names=["x", "y", "z"]))
+        # parse lidar
+        lidar_pnts = np.array(
+            list(point_cloud2.read_points(lidar_msg, field_names=["x", "y", "z"]))
         )
-        points = np.column_stack((points["x"], points["y"], points["z"]))
+        lidar_pnts = np.column_stack(
+            (lidar_pnts["x"], lidar_pnts["y"], lidar_pnts["z"])
+        )
 
-        # Create top-down view (bird's eye)
-        plt.scatter(points[:, 0], points[:, 1], s=1, c=points[:, 2], cmap="viridis")
-        plt.xlabel("X (forward)")
-        plt.ylabel("Y (left-right)")
-        plt.colorbar(label="Height (Z)")
-        plt.show()
+        # plt.scatter(
+        #     lidar_pnts[:, 0], lidar_pnts[:, 1], s=1, c=lidar_pnts[:, 2], cmap="viridis"
+        # )
+        # plt.xlabel("X (forward)")
+        # plt.ylabel("Y (left-right)")
+        # plt.colorbar(label="Height (Z)")
+        # plt.show()
 
+        # parse gps
+        gps_cords = np.array([gps_msg.latitude, gps_msg.longitude], dtype=np.float32)
+
+        # parse status
+        print('perform test here')
 
 def main(args=None):
     rclpy.init(args=args)
