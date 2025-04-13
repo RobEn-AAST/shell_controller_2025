@@ -13,7 +13,7 @@ from sensor_msgs_py import point_cloud2
 import cv2
 import matplotlib.pyplot as plt
 
-
+# pytorch stablebaseline gymansium
 class Brain(Node):
     def __init__(self):
         """
@@ -25,7 +25,6 @@ class Brain(Node):
         super().__init__("brain")
 
         rgb_sub = Subscriber(self, Image, "/carla/ego_vehicle/rgb_front/image")
-        depth_sub = Subscriber(self, Image, "/carla/ego_vehicle/depth_middle/image")
         lidar_sub = Subscriber(self, PointCloud2, "/carla/ego_vehicle/vlp16_1")
         gps_sub = Subscriber(self, NavSatFix, "/carla/ego_vehicle/gnss")
         status_sub = Subscriber(self, CarlaEgoVehicleStatus, "/carla/ego_vehicle/vehicle_status")
@@ -34,7 +33,7 @@ class Brain(Node):
 
         # Sync messages within 0.1s window
         ats = ApproximateTimeSynchronizer(
-            [rgb_sub, depth_sub, lidar_sub, gps_sub, status_sub, imu_sub],
+            [rgb_sub, lidar_sub, gps_sub, status_sub, imu_sub],
             queue_size=30,
             slop=0.1,  # 100ms tolerance
         )
@@ -73,7 +72,6 @@ class Brain(Node):
     def sync_sensors_callback(
         self,
         rgb_msg: Image,
-        depth_msg: Image,
         lidar_msg: PointCloud2,
         gps_msg: NavSatFix,
         status_msg: CarlaEgoVehicleStatus,
@@ -86,13 +84,7 @@ class Brain(Node):
             )
             rgb_img = np.array(rgb_img)[:, :, :3]  # HxWxC
 
-            depth_img = self.cv_bridge.imgmsg_to_cv2(
-                depth_msg, desired_encoding="passthrough"
-            )
-            depth_img = np.array(depth_img)  # HxWxC
-
-            # cv2.imshow("img_depth", rgb_img)
-            # cv2.imshow("img_rgb", depth_img)
+            # cv2.imshow("img_rgb", rgb_img)
             # cv2.waitKey(1)
 
         except CvBridgeError as e:
@@ -116,9 +108,6 @@ class Brain(Node):
 
         # parse gps
         gps_cords = np.array([gps_msg.latitude, gps_msg.longitude], dtype=np.float32)
-
-        # parse status
-        print('perform test here')
 
 def main(args=None):
     rclpy.init(args=args)
