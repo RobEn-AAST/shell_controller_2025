@@ -1,0 +1,1 @@
+ament_cmake_symlink_install_targets("TARGET_FILES" "/home/zeyadcode_jammy/shell_ws/src/build/carla_shell_bridge/libcarla_vehicle_interface.so" "TARGETS" "carla_vehicle_interface" "ARCHIVE_DESTINATION" "lib" "LIBRARY_DESTINATION" "lib" "RUNTIME_DESTINATION" "bin")

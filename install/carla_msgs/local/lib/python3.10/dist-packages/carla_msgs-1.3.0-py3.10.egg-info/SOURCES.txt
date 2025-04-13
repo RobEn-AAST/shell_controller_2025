@@ -1,0 +1,1 @@
+/home/zeyadcode_jammy/shell_ws/src/build/carla_msgs/ament_cmake_python/carla_msgs/carla_msgs.egg-info/SOURCES.txt

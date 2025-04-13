@@ -1,0 +1,97 @@
+{
+	"configurations" : 
+	[
+		{
+			"directories" : 
+			[
+				{
+					"build" : ".",
+					"hasInstallRule" : true,
+					"jsonFile" : "directory-.-RelWithDebInfo-1b4fbb4d4b938913fbfb.json",
+					"minimumCMakeVersion" : 
+					{
+						"string" : "3.12"
+					},
+					"projectIndex" : 0,
+					"source" : ".",
+					"targetIndexes" : 
+					[
+						0,
+						1,
+						2,
+						3,
+						4
+					]
+				}
+			],
+			"name" : "RelWithDebInfo",
+			"projects" : 
+			[
+				{
+					"directoryIndexes" : 
+					[
+						0
+					],
+					"name" : "carla_shell_bridge",
+					"targetIndexes" : 
+					[
+						0,
+						1,
+						2,
+						3,
+						4
+					]
+				}
+			],
+			"targets" : 
+			[
+				{
+					"directoryIndex" : 0,
+					"id" : "ament_cmake_python_build_carla_shell_bridge_egg::@6890427a1f51a3e7e1df",
+					"jsonFile" : "target-ament_cmake_python_build_carla_shell_bridge_egg-RelWithDebInfo-e6a2e1e9e696f3e29bf8.json",
+					"name" : "ament_cmake_python_build_carla_shell_bridge_egg",
+					"projectIndex" : 0
+				},
+				{
+					"directoryIndex" : 0,
+					"id" : "ament_cmake_python_symlink_carla_shell_bridge::@6890427a1f51a3e7e1df",
+					"jsonFile" : "target-ament_cmake_python_symlink_carla_shell_bridge-RelWithDebInfo-bc37648147ad6298998e.json",
+					"name" : "ament_cmake_python_symlink_carla_shell_bridge",
+					"projectIndex" : 0
+				},
+				{
+					"directoryIndex" : 0,
+					"id" : "carla_shell_bridge_uninstall::@6890427a1f51a3e7e1df",
+					"jsonFile" : "target-carla_shell_bridge_uninstall-RelWithDebInfo-5c9ea23fc3aee82dd8a5.json",
+					"name" : "carla_shell_bridge_uninstall",
+					"projectIndex" : 0
+				},
+				{
+					"directoryIndex" : 0,
+					"id" : "carla_vehicle_interface::@6890427a1f51a3e7e1df",
+					"jsonFile" : "target-carla_vehicle_interface-RelWithDebInfo-b0c7b7900a41b0331333.json",
+					"name" : "carla_vehicle_interface",
+					"projectIndex" : 0
+				},
+				{
+					"directoryIndex" : 0,
+					"id" : "uninstall::@6890427a1f51a3e7e1df",
+					"jsonFile" : "target-uninstall-RelWithDebInfo-dcbabed2a065c15064fd.json",
+					"name" : "uninstall",
+					"projectIndex" : 0
+				}
+			]
+		}
+	],
+	"kind" : "codemodel",
+	"paths" : 
+	{
+		"build" : "/home/zeyadcode_jammy/shell_ws/src/build/carla_shell_bridge",
+		"source" : "/home/zeyadcode_jammy/shell_ws/src/sem-apc-carla-interface"
+	},
+	"version" : 
+	{
+		"major" : 2,
+		"minor" : 3
+	}
+}

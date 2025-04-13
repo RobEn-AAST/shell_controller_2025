@@ -1,0 +1,1 @@
+/home/zeyadcode_jammy/shell_ws/src/build/rviz_carla_plugin/ament_cmake_environment_hooks/local_setup.sh

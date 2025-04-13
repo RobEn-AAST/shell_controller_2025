@@ -1,0 +1,6 @@
+setup.py
+shell_simulation/__init__.py
+shell_simulation.egg-info/PKG-INFO
+shell_simulation.egg-info/SOURCES.txt
+shell_simulation.egg-info/dependency_links.txt
+shell_simulation.egg-info/top_level.txt

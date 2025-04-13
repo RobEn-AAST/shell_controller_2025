@@ -1,0 +1,1 @@
+/home/zeyadcode_jammy/shell_ws/src/build/carla_msgs/rosidl_generator_c/carla_msgs/msg/detail/carla_bounding_box__type_support.h

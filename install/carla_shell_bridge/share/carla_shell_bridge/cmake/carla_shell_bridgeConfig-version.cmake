@@ -1,0 +1,1 @@
+/home/zeyadcode_jammy/shell_ws/src/build/carla_shell_bridge/ament_cmake_core/carla_shell_bridgeConfig-version.cmake

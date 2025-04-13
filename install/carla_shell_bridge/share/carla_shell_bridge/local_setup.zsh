@@ -1,0 +1,1 @@
+/home/zeyadcode_jammy/shell_ws/src/build/carla_shell_bridge/ament_cmake_environment_hooks/local_setup.zsh

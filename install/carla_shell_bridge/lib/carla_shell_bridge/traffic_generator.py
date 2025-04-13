@@ -1,0 +1,1 @@
+/home/zeyadcode_jammy/shell_ws/src/sem-apc-carla-interface/scripts/traffic_generator.py

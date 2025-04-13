@@ -1,0 +1,14 @@
+{
+	"backtraceGraph" : 
+	{
+		"commands" : [],
+		"files" : [],
+		"nodes" : []
+	},
+	"installers" : [],
+	"paths" : 
+	{
+		"build" : "carla_ackermann_msgs__py",
+		"source" : "/home/zeyadcode_jammy/shell_ws/src/build/carla_ackermann_msgs/carla_ackermann_msgs__py"
+	}
+}

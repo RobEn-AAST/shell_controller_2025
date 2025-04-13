@@ -1,0 +1,27 @@
+[2.794s] Invoking command in '/home/zeyadcode_jammy/shell_ws/src/build/carla_ad_agent': AMENT_PREFIX_PATH=/home/zeyadcode_jammy/shell_ws/src/install/ros_compatibility:/home/zeyadcode_jammy/shell_ws/src/install/carla_waypoint_types:/home/zeyadcode_jammy/shell_ws/src/install/carla_msgs:${AMENT_PREFIX_PATH} CMAKE_PREFIX_PATH=/home/zeyadcode_jammy/shell_ws/src/install/carla_waypoint_types:/home/zeyadcode_jammy/shell_ws/src/install/carla_msgs LD_LIBRARY_PATH=/home/zeyadcode_jammy/shell_ws/src/install/carla_waypoint_types/lib:/home/zeyadcode_jammy/shell_ws/src/install/carla_msgs/lib:${LD_LIBRARY_PATH} PYTHONPATH=/home/zeyadcode_jammy/shell_ws/src/build/carla_ad_agent/prefix_override:/usr/lib/python3/dist-packages/colcon_core/task/python/colcon_distutils_commands:/home/zeyadcode_jammy/shell_ws/src/install/carla_ad_agent/lib/python3.10/site-packages:/home/zeyadcode_jammy/shell_ws/src/build/ros_compatibility/src:/home/zeyadcode_jammy/shell_ws/src/install/ros_compatibility/lib/python3.10/site-packages:/home/zeyadcode_jammy/shell_ws/src/install/carla_waypoint_types/local/lib/python3.10/dist-packages:/home/zeyadcode_jammy/shell_ws/src/install/carla_msgs/local/lib/python3.10/dist-packages:${PYTHONPATH} /usr/bin/python3 -W ignore:setup.py install is deprecated -W ignore:easy_install command is deprecated setup.py develop --editable --build-directory /home/zeyadcode_jammy/shell_ws/src/build/carla_ad_agent/build --no-deps symlink_data
+[3.430s] running develop
+[3.594s] running egg_info
+[3.594s] creating src/carla_ad_agent.egg-info
+[3.595s] writing src/carla_ad_agent.egg-info/PKG-INFO
+[3.595s] writing dependency_links to src/carla_ad_agent.egg-info/dependency_links.txt
+[3.595s] writing entry points to src/carla_ad_agent.egg-info/entry_points.txt
+[3.595s] writing requirements to src/carla_ad_agent.egg-info/requires.txt
+[3.595s] writing top-level names to src/carla_ad_agent.egg-info/top_level.txt
+[3.598s] writing manifest file 'src/carla_ad_agent.egg-info/SOURCES.txt'
+[3.598s] reading manifest file 'src/carla_ad_agent.egg-info/SOURCES.txt'
+[3.599s] writing manifest file 'src/carla_ad_agent.egg-info/SOURCES.txt'
+[3.602s] running build_ext
+[3.602s] Creating /home/zeyadcode_jammy/shell_ws/src/install/carla_ad_agent/lib/python3.10/site-packages/carla-ad-agent.egg-link (link to src)
+[3.602s] Installing ad_agent script to /home/zeyadcode_jammy/shell_ws/src/install/carla_ad_agent/lib/carla_ad_agent
+[3.602s] Installing local_planner script to /home/zeyadcode_jammy/shell_ws/src/install/carla_ad_agent/lib/carla_ad_agent
+[3.603s] Installing testing_waypoints script to /home/zeyadcode_jammy/shell_ws/src/install/carla_ad_agent/lib/carla_ad_agent
+[3.603s] 
+[3.603s] Installed /home/zeyadcode_jammy/shell_ws/src/build/carla_ad_agent/src
+[3.603s] running symlink_data
+[3.603s] creating /home/zeyadcode_jammy/shell_ws/src/install/carla_ad_agent/share/ament_index
+[3.603s] creating /home/zeyadcode_jammy/shell_ws/src/install/carla_ad_agent/share/ament_index/resource_index
+[3.603s] creating /home/zeyadcode_jammy/shell_ws/src/install/carla_ad_agent/share/ament_index/resource_index/packages
+[3.603s] symbolically linking /home/zeyadcode_jammy/shell_ws/src/build/carla_ad_agent/resource/carla_ad_agent -> /home/zeyadcode_jammy/shell_ws/src/install/carla_ad_agent/share/ament_index/resource_index/packages
+[3.603s] symbolically linking /home/zeyadcode_jammy/shell_ws/src/build/carla_ad_agent/package.xml -> /home/zeyadcode_jammy/shell_ws/src/install/carla_ad_agent/share/carla_ad_agent
+[3.603s] symbolically linking /home/zeyadcode_jammy/shell_ws/src/build/carla_ad_agent/launch/carla_ad_agent.launch.py -> /home/zeyadcode_jammy/shell_ws/src/install/carla_ad_agent/share/carla_ad_agent
+[3.654s] Invoked command in '/home/zeyadcode_jammy/shell_ws/src/build/carla_ad_agent' returned '0': AMENT_PREFIX_PATH=/home/zeyadcode_jammy/shell_ws/src/install/ros_compatibility:/home/zeyadcode_jammy/shell_ws/src/install/carla_waypoint_types:/home/zeyadcode_jammy/shell_ws/src/install/carla_msgs:${AMENT_PREFIX_PATH} CMAKE_PREFIX_PATH=/home/zeyadcode_jammy/shell_ws/src/install/carla_waypoint_types:/home/zeyadcode_jammy/shell_ws/src/install/carla_msgs LD_LIBRARY_PATH=/home/zeyadcode_jammy/shell_ws/src/install/carla_waypoint_types/lib:/home/zeyadcode_jammy/shell_ws/src/install/carla_msgs/lib:${LD_LIBRARY_PATH} PYTHONPATH=/home/zeyadcode_jammy/shell_ws/src/build/carla_ad_agent/prefix_override:/usr/lib/python3/dist-packages/colcon_core/task/python/colcon_distutils_commands:/home/zeyadcode_jammy/shell_ws/src/install/carla_ad_agent/lib/python3.10/site-packages:/home/zeyadcode_jammy/shell_ws/src/build/ros_compatibility/src:/home/zeyadcode_jammy/shell_ws/src/install/ros_compatibility/lib/python3.10/site-packages:/home/zeyadcode_jammy/shell_ws/src/install/carla_waypoint_types/local/lib/python3.10/dist-packages:/home/zeyadcode_jammy/shell_ws/src/install/carla_msgs/local/lib/python3.10/dist-packages:${PYTHONPATH} /usr/bin/python3 -W ignore:setup.py install is deprecated -W ignore:easy_install command is deprecated setup.py develop --editable --build-directory /home/zeyadcode_jammy/shell_ws/src/build/carla_ad_agent/build --no-deps symlink_data

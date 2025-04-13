@@ -1,0 +1,1 @@
+/home/zeyadcode_jammy/shell_ws/src/build/carla_spawn_objects/launch/carla_example_ego_vehicle.launch.py

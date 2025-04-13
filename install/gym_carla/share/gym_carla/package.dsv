@@ -1,0 +1,6 @@
+source;share/gym_carla/hook/pythonpath.ps1
+source;share/gym_carla/hook/pythonpath.dsv
+source;share/gym_carla/hook/pythonpath.sh
+source;../../build/gym_carla/share/gym_carla/hook/pythonpath_develop.ps1
+source;../../build/gym_carla/share/gym_carla/hook/pythonpath_develop.dsv
+source;../../build/gym_carla/share/gym_carla/hook/pythonpath_develop.sh
