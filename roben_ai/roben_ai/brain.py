@@ -3,7 +3,7 @@ from rclpy.node import Node
 import numpy as np
 from message_filters import ApproximateTimeSynchronizer, Subscriber
 
-from std_msgs.msg import Float32
+from std_msgs.msg import Float32, String
 from sensor_msgs.msg import Image, PointCloud2, NavSatFix, Imu
 from carla_msgs.msg import CarlaEgoVehicleStatus, CarlaLaneInvasionEvent, CarlaCollisionEvent
 
@@ -45,6 +45,10 @@ class Brain(Node):
         self.create_subscription(
             Float32, "/carla/ego_vehicle/speedometer", self.speed_cb, 10
         )
+
+        self.create_subscription(
+            String, "/carla/map", self.map_cb, 10
+        )
         
         # event driven
         self.lane_invaded = np.array([0])
@@ -57,6 +61,9 @@ class Brain(Node):
 
     def speed_cb(self, speed_msg: Float32):
         self.speed = np.array([speed_msg.data], dtype=np.float32)
+
+    def map_cb(self, map_msg: String):
+        print('test')
 
     def lane_invaded_cb(self, lane_invaded_msg: CarlaLaneInvasionEvent):
         # Check if the vehicle has invaded a lane
