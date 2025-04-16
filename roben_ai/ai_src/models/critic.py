@@ -2,7 +2,7 @@ import torch
 import torch.nn as nn
 
 
-class Critic(nn.Module):
+class CriticNet(nn.Module):
     def __init__(self, in_size):
         super().__init__()
         self.layers = nn.Sequential(

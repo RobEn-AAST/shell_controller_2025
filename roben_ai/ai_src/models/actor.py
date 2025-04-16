@@ -3,7 +3,7 @@ import torch.nn as nn
 from torch.distributions import Normal, Categorical
 
 
-class Actor(nn.Module):
+class ActorNet(nn.Module):
     def __init__(self, in_size):
         """
         /brake_command [std_msgs/Float64]
@@ -52,11 +52,11 @@ class Actor(nn.Module):
         x = self.body(x)
 
         steering_mue, steering_log_std = self.steering_head(x)
-        steering_std = torch.clamp(self.steering_logstd.exp(), 1e-3, 0.5)  # type: ignore
+        steering_std = torch.clamp(self.steering_logstd.exp(), 1e-3, 1)  # type: ignore
         steering_dist = Normal(steering_mue, steering_std)
 
         throttle_mue, throttle_log_std = self.throttle_brake_head(x)
-        throttle_std = torch.clamp(self.throttle_logstd.exp(), 1e-3, 1.0)  # type: ignore
+        throttle_std = torch.clamp(self.throttle_logstd.exp(), 1e-3, 2.0)  # type: ignore
         throttle_dist = Normal(throttle_mue, throttle_std)
 
         # gear = self.gear_head(x)

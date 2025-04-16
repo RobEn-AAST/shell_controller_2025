@@ -1,3 +1,3 @@
-from .actor import Actor
-from .critic import Critic
-from .backbone import Backbone
+from .actor import ActorNet
+from .critic import CriticNet
+from .backbone import BackboneNet

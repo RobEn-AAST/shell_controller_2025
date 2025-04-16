@@ -8,7 +8,7 @@ from torchvision.models.convnext import LayerNorm2d
 # %%
 
 
-class Backbone(nn.Module):
+class BackboneNet(nn.Module):
     lastconv_output_channels = 768
 
     def __init__(self):

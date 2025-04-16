@@ -5,7 +5,7 @@ from config import HyperParams
 from utils import Transition
 import gymnasium as gym
 from torchvision import transforms
-from models import Actor, Critic, Backbone
+from models import ActorNet, CriticNet, BackboneNet
 from torch.distributions import Normal
 
 
@@ -14,10 +14,10 @@ class Trainer:
         self,
         env: gym.Env,
         opt: torch.optim.Optimizer,
-        backbone_net: Backbone,
-        actor_net: Actor,
-        critic_net: Critic,
-        target_net: Critic,
+        backbone_net: BackboneNet,
+        actor_net: ActorNet,
+        critic_net: CriticNet,
+        target_net: CriticNet,
     ):
         self.env = env
         self.backbone_net = backbone_net
