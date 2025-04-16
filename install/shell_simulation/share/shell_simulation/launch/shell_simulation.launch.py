@@ -1,1 +1,0 @@
-/home/zeyadcode_jammy/shell_ws/src/sem-apc-example-project/shell_simulation/launch/shell_simulation.launch.py

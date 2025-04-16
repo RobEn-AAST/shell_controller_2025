@@ -1,1 +1,0 @@
-/home/zeyadcode_jammy/shell_ws/src/build/carla_waypoint_types/rosidl_cmake/srv/GetWaypoint_Request.msg

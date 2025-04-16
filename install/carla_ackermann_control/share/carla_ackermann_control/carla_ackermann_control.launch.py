@@ -1,1 +1,0 @@
-/home/zeyadcode_jammy/shell_ws/src/build/carla_ackermann_control/launch/carla_ackermann_control.launch.py

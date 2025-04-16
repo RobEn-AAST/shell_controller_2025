@@ -1,1 +1,0 @@
-/home/zeyadcode_jammy/shell_ws/src/sem-apc-ros-bridge/carla_ros_bridge/launch/carla_ros_bridge_with_example_ego_vehicle.launch.py

@@ -1,1 +1,0 @@
-/home/zeyadcode_jammy/shell_ws/src/build/carla_twist_to_control/launch/carla_twist_to_control.launch.py

@@ -1,1 +1,0 @@
-/home/zeyadcode_jammy/shell_ws/src/build/carla_waypoint_types/ament_cmake_python/carla_waypoint_types/carla_waypoint_types.egg-info/SOURCES.txt

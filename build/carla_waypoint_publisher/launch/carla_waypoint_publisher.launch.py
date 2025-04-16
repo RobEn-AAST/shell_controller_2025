@@ -1,1 +1,0 @@
-/home/zeyadcode_jammy/shell_ws/src/sem-apc-ros-bridge/carla_waypoint_publisher/launch/carla_waypoint_publisher.launch.py

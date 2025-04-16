@@ -1,1 +1,0 @@
-/home/zeyadcode_jammy/shell_ws/src/build/carla_ackermann_msgs/rosidl_generator_c/carla_ackermann_msgs/msg/detail/ego_vehicle_control_current__struct.h

@@ -1,1 +1,0 @@
-/home/zeyadcode_jammy/shell_ws/src/build/carla_waypoint_types/ament_cmake_export_targets/ament_cmake_export_targets-extras.cmake

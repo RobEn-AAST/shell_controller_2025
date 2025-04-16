@@ -1,1 +1,0 @@
-/home/zeyadcode_jammy/shell_ws/src/build/carla_manual_control/launch/carla_manual_control.launch.py

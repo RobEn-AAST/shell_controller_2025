@@ -1,1 +1,0 @@
-/home/zeyadcode_jammy/shell_ws/src/build/carla_waypoint_types/rosidl_generator_cpp/carla_waypoint_types/msg/rosidl_generator_cpp__visibility_control.hpp

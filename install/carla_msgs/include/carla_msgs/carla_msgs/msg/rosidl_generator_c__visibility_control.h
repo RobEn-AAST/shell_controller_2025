@@ -1,1 +1,0 @@
-/home/zeyadcode_jammy/shell_ws/src/build/carla_msgs/rosidl_generator_c/carla_msgs/msg/rosidl_generator_c__visibility_control.h

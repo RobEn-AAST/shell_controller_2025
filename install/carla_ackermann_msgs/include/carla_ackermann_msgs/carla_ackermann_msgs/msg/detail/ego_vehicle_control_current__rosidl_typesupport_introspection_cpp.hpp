@@ -1,1 +1,0 @@
-/home/zeyadcode_jammy/shell_ws/src/build/carla_ackermann_msgs/rosidl_typesupport_introspection_cpp/carla_ackermann_msgs/msg/detail/ego_vehicle_control_current__rosidl_typesupport_introspection_cpp.hpp

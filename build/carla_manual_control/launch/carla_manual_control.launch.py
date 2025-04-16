@@ -1,1 +1,0 @@
-/home/zeyadcode_jammy/shell_ws/src/sem-apc-ros-bridge/carla_manual_control/launch/carla_manual_control.launch.py

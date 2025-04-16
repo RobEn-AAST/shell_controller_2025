@@ -1,6 +1,0 @@
-setup.py
-carla_shell_bridge/__init__.py
-carla_shell_bridge.egg-info/PKG-INFO
-carla_shell_bridge.egg-info/SOURCES.txt
-carla_shell_bridge.egg-info/dependency_links.txt
-carla_shell_bridge.egg-info/top_level.txt

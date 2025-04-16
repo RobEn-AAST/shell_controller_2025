@@ -1,1 +1,0 @@
-/home/zeyadcode_jammy/shell_ws/src/build/carla_msgs/rosidl_generator_cpp/carla_msgs/msg/detail/carla_world_info__struct.hpp

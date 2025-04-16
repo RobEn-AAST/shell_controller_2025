@@ -1,1 +1,0 @@
-/home/zeyadcode_jammy/shell_ws/src/build/carla_msgs/rosidl_generator_py/carla_msgs/srv/_spawn_object_s.c

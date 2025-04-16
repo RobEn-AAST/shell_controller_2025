@@ -1,1 +1,0 @@
-/home/zeyadcode_jammy/shell_ws/src/gym-carla/setup.py

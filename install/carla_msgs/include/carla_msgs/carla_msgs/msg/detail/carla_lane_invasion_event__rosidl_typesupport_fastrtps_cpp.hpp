@@ -1,1 +1,0 @@
-/home/zeyadcode_jammy/shell_ws/src/build/carla_msgs/rosidl_typesupport_fastrtps_cpp/carla_msgs/msg/detail/carla_lane_invasion_event__rosidl_typesupport_fastrtps_cpp.hpp

@@ -1,1 +1,0 @@
-/home/zeyadcode_jammy/shell_ws/src/sem-apc-carla-interface/scripts/map_loader.py

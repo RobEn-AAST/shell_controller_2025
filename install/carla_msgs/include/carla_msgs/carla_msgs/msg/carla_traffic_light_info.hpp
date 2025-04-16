@@ -1,1 +1,0 @@
-/home/zeyadcode_jammy/shell_ws/src/build/carla_msgs/rosidl_generator_cpp/carla_msgs/msg/carla_traffic_light_info.hpp

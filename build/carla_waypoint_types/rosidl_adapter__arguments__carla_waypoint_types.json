@@ -1,8 +1,0 @@
-{
-  "package_name": "carla_waypoint_types",
-  "non_idl_tuples": [
-    "/home/zeyadcode_jammy/shell_ws/src/sem-apc-ros-bridge/carla_waypoint_types:msg/CarlaWaypoint.msg",
-    "/home/zeyadcode_jammy/shell_ws/src/sem-apc-ros-bridge/carla_waypoint_types:srv/GetWaypoint.srv",
-    "/home/zeyadcode_jammy/shell_ws/src/sem-apc-ros-bridge/carla_waypoint_types:srv/GetActorWaypoint.srv"
-  ]
-}

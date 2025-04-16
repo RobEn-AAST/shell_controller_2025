@@ -1,1 +1,0 @@
-/home/zeyadcode_jammy/shell_ws/src/build/rviz_carla_plugin/ament_cmake_core/rviz_carla_pluginConfig.cmake

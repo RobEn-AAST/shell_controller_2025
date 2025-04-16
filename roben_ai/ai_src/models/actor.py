@@ -52,7 +52,7 @@ class Actor(nn.Module):
         x = self.body(x)
 
         steering_mue, steering_log_std = self.steering_head(x)
-        steering_std = torch.clamp(self.steering_logstd.exp(), 1e-3, 2.0)  # type: ignore
+        steering_std = torch.clamp(self.steering_logstd.exp(), 1e-3, 0.5)  # type: ignore
         steering_dist = Normal(steering_mue, steering_std)
 
         throttle_mue, throttle_log_std = self.throttle_brake_head(x)

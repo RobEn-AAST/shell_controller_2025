@@ -1,1 +1,0 @@
-/home/zeyadcode_jammy/shell_ws/src/sem-apc-ros-bridge/rqt_carla_control/setup.py

@@ -1,1 +1,0 @@
-/home/zeyadcode_jammy/shell_ws/src/sem-apc-ros-bridge/carla_ad_agent/launch/carla_ad_agent.launch.py

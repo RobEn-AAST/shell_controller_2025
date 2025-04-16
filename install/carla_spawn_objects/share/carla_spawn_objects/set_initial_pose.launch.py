@@ -1,1 +1,0 @@
-/home/zeyadcode_jammy/shell_ws/src/build/carla_spawn_objects/launch/set_initial_pose.launch.py

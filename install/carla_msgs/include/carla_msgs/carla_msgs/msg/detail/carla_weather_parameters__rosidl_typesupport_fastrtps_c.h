@@ -1,1 +1,0 @@
-/home/zeyadcode_jammy/shell_ws/src/build/carla_msgs/rosidl_typesupport_fastrtps_c/carla_msgs/msg/detail/carla_weather_parameters__rosidl_typesupport_fastrtps_c.h

@@ -1,1 +1,0 @@
-/home/zeyadcode_jammy/shell_ws/src/build/carla_walker_agent/launch/carla_walker_agent.launch.py

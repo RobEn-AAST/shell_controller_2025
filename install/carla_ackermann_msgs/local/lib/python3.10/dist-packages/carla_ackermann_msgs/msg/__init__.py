@@ -1,1 +1,0 @@
-/home/zeyadcode_jammy/shell_ws/src/build/carla_ackermann_msgs/rosidl_generator_py/carla_ackermann_msgs/msg/__init__.py
