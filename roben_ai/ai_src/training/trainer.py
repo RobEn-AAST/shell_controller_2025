@@ -64,5 +64,22 @@ class Trainer:
 
     def _reset_env(self) -> torch.Tensor:
         obs, _ = self.env.reset()
-        obs = self.transform(obs)
-        return obs
+        return self._decode_obs(obs)
+
+    def _decode_obs(self, obs: dict):
+        """
+        returns camera, lidar, birdeye, satate in tensor forms
+        Height = Width = 256 (display parameter)
+        C = 3 (channels)
+        """
+        camera: np.ndarray = obs["camera"]  # (D, D, C)
+        lidar: np.ndarray = obs["lidar"]  # (D, D, C)
+        birdeye: np.ndarray = obs["birdeye"]  # (D, D, C)
+        state: np.ndarray = obs["state"]  # (4,)
+
+        camera = self.transform(camera).unsqueeze(0)  # type: ignore BxCxHxW
+        lidar = self.transform(lidar).unsqueeze(0)  # type: ignore BxCxHxW
+        birdeye = self.transform(birdeye).unsqueeze(0)  # type: ignore BxCxHxW
+        state = torch.tensor([state])  # type: ignore Bx4
+
+        return camera, lidar, birdeye, state

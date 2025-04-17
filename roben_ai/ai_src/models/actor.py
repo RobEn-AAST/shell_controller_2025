@@ -28,7 +28,7 @@ class ActorNet(nn.Module):
 
         self.steering_head = nn.Sequential(  # -1 - 1
             nn.Linear(32, 16),
-            nn.ReLU()(),
+            nn.ReLU(),
             nn.Linear(16, 1),
             nn.Tanh(),
         )

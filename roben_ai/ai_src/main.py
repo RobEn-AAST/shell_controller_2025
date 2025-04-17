@@ -3,6 +3,7 @@ import torch
 from gym_carla import make_carla_env
 from config import HyperParams
 from models import ActorNet, CriticNet, BackboneNet
+from utils import Transition
 
 env = make_carla_env()
 
