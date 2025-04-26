@@ -446,22 +446,27 @@ class CarlaEnv(gym.Env):
         """
         actor_poly_dict = {}
         for actor in self.world.get_actors().filter(filt):
-            # Get x, y and yaw of the actor
-            trans = actor.get_transform()
-            x = trans.location.x
-            y = trans.location.y
-            yaw = trans.rotation.yaw / 180 * np.pi
-            # Get length and width
-            bb = actor.bounding_box
-            l = bb.extent.x
-            w = bb.extent.y
-            # Get bounding box polygon in the actor's local coordinate
-            poly_local = np.array([[l, w], [l, -w], [-l, -w], [-l, w]]).transpose()
-            # Get rotation matrix to transform to global coordinate
-            R = np.array([[np.cos(yaw), -np.sin(yaw)], [np.sin(yaw), np.cos(yaw)]])
-            # Get global bounding box polygon
-            poly = np.matmul(R, poly_local).transpose() + np.repeat([[x, y]], 4, axis=0)
-            actor_poly_dict[actor.id] = poly
+            try:
+                if not actor.is_alive or math.isnan(actor.get_location().x):
+                    continue
+                # Get x, y and yaw of the actor
+                trans = actor.get_transform()
+                x = trans.location.x
+                y = trans.location.y
+                yaw = trans.rotation.yaw / 180 * np.pi
+                # Get length and width
+                bb = actor.bounding_box
+                l = bb.extent.x
+                w = bb.extent.y
+                # Get bounding box polygon in the actor's local coordinate
+                poly_local = np.array([[l, w], [l, -w], [-l, -w], [-l, w]]).transpose()
+                # Get rotation matrix to transform to global coordinate
+                R = np.array([[np.cos(yaw), -np.sin(yaw)], [np.sin(yaw), np.cos(yaw)]])
+                # Get global bounding box polygon
+                poly = np.matmul(R, poly_local).transpose() + np.repeat([[x, y]], 4, axis=0)
+                actor_poly_dict[actor.id] = poly
+            except RuntimeError:
+                continue
         return actor_poly_dict
 
     def _get_obs(self):
@@ -607,6 +612,8 @@ class CarlaEnv(gym.Env):
         return obs
 
     def _get_reward(self):
+        # todo instead of having a target speed rather add penality ffor exceeeding max speed
+        # todo always add penality for leaving the right lane 
         """Calculate the step reward."""
         # reward for speed tracking
         v = self.ego.get_velocity()
@@ -672,24 +679,30 @@ class CarlaEnv(gym.Env):
 
     def _clear_all_actors(self, actor_filters):
         """Clear specific actors."""
-        # Destroy vehicles FIRST
-        for actor_filter in ["vehicle.*", "controller.ai.walker", "walker.*"]:
-            for actor in self.world.get_actors().filter(actor_filter):
-                if actor.is_alive:
-                    print(f"Destroying {actor.type_id}")
-                    actor.destroy()
-
-        # Then destroy standalone sensors
+        # Destroy sensors FIRST
         for sensor in self.sensor_actors:
             if sensor.is_alive:
                 sensor.destroy()
         self.sensor_actors = []
-        # for sensor_filter in ["sensor.other.collision", "sensor.lidar.ray_cast", "sensor.camera.rgb"]:
-        #     for sensor in self.world.get_actors().filter(sensor_filter):
-        #         if sensor.is_alive:
-        #             print(f"Destroying {sensor.type_id}")
-        #             sensor.destroy()
+        
+        # Then destroy vehicles and walkers
+        for actor_filter in ["vehicle.*", "controller.ai.walker", "walker.*"]:
+            for actor in self.world.get_actors().filter(actor_filter):
+                if actor.is_alive:
+                    try:
+                        if actor.type_id == 'controller.ai.walker':
+                            actor.stop()
+                        actor.destroy()
+                    except RuntimeError:  # Already destroyed
+                        pass
 
-        # Force a tick to ensure destruction completes
+        # Double-check for any remaining sensors
+        for sensor_filter in ["sensor.other.collision", "sensor.lidar.ray_cast", "sensor.camera.rgb"]:
+            for sensor in self.world.get_actors().filter(sensor_filter):
+                if sensor.is_alive:
+                    sensor.destroy()
+
+        # Force 2 ticks to ensure destruction
         if self.world.get_settings().synchronous_mode:
+            self.world.tick()
             self.world.tick()

@@ -372,6 +372,11 @@ class MapImage(object):
       draw_traffic_signs(map_surface, yield_font_surface, ts_yield, trigger_color=COLOR_ORANGE_1)
 
   def world_to_pixel(self, location, offset=(0, 0)):
+    # Add NaN check first
+    if math.isnan(location.x) or math.isnan(location.y):
+      print("TRIED TO DELETE NAN in world_to_pixel ")
+      return [0, 0]  # Safe default
+    
     x = self.scale * self._pixels_per_meter * (location.x - self._world_offset[0])
     y = self.scale * self._pixels_per_meter * (location.y - self._world_offset[1])
     return [int(x - offset[0]), int(y - offset[1])]
