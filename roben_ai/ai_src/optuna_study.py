@@ -24,21 +24,13 @@ policy_kwargs = dict(
 
 
 def sample_config(trial):
-    n_steps = trial.suggest_categorical("n_steps", [64, 128, 256, 512])
-    max_possible_batch = min(256, n_steps)  # Upper limit is 256 from your original range
-    valid_batches = [bs for bs in range(16, max_possible_batch + 1, 16) if n_steps % bs == 0]
-
-    # If no valid batches found (unlikely with your n_steps options), fallback to n_steps
-    if not valid_batches:
-        valid_batches = [n_steps]
-
     return {
         # Learning rate: explore orders of magnitude between 1e-5 and 1e-2
         "learning_rate": trial.suggest_float("learning_rate", 1e-5, 1e-2, log=True),
         # Number of steps per env before each update (rollout length)
-        "n_steps": n_steps,
+        "n_steps": trial.suggest_categorical("n_steps", [64, 128, 256, 512]),
         # Minibatch size for each gradient step
-        "batch_size": trial.suggest_categorical("batch_size", valid_batches),
+        "batch_size": trial.suggest_categorical("batch_size", [8, 16, 32, 64]),
         # Number of passes over the data (epochs) per update
         "n_epochs": trial.suggest_int("n_epochs", 3, 10),
         # Discount factor for future rewards
@@ -85,7 +77,6 @@ def objective(trial):
 
     mean_reward = float("-inf")
     for ts in range(0, total_timesteps, eval_interval):
-        print("=========================starting learning=========================")
         model.learn(eval_interval)
 
         mean_reward, _ = evaluate_policy(model, train_env, n_eval_episodes=5, deterministic=True)
