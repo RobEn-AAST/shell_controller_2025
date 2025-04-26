@@ -72,7 +72,7 @@ def objective(trial):
         **config,
     )
 
-    eval_interval = 5  # timesteps between evaluations, test 10000 later
+    eval_interval = 1_000  # timesteps between evaluations, test 10000 later
     total_timesteps = 100_000
 
     mean_reward = float("-inf")
