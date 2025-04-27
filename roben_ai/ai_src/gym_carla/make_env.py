@@ -11,7 +11,7 @@ import numpy as np
 import gym_carla
 
 
-def make_carla_env(display_size=256, n_walkers=10, n_vehicles=10):
+def make_carla_env(display_size=256, n_walkers=10, n_vehicles=10, eval=False):
     """
     Returns envirnoment, dictionary of the observation space
     """
@@ -42,7 +42,7 @@ def make_carla_env(display_size=256, n_walkers=10, n_vehicles=10):
         "display_route": True,  # whether to render the desired route
         "pixor_size": 64,  # size of the pixor labels
         "pixor": False,  # whether to output PIXOR observation
-        "should_render": should_render,
+        "evaluate": eval,
     }
 
     # Set gym-carla environment

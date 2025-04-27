@@ -45,6 +45,7 @@ class CarlaEnv(gym.Env):
         self.desired_speed = params["desired_speed"]
         self.max_ego_spawn_times = params["max_ego_spawn_times"]
         self.display_route = params["display_route"]
+        self.evaluate: bool = params["evaluate"]
         if "pixor" in params.keys():
             self.pixor = params["pixor"]
             self.pixor_size = params["pixor_size"]
@@ -85,27 +86,28 @@ class CarlaEnv(gym.Env):
                     "pixor_state": spaces.Box(np.array([-1000, -1000, -1, -1, -5]), np.array([1000, 1000, 1, 1, 20]), dtype=np.float64),
                 }
             )
-        self.observation_space = spaces.Dict(observation_space_dict)
+        self.observation_space = spaces.Dict(observation_space_dict)  # type: ignore
 
         # Connect to carla server and get world object
         print("connecting to Carla server...")
-        client = carla.Client("localhost", params["port"])
+        client = carla.Client("localhost", params["port"])  # type: ignore
         client.set_timeout(20.0)
-        self.world = client.load_world(params["town"])
+        self.world = client.get_world() if self.evaluate else client.load_world(params["town"])
         print("Carla server connected!")
 
         # Set weather
-        self.world.set_weather(carla.WeatherParameters.ClearNoon)
+        if not self.evaluate:
+            self.world.set_weather(carla.WeatherParameters.ClearNoon)  # type: ignore
 
-        # Get spawn points
-        self.vehicle_spawn_points = list(self.world.get_map().get_spawn_points())
-        self.walker_spawn_points = []
-        for i in range(self.number_of_walkers):
-            spawn_point = carla.Transform()
-            loc = self.world.get_random_location_from_navigation()
-            if loc != None:
-                spawn_point.location = loc
-                self.walker_spawn_points.append(spawn_point)
+            # Get spawn points
+            self.vehicle_spawn_points = list(self.world.get_map().get_spawn_points())
+            self.walker_spawn_points = []
+            for i in range(self.number_of_walkers):
+                spawn_point = carla.Transform()  # type: ignore
+                loc = self.world.get_random_location_from_navigation()
+                if loc != None:
+                    spawn_point.location = loc
+                    self.walker_spawn_points.append(spawn_point)
 
         # Create the ego vehicle blueprint
         self.ego_bp = self._create_vehicle_bluepprint(params["ego_vehicle_filter"], color="49,8,8")
@@ -118,14 +120,14 @@ class CarlaEnv(gym.Env):
         # Lidar sensor
         self.lidar_data = None
         self.lidar_height = 2.1
-        self.lidar_trans = carla.Transform(carla.Location(x=0.0, z=self.lidar_height))
+        self.lidar_trans = carla.Transform(carla.Location(x=0.0, z=self.lidar_height))  # type: ignore
         self.lidar_bp = self.world.get_blueprint_library().find("sensor.lidar.ray_cast")
         self.lidar_bp.set_attribute("channels", "32")
         self.lidar_bp.set_attribute("range", "5000")
 
         # Camera sensor
         self.camera_img = np.zeros((self.obs_size, self.obs_size, 3), dtype=np.uint8)
-        self.camera_trans = carla.Transform(carla.Location(x=0.8, z=1.7))
+        self.camera_trans = carla.Transform(carla.Location(x=0.8, z=1.7))  # type: ignore
         self.camera_bp = self.world.get_blueprint_library().find("sensor.camera.rgb")
         # Modify the attributes of the blueprint to set image resolution and field of view.
         self.camera_bp.set_attribute("image_size_x", str(self.obs_size))
@@ -153,7 +155,8 @@ class CarlaEnv(gym.Env):
 
     def reset(self, seed=None, options=None):
         # Delete sensors, vehicles and walkers
-        self._clear_all_actors(["sensor.other.collision", "sensor.lidar.ray_cast", "sensor.camera.rgb", "vehicle.*", "controller.ai.walker", "walker.*"])
+        if not self.evaluate:
+            self._clear_all_actors(["sensor.other.collision", "sensor.lidar.ray_cast", "sensor.camera.rgb", "vehicle.*", "controller.ai.walker", "walker.*"])
 
         # Clear sensor objects
         self.collision_sensor = None
@@ -163,31 +166,32 @@ class CarlaEnv(gym.Env):
         # Disable sync mode
         self._set_synchronous_mode(False)
 
-        # Spawn surrounding vehicles
-        random.shuffle(self.vehicle_spawn_points)
-        count = self.number_of_vehicles
-        if count > 0:
-            for spawn_point in self.vehicle_spawn_points:
-                if self._try_spawn_random_vehicle_at(spawn_point, number_of_wheels=[4]):
+        if not self.evaluate:
+            # Spawn surrounding vehicles
+            random.shuffle(self.vehicle_spawn_points)
+            count = self.number_of_vehicles
+            if count > 0:
+                for spawn_point in self.vehicle_spawn_points:
+                    if self._try_spawn_random_vehicle_at(spawn_point, number_of_wheels=[4]):
+                        count -= 1
+                    if count <= 0:
+                        break
+            while count > 0:
+                if self._try_spawn_random_vehicle_at(random.choice(self.vehicle_spawn_points), number_of_wheels=[4]):
                     count -= 1
-                if count <= 0:
-                    break
-        while count > 0:
-            if self._try_spawn_random_vehicle_at(random.choice(self.vehicle_spawn_points), number_of_wheels=[4]):
-                count -= 1
 
-        # Spawn pedestrians
-        random.shuffle(self.walker_spawn_points)
-        count = self.number_of_walkers
-        if count > 0:
-            for spawn_point in self.walker_spawn_points:
-                if self._try_spawn_random_walker_at(spawn_point):
+            # Spawn pedestrians
+            random.shuffle(self.walker_spawn_points)
+            count = self.number_of_walkers
+            if count > 0:
+                for spawn_point in self.walker_spawn_points:
+                    if self._try_spawn_random_walker_at(spawn_point):
+                        count -= 1
+                    if count <= 0:
+                        break
+            while count > 0:
+                if self._try_spawn_random_walker_at(random.choice(self.walker_spawn_points)):
                     count -= 1
-                if count <= 0:
-                    break
-        while count > 0:
-            if self._try_spawn_random_walker_at(random.choice(self.walker_spawn_points)):
-                count -= 1
 
         # Get actors polygon list
         self.vehicle_polygons = []
@@ -199,24 +203,28 @@ class CarlaEnv(gym.Env):
 
         # Spawn the ego vehicle
         ego_spawn_times = 0
-        while True:
-            if ego_spawn_times > self.max_ego_spawn_times:
-                self.reset()
+        if not self.evaluate:
+            while True:
+                if ego_spawn_times > self.max_ego_spawn_times:
+                    self.reset()
 
-            if self.task_mode == "random":
-                transform = random.choice(self.vehicle_spawn_points)
-            if self.task_mode == "roundabout":
-                self.start = [52.1 + np.random.uniform(-5, 5), -4.2, 178.66]  # random
-                # self.start=[52.1,-4.2, 178.66] # static
-                transform = set_carla_transform(self.start)
-            if self._try_spawn_ego_vehicle_at(transform):
-                break
-            else:
-                ego_spawn_times += 1
-                time.sleep(0.1)
+                if self.task_mode == "random":
+                    transform = random.choice(self.vehicle_spawn_points)
+                if self.task_mode == "roundabout":
+                    self.start = [52.1 + np.random.uniform(-5, 5), -4.2, 178.66]  # random
+                    # self.start=[52.1,-4.2, 178.66] # static
+                    transform = set_carla_transform(self.start)
+                if self._try_spawn_ego_vehicle_at(transform):  # type: ignore
+                    break
+                else:
+                    ego_spawn_times += 1
+                    time.sleep(0.1)
+        else:
+            if not self._try_spawn_ego_vehicle_at(None):
+                raise RuntimeError("No ego vehicle found in the world during evaluation.")
 
         # Add collision sensor
-        self.collision_sensor = self.world.spawn_actor(self.collision_bp, carla.Transform(), attach_to=self.ego)
+        self.collision_sensor = self.world.spawn_actor(self.collision_bp, carla.Transform(), attach_to=self.ego)  # type: ignore
         self.collision_sensor.listen(lambda event: get_collision_hist(event))
 
         def get_collision_hist(event):
@@ -287,7 +295,7 @@ class CarlaEnv(gym.Env):
             brake = np.clip(-acc / 8, 0, 1)
 
         # Apply control
-        act = carla.VehicleControl(throttle=float(throttle), steer=float(-steer), brake=float(brake))
+        act = carla.VehicleControl(throttle=float(throttle), steer=float(-steer), brake=float(brake))  # type: ignore
         self.ego.apply_control(act)
 
         self.world.tick()
@@ -319,7 +327,7 @@ class CarlaEnv(gym.Env):
         self.np_random, seed = seeding.np_random(seed)
         return [seed]
 
-    def render(self, mode):
+    def render(self, mode):  # type: ignore
         pass
 
     def _create_vehicle_bluepprint(self, actor_filter, color=None, number_of_wheels=[4]):
@@ -391,7 +399,7 @@ class CarlaEnv(gym.Env):
 
         if walker_actor is not None:
             walker_controller_bp = self.world.get_blueprint_library().find("controller.ai.walker")
-            walker_controller_actor = self.world.spawn_actor(walker_controller_bp, carla.Transform(), walker_actor)
+            walker_controller_actor = self.world.spawn_actor(walker_controller_bp, carla.Transform(), walker_actor)  # type: ignore
             # start walker
             walker_controller_actor.start()
             # set walk to random point
@@ -408,6 +416,17 @@ class CarlaEnv(gym.Env):
         Returns:
           Bool indicating whether the spawn is successful.
         """
+
+        if self.evaluate:
+            # 1) Try to find any already‐spawned ego‐tagged vehicle
+            all_vehicles = self.world.get_actors().filter("vehicle.*")
+            for veh in all_vehicles:
+                if veh.attributes.get("role_name") == "ego_vehicle" and veh.is_alive:
+                    # Found it—just re‐use
+                    self.ego = veh
+                    return True
+            return False
+
         vehicle = None
         # Check if ego position overlaps with surrounding vehicles
         overlap = False
@@ -678,10 +697,9 @@ class CarlaEnv(gym.Env):
         for actor_filter in actor_filters:
             for actor in self.world.get_actors().filter(actor_filter):
                 if actor.is_alive:
-                    if actor.type_id == 'controller.ai.walker':
+                    if actor.type_id == "controller.ai.walker":
                         actor.stop()
                 actor.destroy()
-        
 
     # def _clear_all_actors(self, actor_filters):
     #     """Clear specific actors."""

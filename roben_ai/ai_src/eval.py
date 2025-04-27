@@ -1,9 +1,8 @@
 import gym_carla
 import gymnasium as gym
 
-
 if __name__ == "__main__":
-    env = gym_carla.make_carla_env()
+    env = gym_carla.make_carla_env(eval=True)
 
     obs = env.reset()
     while True:
