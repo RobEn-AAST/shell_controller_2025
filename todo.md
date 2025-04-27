@@ -9,3 +9,15 @@ Later:
     Ensure we follow closest point
     Ensure we can acutally update the closest point
     remove the useless files
+
+
+
+
+pip install carla
+pip3 install torch torchvision torchaudio --index-url https://download.pytorch.org/whl/cpu
+pip install optuna
+pip install gymnasium
+pip3 install numpy==1.26.4
+pip install matplotlib
+pip install opencv-python
+pip install stable-baselines3
