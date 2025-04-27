@@ -1,3 +1,0 @@
-ai_src
-config
-roben_ai

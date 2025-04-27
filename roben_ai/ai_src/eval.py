@@ -1,4 +1,4 @@
-from ai_src.gym_carla import make_carla_env
+from gym_carla import make_carla_env
 import gymnasium as gym
 
 if __name__ == "__main__":

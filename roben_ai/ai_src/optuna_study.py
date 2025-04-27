@@ -1,4 +1,4 @@
-from ai_src.gym_carla import make_carla_env
+from gym_carla import make_carla_env
 from stable_baselines3 import PPO
 import torch.nn as nn
 from stable_baselines3.common.env_util import make_vec_env
