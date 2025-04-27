@@ -1,4 +1,4 @@
-from gym_carla import make_carla_env
+from ai_src.gym_carla import make_carla_env
 from stable_baselines3 import PPO
 import torch.nn as nn
 from stable_baselines3.common.env_util import make_vec_env
@@ -74,7 +74,7 @@ def objective(trial):
         **config,
     )
 
-    eval_interval = 500 # timesteps between evaluations
+    eval_interval = 500  # timesteps between evaluations
     total_timesteps = 50_000
 
     mean_reward = float("-inf")

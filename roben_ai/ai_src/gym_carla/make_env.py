@@ -8,8 +8,7 @@
 import gymnasium as gym
 from gymnasium import spaces
 import numpy as np
-import gym_carla
-
+from ai_src import gym_carla
 
 def make_carla_env(display_size=256, n_walkers=10, n_vehicles=10, eval=False):
     """

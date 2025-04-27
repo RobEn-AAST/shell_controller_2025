@@ -1,8 +1,8 @@
-import gym_carla
+from ai_src.gym_carla import make_carla_env
 import gymnasium as gym
 
 if __name__ == "__main__":
-    env = gym_carla.make_carla_env(eval=True)
+    env = make_carla_env(eval=True)
 
     obs = env.reset()
     while True:

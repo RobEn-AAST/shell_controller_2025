@@ -1,0 +1,113 @@
+[0.482s] Invoking command in '/home/zeyadcode_jammy/ros_ws/src/build/roben_ai': PYTHONPATH=/home/zeyadcode_jammy/ros_ws/src/build/roben_ai/prefix_override:/usr/lib/python3/dist-packages/colcon_core/task/python/colcon_distutils_commands:/home/zeyadcode_jammy/ros_ws/src/install/roben_ai/lib/python3.10/site-packages:${PYTHONPATH} /usr/bin/python3 -W ignore:setup.py install is deprecated -W ignore:easy_install command is deprecated setup.py develop --uninstall --editable --build-directory /home/zeyadcode_jammy/ros_ws/src/build/roben_ai/build
+[0.687s] running develop
+[0.810s] Removing /home/zeyadcode_jammy/ros_ws/src/install/roben_ai/lib/python3.10/site-packages/roben-ai.egg-link (link to .)
+[0.835s] Invoked command in '/home/zeyadcode_jammy/ros_ws/src/build/roben_ai' returned '0': PYTHONPATH=/home/zeyadcode_jammy/ros_ws/src/build/roben_ai/prefix_override:/usr/lib/python3/dist-packages/colcon_core/task/python/colcon_distutils_commands:/home/zeyadcode_jammy/ros_ws/src/install/roben_ai/lib/python3.10/site-packages:${PYTHONPATH} /usr/bin/python3 -W ignore:setup.py install is deprecated -W ignore:easy_install command is deprecated setup.py develop --uninstall --editable --build-directory /home/zeyadcode_jammy/ros_ws/src/build/roben_ai/build
+[0.836s] Invoking command in '/home/zeyadcode_jammy/ros_ws/src/roben_ai': PYTHONPATH=/home/zeyadcode_jammy/ros_ws/src/build/roben_ai/prefix_override:/usr/lib/python3/dist-packages/colcon_core/task/python/colcon_distutils_commands:/home/zeyadcode_jammy/ros_ws/src/install/roben_ai/lib/python3.10/site-packages:${PYTHONPATH} /usr/bin/python3 -W ignore:setup.py install is deprecated -W ignore:easy_install command is deprecated setup.py egg_info --egg-base ../build/roben_ai build --build-base /home/zeyadcode_jammy/ros_ws/src/build/roben_ai/build install --record /home/zeyadcode_jammy/ros_ws/src/build/roben_ai/install.log --single-version-externally-managed install_data --force
+[1.021s] running egg_info
+[1.021s] writing ../build/roben_ai/roben_ai.egg-info/PKG-INFO
+[1.022s] writing dependency_links to ../build/roben_ai/roben_ai.egg-info/dependency_links.txt
+[1.022s] writing entry points to ../build/roben_ai/roben_ai.egg-info/entry_points.txt
+[1.022s] writing requirements to ../build/roben_ai/roben_ai.egg-info/requires.txt
+[1.022s] writing top-level names to ../build/roben_ai/roben_ai.egg-info/top_level.txt
+[1.024s] reading manifest file '../build/roben_ai/roben_ai.egg-info/SOURCES.txt'
+[1.025s] writing manifest file '../build/roben_ai/roben_ai.egg-info/SOURCES.txt'
+[1.026s] running build
+[1.026s] running build_py
+[1.026s] creating /home/zeyadcode_jammy/ros_ws/src/build/roben_ai/build
+[1.026s] creating /home/zeyadcode_jammy/ros_ws/src/build/roben_ai/build/lib
+[1.026s] creating /home/zeyadcode_jammy/ros_ws/src/build/roben_ai/build/lib/roben_ai
+[1.026s] copying roben_ai/__init__.py -> /home/zeyadcode_jammy/ros_ws/src/build/roben_ai/build/lib/roben_ai
+[1.026s] copying roben_ai/brain.py -> /home/zeyadcode_jammy/ros_ws/src/build/roben_ai/build/lib/roben_ai
+[1.026s] creating /home/zeyadcode_jammy/ros_ws/src/build/roben_ai/build/lib/config
+[1.026s] copying config/__init__.py -> /home/zeyadcode_jammy/ros_ws/src/build/roben_ai/build/lib/config
+[1.026s] copying config/hyperparams.py -> /home/zeyadcode_jammy/ros_ws/src/build/roben_ai/build/lib/config
+[1.026s] creating /home/zeyadcode_jammy/ros_ws/src/build/roben_ai/build/lib/ai_src
+[1.026s] copying ai_src/eval.py -> /home/zeyadcode_jammy/ros_ws/src/build/roben_ai/build/lib/ai_src
+[1.027s] copying ai_src/__init__.py -> /home/zeyadcode_jammy/ros_ws/src/build/roben_ai/build/lib/ai_src
+[1.027s] copying ai_src/optuna_study.py -> /home/zeyadcode_jammy/ros_ws/src/build/roben_ai/build/lib/ai_src
+[1.027s] creating /home/zeyadcode_jammy/ros_ws/src/build/roben_ai/build/lib/ai_src/gym_carla
+[1.027s] copying ai_src/gym_carla/__init__.py -> /home/zeyadcode_jammy/ros_ws/src/build/roben_ai/build/lib/ai_src/gym_carla
+[1.027s] copying ai_src/gym_carla/make_env.py -> /home/zeyadcode_jammy/ros_ws/src/build/roben_ai/build/lib/ai_src/gym_carla
+[1.027s] creating /home/zeyadcode_jammy/ros_ws/src/build/roben_ai/build/lib/ai_src/training
+[1.027s] copying ai_src/training/__init__.py -> /home/zeyadcode_jammy/ros_ws/src/build/roben_ai/build/lib/ai_src/training
+[1.027s] copying ai_src/training/loss.py -> /home/zeyadcode_jammy/ros_ws/src/build/roben_ai/build/lib/ai_src/training
+[1.027s] copying ai_src/training/trainer.py -> /home/zeyadcode_jammy/ros_ws/src/build/roben_ai/build/lib/ai_src/training
+[1.027s] creating /home/zeyadcode_jammy/ros_ws/src/build/roben_ai/build/lib/ai_src/models
+[1.027s] copying ai_src/models/__init__.py -> /home/zeyadcode_jammy/ros_ws/src/build/roben_ai/build/lib/ai_src/models
+[1.027s] copying ai_src/models/actor.py -> /home/zeyadcode_jammy/ros_ws/src/build/roben_ai/build/lib/ai_src/models
+[1.027s] copying ai_src/models/critic.py -> /home/zeyadcode_jammy/ros_ws/src/build/roben_ai/build/lib/ai_src/models
+[1.027s] copying ai_src/models/backbone.py -> /home/zeyadcode_jammy/ros_ws/src/build/roben_ai/build/lib/ai_src/models
+[1.028s] creating /home/zeyadcode_jammy/ros_ws/src/build/roben_ai/build/lib/ai_src/utils
+[1.028s] copying ai_src/utils/__init__.py -> /home/zeyadcode_jammy/ros_ws/src/build/roben_ai/build/lib/ai_src/utils
+[1.028s] copying ai_src/utils/types.py -> /home/zeyadcode_jammy/ros_ws/src/build/roben_ai/build/lib/ai_src/utils
+[1.028s] creating /home/zeyadcode_jammy/ros_ws/src/build/roben_ai/build/lib/ai_src/gym_carla/envs
+[1.028s] copying ai_src/gym_carla/envs/misc.py -> /home/zeyadcode_jammy/ros_ws/src/build/roben_ai/build/lib/ai_src/gym_carla/envs
+[1.028s] copying ai_src/gym_carla/envs/__init__.py -> /home/zeyadcode_jammy/ros_ws/src/build/roben_ai/build/lib/ai_src/gym_carla/envs
+[1.028s] copying ai_src/gym_carla/envs/carla_env.py -> /home/zeyadcode_jammy/ros_ws/src/build/roben_ai/build/lib/ai_src/gym_carla/envs
+[1.028s] copying ai_src/gym_carla/envs/render.py -> /home/zeyadcode_jammy/ros_ws/src/build/roben_ai/build/lib/ai_src/gym_carla/envs
+[1.028s] copying ai_src/gym_carla/envs/route_planner.py -> /home/zeyadcode_jammy/ros_ws/src/build/roben_ai/build/lib/ai_src/gym_carla/envs
+[1.029s] running install
+[1.030s] running install_lib
+[1.031s] creating /home/zeyadcode_jammy/ros_ws/src/install/roben_ai/lib/python3.10/site-packages/roben_ai
+[1.031s] copying /home/zeyadcode_jammy/ros_ws/src/build/roben_ai/build/lib/roben_ai/__init__.py -> /home/zeyadcode_jammy/ros_ws/src/install/roben_ai/lib/python3.10/site-packages/roben_ai
+[1.031s] copying /home/zeyadcode_jammy/ros_ws/src/build/roben_ai/build/lib/roben_ai/brain.py -> /home/zeyadcode_jammy/ros_ws/src/install/roben_ai/lib/python3.10/site-packages/roben_ai
+[1.031s] creating /home/zeyadcode_jammy/ros_ws/src/install/roben_ai/lib/python3.10/site-packages/config
+[1.031s] copying /home/zeyadcode_jammy/ros_ws/src/build/roben_ai/build/lib/config/__init__.py -> /home/zeyadcode_jammy/ros_ws/src/install/roben_ai/lib/python3.10/site-packages/config
+[1.031s] copying /home/zeyadcode_jammy/ros_ws/src/build/roben_ai/build/lib/config/hyperparams.py -> /home/zeyadcode_jammy/ros_ws/src/install/roben_ai/lib/python3.10/site-packages/config
+[1.031s] creating /home/zeyadcode_jammy/ros_ws/src/install/roben_ai/lib/python3.10/site-packages/ai_src
+[1.031s] copying /home/zeyadcode_jammy/ros_ws/src/build/roben_ai/build/lib/ai_src/eval.py -> /home/zeyadcode_jammy/ros_ws/src/install/roben_ai/lib/python3.10/site-packages/ai_src
+[1.031s] creating /home/zeyadcode_jammy/ros_ws/src/install/roben_ai/lib/python3.10/site-packages/ai_src/gym_carla
+[1.031s] copying /home/zeyadcode_jammy/ros_ws/src/build/roben_ai/build/lib/ai_src/gym_carla/__init__.py -> /home/zeyadcode_jammy/ros_ws/src/install/roben_ai/lib/python3.10/site-packages/ai_src/gym_carla
+[1.031s] copying /home/zeyadcode_jammy/ros_ws/src/build/roben_ai/build/lib/ai_src/gym_carla/make_env.py -> /home/zeyadcode_jammy/ros_ws/src/install/roben_ai/lib/python3.10/site-packages/ai_src/gym_carla
+[1.031s] creating /home/zeyadcode_jammy/ros_ws/src/install/roben_ai/lib/python3.10/site-packages/ai_src/gym_carla/envs
+[1.031s] copying /home/zeyadcode_jammy/ros_ws/src/build/roben_ai/build/lib/ai_src/gym_carla/envs/misc.py -> /home/zeyadcode_jammy/ros_ws/src/install/roben_ai/lib/python3.10/site-packages/ai_src/gym_carla/envs
+[1.032s] copying /home/zeyadcode_jammy/ros_ws/src/build/roben_ai/build/lib/ai_src/gym_carla/envs/__init__.py -> /home/zeyadcode_jammy/ros_ws/src/install/roben_ai/lib/python3.10/site-packages/ai_src/gym_carla/envs
+[1.032s] copying /home/zeyadcode_jammy/ros_ws/src/build/roben_ai/build/lib/ai_src/gym_carla/envs/carla_env.py -> /home/zeyadcode_jammy/ros_ws/src/install/roben_ai/lib/python3.10/site-packages/ai_src/gym_carla/envs
+[1.032s] copying /home/zeyadcode_jammy/ros_ws/src/build/roben_ai/build/lib/ai_src/gym_carla/envs/render.py -> /home/zeyadcode_jammy/ros_ws/src/install/roben_ai/lib/python3.10/site-packages/ai_src/gym_carla/envs
+[1.032s] copying /home/zeyadcode_jammy/ros_ws/src/build/roben_ai/build/lib/ai_src/gym_carla/envs/route_planner.py -> /home/zeyadcode_jammy/ros_ws/src/install/roben_ai/lib/python3.10/site-packages/ai_src/gym_carla/envs
+[1.032s] copying /home/zeyadcode_jammy/ros_ws/src/build/roben_ai/build/lib/ai_src/__init__.py -> /home/zeyadcode_jammy/ros_ws/src/install/roben_ai/lib/python3.10/site-packages/ai_src
+[1.032s] creating /home/zeyadcode_jammy/ros_ws/src/install/roben_ai/lib/python3.10/site-packages/ai_src/training
+[1.032s] copying /home/zeyadcode_jammy/ros_ws/src/build/roben_ai/build/lib/ai_src/training/__init__.py -> /home/zeyadcode_jammy/ros_ws/src/install/roben_ai/lib/python3.10/site-packages/ai_src/training
+[1.032s] copying /home/zeyadcode_jammy/ros_ws/src/build/roben_ai/build/lib/ai_src/training/loss.py -> /home/zeyadcode_jammy/ros_ws/src/install/roben_ai/lib/python3.10/site-packages/ai_src/training
+[1.032s] copying /home/zeyadcode_jammy/ros_ws/src/build/roben_ai/build/lib/ai_src/training/trainer.py -> /home/zeyadcode_jammy/ros_ws/src/install/roben_ai/lib/python3.10/site-packages/ai_src/training
+[1.032s] creating /home/zeyadcode_jammy/ros_ws/src/install/roben_ai/lib/python3.10/site-packages/ai_src/models
+[1.032s] copying /home/zeyadcode_jammy/ros_ws/src/build/roben_ai/build/lib/ai_src/models/__init__.py -> /home/zeyadcode_jammy/ros_ws/src/install/roben_ai/lib/python3.10/site-packages/ai_src/models
+[1.032s] copying /home/zeyadcode_jammy/ros_ws/src/build/roben_ai/build/lib/ai_src/models/actor.py -> /home/zeyadcode_jammy/ros_ws/src/install/roben_ai/lib/python3.10/site-packages/ai_src/models
+[1.032s] copying /home/zeyadcode_jammy/ros_ws/src/build/roben_ai/build/lib/ai_src/models/critic.py -> /home/zeyadcode_jammy/ros_ws/src/install/roben_ai/lib/python3.10/site-packages/ai_src/models
+[1.032s] copying /home/zeyadcode_jammy/ros_ws/src/build/roben_ai/build/lib/ai_src/models/backbone.py -> /home/zeyadcode_jammy/ros_ws/src/install/roben_ai/lib/python3.10/site-packages/ai_src/models
+[1.033s] copying /home/zeyadcode_jammy/ros_ws/src/build/roben_ai/build/lib/ai_src/optuna_study.py -> /home/zeyadcode_jammy/ros_ws/src/install/roben_ai/lib/python3.10/site-packages/ai_src
+[1.033s] creating /home/zeyadcode_jammy/ros_ws/src/install/roben_ai/lib/python3.10/site-packages/ai_src/utils
+[1.033s] copying /home/zeyadcode_jammy/ros_ws/src/build/roben_ai/build/lib/ai_src/utils/__init__.py -> /home/zeyadcode_jammy/ros_ws/src/install/roben_ai/lib/python3.10/site-packages/ai_src/utils
+[1.033s] copying /home/zeyadcode_jammy/ros_ws/src/build/roben_ai/build/lib/ai_src/utils/types.py -> /home/zeyadcode_jammy/ros_ws/src/install/roben_ai/lib/python3.10/site-packages/ai_src/utils
+[1.033s] byte-compiling /home/zeyadcode_jammy/ros_ws/src/install/roben_ai/lib/python3.10/site-packages/roben_ai/__init__.py to __init__.cpython-310.pyc
+[1.033s] byte-compiling /home/zeyadcode_jammy/ros_ws/src/install/roben_ai/lib/python3.10/site-packages/roben_ai/brain.py to brain.cpython-310.pyc
+[1.034s] byte-compiling /home/zeyadcode_jammy/ros_ws/src/install/roben_ai/lib/python3.10/site-packages/config/__init__.py to __init__.cpython-310.pyc
+[1.034s] byte-compiling /home/zeyadcode_jammy/ros_ws/src/install/roben_ai/lib/python3.10/site-packages/config/hyperparams.py to hyperparams.cpython-310.pyc
+[1.034s] byte-compiling /home/zeyadcode_jammy/ros_ws/src/install/roben_ai/lib/python3.10/site-packages/ai_src/eval.py to eval.cpython-310.pyc
+[1.034s] byte-compiling /home/zeyadcode_jammy/ros_ws/src/install/roben_ai/lib/python3.10/site-packages/ai_src/gym_carla/__init__.py to __init__.cpython-310.pyc
+[1.034s] byte-compiling /home/zeyadcode_jammy/ros_ws/src/install/roben_ai/lib/python3.10/site-packages/ai_src/gym_carla/make_env.py to make_env.cpython-310.pyc
+[1.035s] byte-compiling /home/zeyadcode_jammy/ros_ws/src/install/roben_ai/lib/python3.10/site-packages/ai_src/gym_carla/envs/misc.py to misc.cpython-310.pyc
+[1.036s] byte-compiling /home/zeyadcode_jammy/ros_ws/src/install/roben_ai/lib/python3.10/site-packages/ai_src/gym_carla/envs/__init__.py to __init__.cpython-310.pyc
+[1.036s] byte-compiling /home/zeyadcode_jammy/ros_ws/src/install/roben_ai/lib/python3.10/site-packages/ai_src/gym_carla/envs/carla_env.py to carla_env.cpython-310.pyc
+[1.040s] byte-compiling /home/zeyadcode_jammy/ros_ws/src/install/roben_ai/lib/python3.10/site-packages/ai_src/gym_carla/envs/render.py to render.cpython-310.pyc
+[1.043s] byte-compiling /home/zeyadcode_jammy/ros_ws/src/install/roben_ai/lib/python3.10/site-packages/ai_src/gym_carla/envs/route_planner.py to route_planner.cpython-310.pyc
+[1.044s] byte-compiling /home/zeyadcode_jammy/ros_ws/src/install/roben_ai/lib/python3.10/site-packages/ai_src/__init__.py to __init__.cpython-310.pyc
+[1.044s] byte-compiling /home/zeyadcode_jammy/ros_ws/src/install/roben_ai/lib/python3.10/site-packages/ai_src/training/__init__.py to __init__.cpython-310.pyc
+[1.044s] byte-compiling /home/zeyadcode_jammy/ros_ws/src/install/roben_ai/lib/python3.10/site-packages/ai_src/training/loss.py to loss.cpython-310.pyc
+[1.044s] byte-compiling /home/zeyadcode_jammy/ros_ws/src/install/roben_ai/lib/python3.10/site-packages/ai_src/training/trainer.py to trainer.cpython-310.pyc
+[1.045s] byte-compiling /home/zeyadcode_jammy/ros_ws/src/install/roben_ai/lib/python3.10/site-packages/ai_src/models/__init__.py to __init__.cpython-310.pyc
+[1.045s] byte-compiling /home/zeyadcode_jammy/ros_ws/src/install/roben_ai/lib/python3.10/site-packages/ai_src/models/actor.py to actor.cpython-310.pyc
+[1.045s] byte-compiling /home/zeyadcode_jammy/ros_ws/src/install/roben_ai/lib/python3.10/site-packages/ai_src/models/critic.py to critic.cpython-310.pyc
+[1.045s] byte-compiling /home/zeyadcode_jammy/ros_ws/src/install/roben_ai/lib/python3.10/site-packages/ai_src/models/backbone.py to backbone.cpython-310.pyc
+[1.046s] byte-compiling /home/zeyadcode_jammy/ros_ws/src/install/roben_ai/lib/python3.10/site-packages/ai_src/optuna_study.py to optuna_study.cpython-310.pyc
+[1.046s] byte-compiling /home/zeyadcode_jammy/ros_ws/src/install/roben_ai/lib/python3.10/site-packages/ai_src/utils/__init__.py to __init__.cpython-310.pyc
+[1.046s] byte-compiling /home/zeyadcode_jammy/ros_ws/src/install/roben_ai/lib/python3.10/site-packages/ai_src/utils/types.py to types.cpython-310.pyc
+[1.046s] running install_data
+[1.046s] copying resource/roben_ai -> /home/zeyadcode_jammy/ros_ws/src/install/roben_ai/share/ament_index/resource_index/packages
+[1.047s] copying package.xml -> /home/zeyadcode_jammy/ros_ws/src/install/roben_ai/share/roben_ai
+[1.047s] running install_egg_info
+[1.048s] Copying ../build/roben_ai/roben_ai.egg-info to /home/zeyadcode_jammy/ros_ws/src/install/roben_ai/lib/python3.10/site-packages/roben_ai-0.0.0-py3.10.egg-info
+[1.049s] running install_scripts
+[1.065s] Installing brain script to /home/zeyadcode_jammy/ros_ws/src/install/roben_ai/lib/roben_ai
+[1.066s] writing list of installed files to '/home/zeyadcode_jammy/ros_ws/src/build/roben_ai/install.log'
+[1.083s] Invoked command in '/home/zeyadcode_jammy/ros_ws/src/roben_ai' returned '0': PYTHONPATH=/home/zeyadcode_jammy/ros_ws/src/build/roben_ai/prefix_override:/usr/lib/python3/dist-packages/colcon_core/task/python/colcon_distutils_commands:/home/zeyadcode_jammy/ros_ws/src/install/roben_ai/lib/python3.10/site-packages:${PYTHONPATH} /usr/bin/python3 -W ignore:setup.py install is deprecated -W ignore:easy_install command is deprecated setup.py egg_info --egg-base ../build/roben_ai build --build-base /home/zeyadcode_jammy/ros_ws/src/build/roben_ai/build install --record /home/zeyadcode_jammy/ros_ws/src/build/roben_ai/install.log --single-version-externally-managed install_data --force

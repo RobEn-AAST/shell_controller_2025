@@ -1,0 +1,24 @@
+[0.479s] Invoking command in '/home/zeyadcode_jammy/ros_ws/src/build/roben_ai': PYTHONPATH=/home/zeyadcode_jammy/ros_ws/src/build/roben_ai/prefix_override:/usr/lib/python3/dist-packages/colcon_core/task/python/colcon_distutils_commands:/home/zeyadcode_jammy/ros_ws/src/install/roben_ai/lib/python3.10/site-packages:${PYTHONPATH} /usr/bin/python3 -W ignore:setup.py install is deprecated -W ignore:easy_install command is deprecated setup.py develop --editable --build-directory /home/zeyadcode_jammy/ros_ws/src/build/roben_ai/build --no-deps symlink_data
+[0.679s] running develop
+[0.796s] running egg_info
+[0.796s] creating roben_ai.egg-info
+[0.796s] writing roben_ai.egg-info/PKG-INFO
+[0.796s] writing dependency_links to roben_ai.egg-info/dependency_links.txt
+[0.796s] writing entry points to roben_ai.egg-info/entry_points.txt
+[0.796s] writing requirements to roben_ai.egg-info/requires.txt
+[0.796s] writing top-level names to roben_ai.egg-info/top_level.txt
+[0.797s] writing manifest file 'roben_ai.egg-info/SOURCES.txt'
+[0.798s] reading manifest file 'roben_ai.egg-info/SOURCES.txt'
+[0.799s] writing manifest file 'roben_ai.egg-info/SOURCES.txt'
+[0.800s] running build_ext
+[0.800s] Creating /home/zeyadcode_jammy/ros_ws/src/install/roben_ai/lib/python3.10/site-packages/roben-ai.egg-link (link to .)
+[0.800s] Installing brain script to /home/zeyadcode_jammy/ros_ws/src/install/roben_ai/lib/roben_ai
+[0.801s] 
+[0.801s] Installed /home/zeyadcode_jammy/ros_ws/src/build/roben_ai
+[0.801s] running symlink_data
+[0.801s] creating /home/zeyadcode_jammy/ros_ws/src/install/roben_ai/share/ament_index
+[0.801s] creating /home/zeyadcode_jammy/ros_ws/src/install/roben_ai/share/ament_index/resource_index
+[0.801s] creating /home/zeyadcode_jammy/ros_ws/src/install/roben_ai/share/ament_index/resource_index/packages
+[0.801s] symbolically linking /home/zeyadcode_jammy/ros_ws/src/build/roben_ai/resource/roben_ai -> /home/zeyadcode_jammy/ros_ws/src/install/roben_ai/share/ament_index/resource_index/packages
+[0.801s] symbolically linking /home/zeyadcode_jammy/ros_ws/src/build/roben_ai/package.xml -> /home/zeyadcode_jammy/ros_ws/src/install/roben_ai/share/roben_ai
+[0.825s] Invoked command in '/home/zeyadcode_jammy/ros_ws/src/build/roben_ai' returned '0': PYTHONPATH=/home/zeyadcode_jammy/ros_ws/src/build/roben_ai/prefix_override:/usr/lib/python3/dist-packages/colcon_core/task/python/colcon_distutils_commands:/home/zeyadcode_jammy/ros_ws/src/install/roben_ai/lib/python3.10/site-packages:${PYTHONPATH} /usr/bin/python3 -W ignore:setup.py install is deprecated -W ignore:easy_install command is deprecated setup.py develop --editable --build-directory /home/zeyadcode_jammy/ros_ws/src/build/roben_ai/build --no-deps symlink_data

@@ -19,9 +19,9 @@ from gymnasium import spaces
 from gymnasium.utils import seeding
 import carla
 
-from gym_carla.envs.render import BirdeyeRender
-from gym_carla.envs.route_planner import RoutePlanner
-from gym_carla.envs.misc import *
+from ai_src.gym_carla.envs.render import BirdeyeRender
+from ai_src.gym_carla.envs.route_planner import RoutePlanner
+from ai_src.gym_carla.envs.misc import *
 
 
 class CarlaEnv(gym.Env):
