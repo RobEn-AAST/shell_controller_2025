@@ -11,14 +11,14 @@ import numpy as np
 import gym_carla
 
 
-def make_carla_env(display_size=256):
+def make_carla_env(display_size=256, n_walkers=10, n_vehicles=10):
     """
     Returns envirnoment, dictionary of the observation space
     """
     # parameters for the gym_carla environment
     params = {
-        "number_of_vehicles": 10,
-        "number_of_walkers": 2,
+        "number_of_vehicles": n_vehicles,
+        "number_of_walkers": n_walkers,
         "display_size": display_size,  # screen size of bird-eye render
         "max_past_step": 1,  # the number of past steps to draw
         "dt": 0.1,  # time interval between two frames
@@ -37,7 +37,7 @@ def make_carla_env(display_size=256):
         "lidar_bin": 0.125,  # bin size of lidar sensor (meter)
         "d_behind": 12,  # distance behind the ego vehicle (meter)
         "out_lane_thres": 2.0,  # threshold for out of lane
-        "desired_speed": 43e3,  # desired speed (m/s)
+        "desired_speed": (43*1000)/(60*60),  # desired speed (m/s)
         "max_ego_spawn_times": 200,  # maximum times to spawn ego vehicle
         "display_route": True,  # whether to render the desired route
         "pixor_size": 64,  # size of the pixor labels

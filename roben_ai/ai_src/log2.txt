@@ -1,0 +1,94 @@
+zeyadcode_jammy@zeyadcodeUbuntuJammy:~/ros_ws/src/roben_ai/ai_src$ python3 optuna_study.py 
+/home/zeyadcode_jammy/.local/lib/python3.10/site-packages/optuna/_experimental.py:31: ExperimentalWarning: Argument ``multivariate`` is an experimental feature. The interface can change in the future.
+  warnings.warn(
+/home/zeyadcode_jammy/.local/lib/python3.10/site-packages/optuna/_experimental.py:31: ExperimentalWarning: Argument ``group`` is an experimental feature. The interface can change in the future.
+  warnings.warn(
+[I 2025-04-26 22:44:10,084] Using an existing study with name 'ppo_carla' instead of creating a new one.
+connecting to Carla server...
+Carla server connected!
+/home/zeyadcode_jammy/ros_ws/src/roben_ai/ai_src/optuna_study.py:38: FutureWarning: suggest_uniform has been deprecated in v3.0.0. This feature will be removed in v6.0.0. See https://github.com/optuna/optuna/releases/tag/v3.0.0. Use suggest_float instead.
+  "gamma": trial.suggest_uniform("gamma", 0.90, 0.9999),
+/home/zeyadcode_jammy/ros_ws/src/roben_ai/ai_src/optuna_study.py:40: FutureWarning: suggest_uniform has been deprecated in v3.0.0. This feature will be removed in v6.0.0. See https://github.com/optuna/optuna/releases/tag/v3.0.0. Use suggest_float instead.
+  "gae_lambda": trial.suggest_uniform("gae_lambda", 0.80, 1.00),
+/home/zeyadcode_jammy/ros_ws/src/roben_ai/ai_src/optuna_study.py:42: FutureWarning: suggest_uniform has been deprecated in v3.0.0. This feature will be removed in v6.0.0. See https://github.com/optuna/optuna/releases/tag/v3.0.0. Use suggest_float instead.
+  "clip_range": trial.suggest_uniform("clip_range", 0.10, 0.30),
+/home/zeyadcode_jammy/ros_ws/src/roben_ai/ai_src/optuna_study.py:48: FutureWarning: suggest_loguniform has been deprecated in v3.0.0. This feature will be removed in v6.0.0. See https://github.com/optuna/optuna/releases/tag/v3.0.0. Use suggest_float(..., log=True) instead.
+  "ent_coef": trial.suggest_loguniform("ent_coef", 1e-8, 1e-1),
+/home/zeyadcode_jammy/ros_ws/src/roben_ai/ai_src/optuna_study.py:50: FutureWarning: suggest_uniform has been deprecated in v3.0.0. This feature will be removed in v6.0.0. See https://github.com/optuna/optuna/releases/tag/v3.0.0. Use suggest_float instead.
+  "vf_coef": trial.suggest_uniform("vf_coef", 0.10, 1.00),
+/home/zeyadcode_jammy/ros_ws/src/roben_ai/ai_src/optuna_study.py:52: FutureWarning: suggest_uniform has been deprecated in v3.0.0. This feature will be removed in v6.0.0. See https://github.com/optuna/optuna/releases/tag/v3.0.0. Use suggest_float instead.
+  "max_grad_norm": trial.suggest_uniform("max_grad_norm", 0.30, 1.00),
+ERROR: failed to destroy actor 345 : unable to destroy actor: not found 
+ERROR: failed to destroy actor 346 : unable to destroy actor: not found 
+ERROR: failed to destroy actor 347 : unable to destroy actor: not found 
+ERROR: failed to destroy actor 499 : unable to destroy actor: not found 
+ERROR: failed to destroy actor 500 : unable to destroy actor: not found 
+ERROR: failed to destroy actor 501 : unable to destroy actor: not found 
+ERROR: failed to destroy actor 653 : unable to destroy actor: not found 
+ERROR: failed to destroy actor 654 : unable to destroy actor: not found 
+ERROR: failed to destroy actor 655 : unable to destroy actor: not found 
+ERROR: failed to destroy actor 807 : unable to destroy actor: not found 
+ERROR: failed to destroy actor 808 : unable to destroy actor: not found 
+ERROR: failed to destroy actor 809 : unable to destroy actor: not found 
+ERROR: failed to destroy actor 961 : unable to destroy actor: not found 
+ERROR: failed to destroy actor 962 : unable to destroy actor: not found 
+ERROR: failed to destroy actor 963 : unable to destroy actor: not found 
+ERROR: failed to destroy actor 1115 : unable to destroy actor: not found 
+ERROR: failed to destroy actor 1116 : unable to destroy actor: not found 
+ERROR: failed to destroy actor 1117 : unable to destroy actor: not found 
+[W 2025-04-26 22:59:22,448] Trial 2 failed with parameters: {'learning_rate': 0.002010669743387615, 'n_steps': 512, 'batch_size': 16, 'n_epochs': 8, 'gamma': 0.9165065116676859, 'gae_lambda': 0.8305669085222581, 'clip_range': 0.15088207828522043, 'clip_range_vf': None, 'normalize_advantage': True, 'ent_coef': 5.613731376346017e-07, 'vf_coef': 0.78575986239145, 'max_grad_norm': 0.5390613950962286, 'sde_sample_freq': 7, 'target_kl': 0.05} because of the following error: RuntimeError('Responding error from function set_actor_collisions: Actor could not be found in the registry.  Actor Id: 1226').
+Traceback (most recent call last):
+  File "/home/zeyadcode_jammy/.local/lib/python3.10/site-packages/optuna/study/_optimize.py", line 197, in _run_trial
+    value_or_values = func(trial)
+  File "/home/zeyadcode_jammy/ros_ws/src/roben_ai/ai_src/optuna_study.py", line 84, in objective
+    mean_reward, _ = evaluate_policy(model, train_env, n_eval_episodes=5, deterministic=True)
+  File "/home/zeyadcode_jammy/.local/lib/python3.10/site-packages/stable_baselines3/common/evaluation.py", line 94, in evaluate_policy
+    new_observations, rewards, dones, infos = env.step(actions)
+  File "/home/zeyadcode_jammy/.local/lib/python3.10/site-packages/stable_baselines3/common/vec_env/base_vec_env.py", line 222, in step
+    return self.step_wait()
+  File "/home/zeyadcode_jammy/.local/lib/python3.10/site-packages/stable_baselines3/common/vec_env/dummy_vec_env.py", line 71, in step_wait
+    obs, self.reset_infos[env_idx] = self.envs[env_idx].reset()
+  File "/home/zeyadcode_jammy/.local/lib/python3.10/site-packages/stable_baselines3/common/monitor.py", line 83, in reset
+    return self.env.reset(**kwargs)
+  File "/home/zeyadcode_jammy/.local/lib/python3.10/site-packages/gymnasium/wrappers/common.py", line 400, in reset
+    return super().reset(seed=seed, options=options)
+  File "/home/zeyadcode_jammy/.local/lib/python3.10/site-packages/gymnasium/core.py", line 333, in reset
+    return self.env.reset(seed=seed, options=options)
+  File "/home/zeyadcode_jammy/.local/lib/python3.10/site-packages/gymnasium/wrappers/common.py", line 295, in reset
+    return self.env.reset(seed=seed, options=options)
+  File "/home/zeyadcode_jammy/ros_ws/src/roben_ai/ai_src/gym_carla/envs/carla_env.py", line 260, in reset
+    self.world.apply_settings(self.settings)
+RuntimeError: Responding error from function set_actor_collisions: Actor could not be found in the registry.  Actor Id: 1226
+[W 2025-04-26 22:59:22,452] Trial 2 failed with value None.
+Traceback (most recent call last):
+  File "/home/zeyadcode_jammy/ros_ws/src/roben_ai/ai_src/optuna_study.py", line 106, in <module>
+    study.optimize(objective, n_trials=50, n_jobs=1, callbacks=[save_best])
+  File "/home/zeyadcode_jammy/.local/lib/python3.10/site-packages/optuna/study/study.py", line 475, in optimize
+    _optimize(
+  File "/home/zeyadcode_jammy/.local/lib/python3.10/site-packages/optuna/study/_optimize.py", line 63, in _optimize
+    _optimize_sequential(
+  File "/home/zeyadcode_jammy/.local/lib/python3.10/site-packages/optuna/study/_optimize.py", line 160, in _optimize_sequential
+    frozen_trial = _run_trial(study, func, catch)
+  File "/home/zeyadcode_jammy/.local/lib/python3.10/site-packages/optuna/study/_optimize.py", line 248, in _run_trial
+    raise func_err
+  File "/home/zeyadcode_jammy/.local/lib/python3.10/site-packages/optuna/study/_optimize.py", line 197, in _run_trial
+    value_or_values = func(trial)
+  File "/home/zeyadcode_jammy/ros_ws/src/roben_ai/ai_src/optuna_study.py", line 84, in objective
+    mean_reward, _ = evaluate_policy(model, train_env, n_eval_episodes=5, deterministic=True)
+  File "/home/zeyadcode_jammy/.local/lib/python3.10/site-packages/stable_baselines3/common/evaluation.py", line 94, in evaluate_policy
+    new_observations, rewards, dones, infos = env.step(actions)
+  File "/home/zeyadcode_jammy/.local/lib/python3.10/site-packages/stable_baselines3/common/vec_env/base_vec_env.py", line 222, in step
+    return self.step_wait()
+  File "/home/zeyadcode_jammy/.local/lib/python3.10/site-packages/stable_baselines3/common/vec_env/dummy_vec_env.py", line 71, in step_wait
+    obs, self.reset_infos[env_idx] = self.envs[env_idx].reset()
+  File "/home/zeyadcode_jammy/.local/lib/python3.10/site-packages/stable_baselines3/common/monitor.py", line 83, in reset
+    return self.env.reset(**kwargs)
+  File "/home/zeyadcode_jammy/.local/lib/python3.10/site-packages/gymnasium/wrappers/common.py", line 400, in reset
+    return super().reset(seed=seed, options=options)
+  File "/home/zeyadcode_jammy/.local/lib/python3.10/site-packages/gymnasium/core.py", line 333, in reset
+    return self.env.reset(seed=seed, options=options)
+  File "/home/zeyadcode_jammy/.local/lib/python3.10/site-packages/gymnasium/wrappers/common.py", line 295, in reset
+    return self.env.reset(seed=seed, options=options)
+  File "/home/zeyadcode_jammy/ros_ws/src/roben_ai/ai_src/gym_carla/envs/carla_env.py", line 260, in reset
+    self.world.apply_settings(self.settings)
+RuntimeError: Responding error from function set_actor_collisions: Actor could not be found in the registry.  Actor Id: 1226

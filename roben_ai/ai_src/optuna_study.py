@@ -2,6 +2,7 @@ from gym_carla import make_carla_env
 from stable_baselines3 import PPO
 import torch.nn as nn
 from stable_baselines3.common.env_util import make_vec_env
+import random
 from stable_baselines3.common.vec_env import SubprocVecEnv
 from stable_baselines3.common.evaluation import evaluate_policy
 import json
@@ -57,7 +58,8 @@ def sample_config(trial):
 
 
 def objective(trial):
-    train_env = Monitor(make_carla_env())
+    # train_env = Monitor(make_carla_env(n_walkers=random.randint(30, 100), n_vehicles=random.randint(30, 100)))
+    train_env = Monitor(make_carla_env(n_walkers=50, n_vehicles=50))
     config = sample_config(trial)
     # train_env = make_vec_env(make_carla_env, n_envs=2, vec_env_cls=SubprocVecEnv)
     # train_env = make_carla_env()
@@ -72,8 +74,8 @@ def objective(trial):
         **config,
     )
 
-    eval_interval = 1_000  # timesteps between evaluations, test 10000 later
-    total_timesteps = 100_000
+    eval_interval = 500 # timesteps between evaluations
+    total_timesteps = 50_000
 
     mean_reward = float("-inf")
     for ts in range(0, total_timesteps, eval_interval):

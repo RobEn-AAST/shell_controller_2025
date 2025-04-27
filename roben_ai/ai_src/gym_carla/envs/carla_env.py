@@ -151,16 +151,14 @@ class CarlaEnv(gym.Env):
             x, y = x.flatten(), y.flatten()
             self.pixel_grid = np.vstack((x, y)).T
 
-        self.sensor_actors = []
-
     def reset(self, seed=None, options=None):
+        # Delete sensors, vehicles and walkers
+        self._clear_all_actors(["sensor.other.collision", "sensor.lidar.ray_cast", "sensor.camera.rgb", "vehicle.*", "controller.ai.walker", "walker.*"])
+
         # Clear sensor objects
         self.collision_sensor = None
         self.lidar_sensor = None
         self.camera_sensor = None
-
-        # Delete sensors, vehicles and walkers
-        self._clear_all_actors(["sensor.other.collision", "sensor.lidar.ray_cast", "sensor.camera.rgb", "vehicle.*", "controller.ai.walker", "walker.*"])
 
         # Disable sync mode
         self._set_synchronous_mode(False)
@@ -219,7 +217,6 @@ class CarlaEnv(gym.Env):
 
         # Add collision sensor
         self.collision_sensor = self.world.spawn_actor(self.collision_bp, carla.Transform(), attach_to=self.ego)
-        self.sensor_actors.append(self.collision_sensor)
         self.collision_sensor.listen(lambda event: get_collision_hist(event))
 
         def get_collision_hist(event):
@@ -233,7 +230,6 @@ class CarlaEnv(gym.Env):
 
         # Add lidar sensor
         self.lidar_sensor = self.world.spawn_actor(self.lidar_bp, self.lidar_trans, attach_to=self.ego)
-        self.sensor_actors.append(self.lidar_sensor)
         self.lidar_sensor.listen(lambda data: get_lidar_data(data))
 
         def get_lidar_data(data):
@@ -241,7 +237,6 @@ class CarlaEnv(gym.Env):
 
         # Add camera sensor
         self.camera_sensor = self.world.spawn_actor(self.camera_bp, self.camera_trans, attach_to=self.ego)
-        self.sensor_actors.append(self.camera_sensor)
         self.camera_sensor.listen(lambda data: get_camera_img(data))
 
         def get_camera_img(data):
@@ -466,6 +461,7 @@ class CarlaEnv(gym.Env):
                 poly = np.matmul(R, poly_local).transpose() + np.repeat([[x, y]], 4, axis=0)
                 actor_poly_dict[actor.id] = poly
             except RuntimeError:
+                print("got runtime error at _get_actor_polygons")
                 continue
         return actor_poly_dict
 
@@ -613,7 +609,7 @@ class CarlaEnv(gym.Env):
 
     def _get_reward(self):
         # todo instead of having a target speed rather add penality ffor exceeeding max speed
-        # todo always add penality for leaving the right lane 
+        # todo always add penality for leaving the right lane
         """Calculate the step reward."""
         # reward for speed tracking
         v = self.ego.get_velocity()
@@ -679,30 +675,41 @@ class CarlaEnv(gym.Env):
 
     def _clear_all_actors(self, actor_filters):
         """Clear specific actors."""
-        # Destroy sensors FIRST
-        for sensor in self.sensor_actors:
-            if sensor.is_alive:
-                sensor.destroy()
-        self.sensor_actors = []
-        
-        # Then destroy vehicles and walkers
-        for actor_filter in ["vehicle.*", "controller.ai.walker", "walker.*"]:
+        for actor_filter in actor_filters:
             for actor in self.world.get_actors().filter(actor_filter):
                 if actor.is_alive:
-                    try:
-                        if actor.type_id == 'controller.ai.walker':
-                            actor.stop()
-                        actor.destroy()
-                    except RuntimeError:  # Already destroyed
-                        pass
+                    if actor.type_id == 'controller.ai.walker':
+                        actor.stop()
+                actor.destroy()
+        
 
-        # Double-check for any remaining sensors
-        for sensor_filter in ["sensor.other.collision", "sensor.lidar.ray_cast", "sensor.camera.rgb"]:
-            for sensor in self.world.get_actors().filter(sensor_filter):
-                if sensor.is_alive:
-                    sensor.destroy()
+    # def _clear_all_actors(self, actor_filters):
+    #     """Clear specific actors."""
+    #     # Destroy sensors FIRST
+    #     for sensor in [self.collision_sensor, self.lidar_sensor, self.camera_sensor]:
+    #         if sensor is not None and sensor.is_alive:
+    #             sensor.destroy()
 
-        # Force 2 ticks to ensure destruction
-        if self.world.get_settings().synchronous_mode:
-            self.world.tick()
-            self.world.tick()
+    #     # Then destroy vehicles and walkers
+    #     for actor_filter in ["vehicle.*", "controller.ai.walker", "walker.*"]:
+    #         for actor in self.world.get_actors().filter(actor_filter):
+    #             if actor.is_alive:
+    #                 try:
+    #                     if actor.type_id == "controller.ai.walker":
+    #                         actor.stop()
+    #                     actor.destroy()
+    #                 except RuntimeError:  # Already destroyed
+    #                     pass
+
+    #     # Double-check for any remaining sensors
+    #     for actor_filter in actor_filters:
+    #         for actor in self.world.get_actors().filter(actor_filter):
+    #             if actor.is_alive:
+    #                 if actor.type_id == 'controller.ai.walker':
+    #                     actor.stop()
+    #             actor.destroy()
+
+    #     # Force 2 ticks to ensure destruction
+    #     if self.world.get_settings().synchronous_mode:
+    #         self.world.tick()
+    #         self.world.tick()
