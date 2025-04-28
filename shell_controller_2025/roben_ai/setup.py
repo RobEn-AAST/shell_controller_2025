@@ -26,6 +26,9 @@ setup(
         "stable-baselines3",
         "matplotlib",
         "optuna",
+        "scikit-image",
+        "carla==0.9.13",
+        
     ],
     zip_safe=True,
     maintainer="zeyadcode_jammy",

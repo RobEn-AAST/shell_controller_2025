@@ -666,7 +666,7 @@ class CarlaEnv(gym.Env):
 
         return r
 
-    def _terminal(self) -> tuple[bool, bool]:
+    def _terminal(self):
         """Calculate whether to terminate the current episode. terminated, truncated"""
         # Get ego state
         ego_x, ego_y = get_pos(self.ego)

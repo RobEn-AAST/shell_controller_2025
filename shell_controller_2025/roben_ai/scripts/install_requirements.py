@@ -51,6 +51,8 @@ def install_requirements():
         "stable-baselines3",
         "matplotlib",
         "optuna",
+        "scikit-image",
+        "carla==0.9.13",
     ]
 
     # Try to install each package separately

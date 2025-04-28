@@ -1,9 +1,8 @@
-import rclpy
-from rclpy.node import Node
+import rospy
 from ai_src import make_carla_env
 
 # pytorch stablebaseline gymansium
-class Brain(Node):
+class Brain:
     def __init__(self):
         """
         The main controller of them all, the ultimate god of this body!
@@ -11,33 +10,31 @@ class Brain(Node):
         sends them to an actor critic policy, and retreives the action we are asked to execute
         And executes it! voalla!!
         """
-        super().__init__("brain")
+        rospy.init_node("brain")
 
-        self.get_logger().info("Brain node started...")
+        rospy.loginfo("Brain node started...")
 
         env = make_carla_env(eval=True)
 
         obs, _ = env.reset()
-        while True:
+        while not rospy.is_shutdown():
             action = [2, 1]
             obs, r, terminated, truncated, _ = env.step(action)
             done = terminated or truncated
-            print(f'reward: {r}')
+            rospy.loginfo(f'reward: {r}')
             if done:
                 # obs = env.reset()
-                print('welp here went nothing')
+                rospy.loginfo('welp here went nothing')
 
 
 
 
 def main(args=None):
-    rclpy.init(args=args)
-
-    node = Brain()
-    rclpy.spin(node)
-
-    node.destroy_node()
-    rclpy.shutdown()
+    try:
+        node = Brain()
+        rospy.spin()
+    except rospy.ROSInterruptException:
+        pass
 
 
 if __name__ == "__main__":
