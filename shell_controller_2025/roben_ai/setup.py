@@ -17,7 +17,7 @@ setup(
     ],
     install_requires=[
         "setuptools",
-        "numpy==1.26.4",
+        "numpy==1.24.4",
         "torch",
         "torchvision",
         "torchaudio",

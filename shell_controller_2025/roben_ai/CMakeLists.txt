@@ -69,6 +69,6 @@ add_custom_target(install_requirements ALL
 
 # Make brain the main target - similar to shell_simulation_node
 add_custom_target(brain ALL
-  DEPENDS install_requirements ${CATKIN_DEVEL_PREFIX}/${CATKIN_PACKAGE_BIN_DESTINATION}/brain
+  DEPENDS install_requirements ${CMAKE_CURRENT_SOURCE_DIR}/roben_ai/brain.py
   COMMENT "Building brain node target"
 )
