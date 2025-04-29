@@ -3,7 +3,7 @@ import gymnasium as gym
 
 if __name__ == "__main__":
     print('making environment...')
-    env = make_carla_env(eval=False)
+    env = make_carla_env(eval=True)
     print('made environment...')
 
 
@@ -16,5 +16,5 @@ if __name__ == "__main__":
         done = terminated or truncated
         print(f'reward: {r}')
         if done:
-            break
-            # obs = env.reset()
+            # break
+            obs = env.reset()
