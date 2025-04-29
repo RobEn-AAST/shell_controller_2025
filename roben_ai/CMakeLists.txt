@@ -21,11 +21,12 @@ find_package(carla_msgs REQUIRED)
 ## Build ##
 ###########
 
-# Include directories for C++
-include_directories(include)
-
 # Install Python package
 ament_python_install_package(${PROJECT_NAME})
+# Install AI source directory
+ament_python_install_package(ai_src)
+# Install config directory
+ament_python_install_package(config)
 
 #############
 ## Install ##

@@ -12,7 +12,16 @@ def generate_launch_description():
         output='screen'
     )
     
+    brain_node = Node(
+        package='roben_ai',
+        namespace='',
+        executable='brain',
+        name='brain',
+        output='screen'
+    )
+    
     return LaunchDescription([  
         # Nodes
-        example_control
+        example_control,
+        brain_node
     ])
