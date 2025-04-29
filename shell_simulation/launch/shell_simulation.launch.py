@@ -15,7 +15,7 @@ def generate_launch_description():
     brain_node = Node(
         package='roben_ai',
         namespace='',
-        executable='brain',
+        executable='brain.py',
         name='brain',
         output='screen'
     )

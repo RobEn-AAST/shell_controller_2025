@@ -1,3 +1,5 @@
+#!/usr/bin/env python3
+
 import rclpy
 from rclpy.node import Node
 from ai_src import make_carla_env
@@ -26,8 +28,6 @@ class Brain(Node):
             if done:
                 # obs = env.reset()
                 print('welp here went nothing')
-
-
 
 
 def main(args=None):

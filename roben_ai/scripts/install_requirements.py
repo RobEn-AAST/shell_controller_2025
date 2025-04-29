@@ -38,6 +38,14 @@ def install_requirements():
     """Install Python requirements using direct pip calls."""
     python_exec = sys.executable
     print(f"Using Python: {python_exec}")
+    
+    # Upgrade pip first
+    print("Upgrading pip...")
+    try:
+        subprocess.check_call([python_exec, "-m", "pip", "install", "--upgrade", "pip"])
+        print("Successfully upgraded pip")
+    except subprocess.CalledProcessError as e:
+        print(f"Failed to upgrade pip: {e}")
 
     # List of packages to install
     packages = [
