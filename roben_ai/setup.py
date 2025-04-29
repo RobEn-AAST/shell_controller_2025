@@ -12,12 +12,10 @@ setup(
         ("share/ament_index/resource_index/packages",
          ["resource/" + package_name]),
         ("share/" + package_name, ["package.xml"]),
-        # Include launch files
-        (os.path.join("share", package_name, "launch"), glob("launch/*.launch.py")),
     ],
     install_requires=[
         "setuptools",
-        "numpy==1.24.4",
+        "numpy==1.26.4",
         "torch",
         "torchvision",
         "torchaudio",
@@ -27,7 +25,6 @@ setup(
         "matplotlib",
         "optuna",
         "scikit-image",
-        "carla==0.9.13"
     ],
     zip_safe=True,
     maintainer="zeyadcode_jammy",

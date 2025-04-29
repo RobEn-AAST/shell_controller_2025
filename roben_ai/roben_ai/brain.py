@@ -1,31 +1,37 @@
 #!/usr/bin/env python3
-import rospy
+import rclpy
+from rclpy.node import Node
 from ai_src import make_carla_env
 
-class Brain:
+class Brain(Node):
     def __init__(self):
-        rospy.init_node('brain', anonymous=False)
-        rospy.loginfo("Brain node started...")
+        super().__init__('brain')
+        self.get_logger().info("Brain node started...")
         
         # Initialize CARLA Gym environment
         self.env = make_carla_env(eval=True)
         self.obs, _ = self.env.reset()
-        rospy.loginfo("done resetting...")
+        self.get_logger().info("done resetting...")
         
-        # Start the control loop
-        self.run_loop()
+        # Create a timer to run the control loop
+        self.timer = self.create_timer(0.1, self.run_step)  # 10 Hz
+        
+    def run_step(self):
+        action = [2, 1]  # Replace with your RL policy later
+        obs, reward, terminated, truncated, _ = self.env.step(action)
+        self.get_logger().info(f"Reward: {reward}")
+        
+        # Check if episode is done
+        if terminated or truncated:
+            self.get_logger().info("Episode finished, resetting environment...")
+            self.obs, _ = self.env.reset()
 
-    def run_loop(self):
-        rospy.loginfo("Started playing loop...")
-        rate = rospy.Rate(10)  # 10 Hz
-        while not rospy.is_shutdown():
-            action = [2, 1]  # Replace with your RL policy later
-            obs, reward, terminated, truncated, _ = self.env.step(action)
-            rospy.loginfo(f"Reward: {reward}")
-            rate.sleep()
+def main(args=None):
+    rclpy.init(args=args)
+    brain_node = Brain()
+    rclpy.spin(brain_node)
+    brain_node.destroy_node()
+    rclpy.shutdown()
 
 if __name__ == "__main__":
-    try:
-        Brain()  # Just instantiate the class; it handles everything
-    except rospy.ROSInterruptException:
-        rospy.logwarn("Brain node shutdown requested.")
+    main()

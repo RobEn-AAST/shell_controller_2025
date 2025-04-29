@@ -42,7 +42,7 @@ def install_requirements():
     # List of packages to install
     packages = [
         "setuptools",
-        "numpy==1.24.4",
+        "numpy==1.26.4",
         "torch",
         "torchvision",
         "torchaudio",
@@ -52,7 +52,6 @@ def install_requirements():
         "matplotlib",
         "optuna",
         "scikit-image",
-        "carla==0.9.13"
     ]
 
     # Try to install each package separately

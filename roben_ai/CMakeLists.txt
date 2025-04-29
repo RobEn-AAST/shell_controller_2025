@@ -1,58 +1,55 @@
-cmake_minimum_required(VERSION 3.0.2)
+cmake_minimum_required(VERSION 3.8)
 project(roben_ai)
 
-find_package(catkin REQUIRED COMPONENTS
-  rospy
-  std_msgs
-  sensor_msgs
-  geometry_msgs
-  carla_msgs
-)
+# Default to C++14
+if(NOT CMAKE_CXX_STANDARD)
+  set(CMAKE_CXX_STANDARD 14)
+endif()
 
-catkin_package(
-  CATKIN_DEPENDS rospy std_msgs sensor_msgs geometry_msgs carla_msgs
-)
+# Find dependencies
+find_package(ament_cmake REQUIRED)
+find_package(ament_cmake_python REQUIRED)
+find_package(rclcpp REQUIRED)
+find_package(rclpy REQUIRED)
+find_package(std_msgs REQUIRED)
+find_package(sensor_msgs REQUIRED)
+find_package(geometry_msgs REQUIRED)
+# Use carla_msgs if available in ROS2, otherwise comment out
+find_package(carla_msgs REQUIRED)
 
 ###########
 ## Build ##
 ###########
 
-include_directories(
-  ${catkin_INCLUDE_DIRS}
-)
+# Include directories for C++
+include_directories(include)
 
-# Set up Python package
-catkin_python_setup()
+# Install Python package
+ament_python_install_package(${PROJECT_NAME})
 
 #############
 ## Install ##
 #############
 
-# Install Python module and requirements installer
-catkin_install_python(PROGRAMS
+# Install Python scripts with proper execution permissions
+install(PROGRAMS
   scripts/install_requirements.py
-  roben_ai/brain.py
-  DESTINATION ${CATKIN_PACKAGE_BIN_DESTINATION}
+  ${PROJECT_NAME}/brain.py
+  DESTINATION lib/${PROJECT_NAME}
+  PERMISSIONS OWNER_READ OWNER_WRITE OWNER_EXECUTE GROUP_READ GROUP_EXECUTE WORLD_READ WORLD_EXECUTE
 )
 
 # Rename brain.py to brain for cleaner execution
-install(
-  FILES ${CATKIN_DEVEL_PREFIX}/${CATKIN_PACKAGE_BIN_DESTINATION}/brain.py
-  DESTINATION ${CATKIN_PACKAGE_BIN_DESTINATION}
+install(FILES
+  ${PROJECT_SOURCE_DIR}/${PROJECT_NAME}/brain.py
+  DESTINATION lib/${PROJECT_NAME}
   RENAME brain
   PERMISSIONS OWNER_READ OWNER_WRITE OWNER_EXECUTE GROUP_READ GROUP_EXECUTE WORLD_READ WORLD_EXECUTE
 )
 
-# Install directory structure
-install(DIRECTORY
-  launch/
-  DESTINATION ${CATKIN_PACKAGE_SHARE_DESTINATION}/launch/
-)
-
-# Create a requirements.txt file based on setup.py dependencies
 install(FILES
   requirements.txt
-  DESTINATION ${CATKIN_PACKAGE_SHARE_DESTINATION}
+  DESTINATION share/${PROJECT_NAME}
 )
 
 #############
@@ -61,14 +58,25 @@ install(FILES
 
 # Add dependency installation as a build step
 add_custom_target(install_requirements ALL
-  COMMAND ${PYTHON_EXECUTABLE} ${CATKIN_DEVEL_PREFIX}/${CATKIN_PACKAGE_BIN_DESTINATION}/install_requirements.py
-  DEPENDS ${CATKIN_DEVEL_PREFIX}/${CATKIN_PACKAGE_BIN_DESTINATION}/install_requirements.py
-  WORKING_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}
+  COMMAND ${PYTHON_EXECUTABLE} ${PROJECT_SOURCE_DIR}/scripts/install_requirements.py
+  WORKING_DIRECTORY ${PROJECT_SOURCE_DIR}
   COMMENT "Installing Python requirements for roben_ai"
 )
 
-# Make brain the main target - similar to shell_simulation_node
+# Make brain the main target
 add_custom_target(brain ALL
-  DEPENDS install_requirements ${CMAKE_CURRENT_SOURCE_DIR}/roben_ai/brain.py
+  DEPENDS install_requirements ${PROJECT_SOURCE_DIR}/${PROJECT_NAME}/brain.py
   COMMENT "Building brain node target"
 )
+
+# Export package dependencies
+ament_export_dependencies(
+  rclcpp
+  rclpy
+  std_msgs
+  sensor_msgs
+  geometry_msgs
+  carla_msgs
+)
+
+ament_package()
