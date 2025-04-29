@@ -1,0 +1,12 @@
+--index-url https://download.pytorch.org/whl/cpu
+setuptools
+torch
+torchvision
+torchaudio
+opencv-python
+gymnasium
+stable-baselines3
+matplotlib
+optuna
+scikit-image
+carla==0.9.13

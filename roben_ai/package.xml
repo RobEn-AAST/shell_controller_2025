@@ -1,0 +1,25 @@
+<?xml version="1.0"?>
+<?xml-model
+  href="http://download.ros.org/schema/package_format3.xsd"
+  schematypens="http://www.w3.org/2001/XMLSchema"?>
+<package format="3">
+  <name>roben_ai</name>
+  <version>0.0.0</version>
+  <description>Autonomous vehicle control using RL</description>
+  <maintainer email="zeyadcode_jammy@todo.todo">zeyadcode_jammy</maintainer>
+  <license>TODO</license>
+
+  <buildtool_depend>catkin</buildtool_depend>
+
+  <depend>rospy</depend>
+  <depend>std_msgs</depend>
+  <depend>sensor_msgs</depend>
+  <depend>geometry_msgs</depend>
+  <depend>carla_msgs</depend>
+  
+  <test_depend>rostest</test_depend>
+
+  <export>
+    <!-- Other tools can request additional information be placed here -->
+  </export>
+</package>
