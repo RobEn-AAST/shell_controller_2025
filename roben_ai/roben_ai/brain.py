@@ -30,8 +30,6 @@ class Brain(Node):
                 print('welp here went nothing')
 
 
-
-
 def main(args=None):
     rclpy.init(args=args)
 
