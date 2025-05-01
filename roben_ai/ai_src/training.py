@@ -10,7 +10,7 @@ device = "cuda" if torch.cuda.is_available() else "cpu"
 
 checkpoints_dir = "./checkpoints"
 params_file = "./best_params.json"
-eval_freq = 500_000
+eval_freq = 50_000
 
 
 # --- Load configuration ---
