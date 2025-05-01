@@ -6,7 +6,6 @@ from stable_baselines3 import PPO
 import torch.nn as nn
 from stable_baselines3.common.monitor import Monitor
 from stable_baselines3.common.callbacks import CheckpointCallback, EvalCallback
-
 device = "cuda" if torch.cuda.is_available() else "cpu"
 
 checkpoints_dir = "./checkpoints"
