@@ -10,6 +10,8 @@ from stable_baselines3.common.monitor import Monitor
 import gymnasium as gym
 import optuna
 
+import torch
+device = torch.device('cuda' if torch.cuda.is_available() else 'cpu')
 
 def save_best(study, trial):
     # When this trial becomes the new best, write its params to disk
@@ -72,10 +74,11 @@ def objective(trial):
         policy_kwargs=policy_kwargs,
         # tensorboard_log="./runs",
         **config,
+        device=device
     )
 
-    eval_interval = 500  # timesteps between evaluations
-    total_timesteps = 50_000
+    eval_interval = 1000  # timesteps between evaluations
+    total_timesteps = 100_000
 
     mean_reward = float("-inf")
     for ts in range(0, total_timesteps, eval_interval):
