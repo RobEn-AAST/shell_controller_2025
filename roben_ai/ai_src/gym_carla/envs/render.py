@@ -112,7 +112,8 @@ class MapImage(object):
   def draw_road_map(self, map_surface, carla_world, carla_map, world_to_pixel, world_to_pixel_width):
     # Set background black
     map_surface.fill(COLOR_BLACK)
-    precision = 0.05
+    # precision = 0.05
+    precision = 0.1
 
     def lane_marking_color_to_tango(lane_marking_color):
       tango_color = COLOR_BLACK

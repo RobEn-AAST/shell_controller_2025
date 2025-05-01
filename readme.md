@@ -12,7 +12,7 @@
 
 # TRAINING
 1. cd into ai_src
-    cd ~/shell_ws/src/roben_ai/ai_src
+    cd ~/ros_ws/src/roben_ai/ai_src
 
 2. run opuna_study for getting behyperparameters
     python3 optuna_study.py

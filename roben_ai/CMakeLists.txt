@@ -40,6 +40,14 @@ install(PROGRAMS
   PERMISSIONS OWNER_READ OWNER_WRITE OWNER_EXECUTE GROUP_READ GROUP_EXECUTE WORLD_READ WORLD_EXECUTE
 )
 
+install(CODE
+  "execute_process(
+    COMMAND ${CMAKE_COMMAND} -E create_symlink 
+    ${CMAKE_INSTALL_PREFIX}/lib/${PROJECT_NAME}/brain.py
+    ${CMAKE_INSTALL_PREFIX}/lib/${PROJECT_NAME}/brain
+  )"
+)
+
 # Rename brain.py to brain for cleaner execution
 install(FILES
   ${PROJECT_SOURCE_DIR}/${PROJECT_NAME}/brain.py
