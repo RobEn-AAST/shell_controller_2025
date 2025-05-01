@@ -154,18 +154,41 @@ class CarlaEnv(gym.Env):
             x, y = x.flatten(), y.flatten()
             self.pixel_grid = np.vstack((x, y)).T
 
-    def reset(self, seed=None, options=None):
-        # Delete sensors, vehicles and walkers
-        if not self.evaluate:
-            self._clear_all_actors(["sensor.other.collision", "sensor.lidar.ray_cast", "sensor.camera.rgb", "vehicle.*", "controller.ai.walker", "walker.*"])
-
-        # Clear sensor objects
         self.collision_sensor = None
         self.lidar_sensor = None
         self.camera_sensor = None
 
-        # Disable sync mode
-        self._set_synchronous_mode(False)
+    def reset(self, seed=None, options=None):
+        # Cleanup phase --------------------------------------------------
+        original_sync_mode = self.world.get_settings().synchronous_mode
+        
+        # Enable sync mode for reliable destruction
+        settings = self.world.get_settings()
+        settings.synchronous_mode = True
+        self.world.apply_settings(settings)
+        
+        # Destroy existing actors
+        if not self.evaluate:
+            self._clear_all_actors([
+                "sensor.other.collision", 
+                "sensor.lidar.ray_cast",
+                "sensor.camera.rgb",
+                "vehicle.*", 
+                "controller.ai.walker",
+                "walker.*"
+            ])
+            # Process destruction commands
+            self.world.tick()
+        
+        # Reset internal state
+        self.collision_hist = []
+        self.vehicle_polygons = []
+        self.walker_polygons = []
+
+        # Spawning phase -------------------------------------------------
+        # Disable sync mode for faster spawning
+        settings.synchronous_mode = False
+        self.world.apply_settings(settings)
 
         if not self.evaluate:
             # Spawn surrounding vehicles
@@ -260,8 +283,8 @@ class CarlaEnv(gym.Env):
         self.reset_step += 1
 
         # Enable sync mode
-        self.settings.synchronous_mode = (not self.evaluate or True)
-        self.world.apply_settings(self.settings)
+        self.settings.synchronous_mode = original_sync_mode # TODO (not self.evaluate)
+        self.world.apply_settings(settings)
 
         self.routeplanner = RoutePlanner(self.ego, self.max_waypt)
         self.waypoints, _, self.vehicle_front = self.routeplanner.run_step()
@@ -299,8 +322,10 @@ class CarlaEnv(gym.Env):
         act = carla.VehicleControl(throttle=float(throttle), steer=float(-steer), brake=float(brake))  # type: ignore
         self.ego.apply_control(act)
 
-        if not self.evaluate or True:
-            self.world.tick()
+        # if not self.evaluate or True: # TODO DISABLE DURING EVALUATION
+        self.world.tick()
+        self.world.tick()
+        self.world.tick()
 
         # Append actors polygon list
         vehicle_poly_dict = self._get_actor_polygons("vehicle.*")
@@ -695,13 +720,34 @@ class CarlaEnv(gym.Env):
         return False, False
 
     def _clear_all_actors(self, actor_filters):
-        """Clear specific actors."""
-        for actor_filter in actor_filters:
-            for actor in self.world.get_actors().filter(actor_filter):
+        """Safer actor cleanup with existence checks and error handling"""
+        # Destroy sensors first (keep existing code)
+        # ...
+
+        # Destroy other actors with existence checks
+        for filter_pattern in actor_filters:
+            for actor in self.world.get_actors().filter(filter_pattern):
                 if actor.is_alive:
-                    if actor.type_id == "controller.ai.walker":
-                        actor.stop()
-                actor.destroy()
+                    try:
+                        if actor.type_id == "controller.ai.walker":
+                            # Modified controller handling
+                            try:
+                                if actor.parent and actor.parent.is_alive:  # Check if walker exists
+                                    actor.stop()
+                            except RuntimeError as e:
+                                print(f"Failed to stop controller: {str(e)}")
+                    except AttributeError:
+                        pass  # In case parent property doesn't exist
+                    
+                    try:
+                        actor.destroy()
+                    except RuntimeError as e:
+                        if "not found" not in str(e):
+                            raise
+                    except Exception as e:
+                        print(f"Error destroying {actor.type_id}: {str(e)}")
+
+
 
     # def _clear_all_actors(self, actor_filters):
     #     """Clear specific actors."""

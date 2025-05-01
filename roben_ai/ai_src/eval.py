@@ -3,7 +3,7 @@ import gymnasium as gym
 
 if __name__ == "__main__":
     print('making environment...')
-    env = make_carla_env(eval=True)
+    env = make_carla_env(eval=False)
     print('made environment...')
 
 
