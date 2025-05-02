@@ -2,6 +2,8 @@
 
 import rclpy
 from rclpy.node import Node
+import car_dreamer
+import time
 
 # pytorch stablebaseline gymansium
 class Brain(Node):
@@ -14,8 +16,15 @@ class Brain(Node):
         """
         super().__init__("brain")
 
-        self.get_logger().info("Brain node started...")
+        task, _ = car_dreamer.create_task("carla_custom")
 
+        task.reset()
+        while True:
+            self.get_logger().info("stepped...")
+            _, _, is_terminal, _ = task.step(12)
+            if is_terminal:
+                task.reset()
+            time.sleep(0.1)
 
 def main(args=None):
     rclpy.init(args=args)

@@ -22,4 +22,7 @@
 
 REQUIREMENTS TRACKER
 pip install flit
-flit install --symlink
+CD into GymCarla then execute this: # note i had to do pip3 uninstall alembic
+    flit install --symlink
+
+
