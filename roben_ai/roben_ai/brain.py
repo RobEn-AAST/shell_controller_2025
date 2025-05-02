@@ -2,7 +2,6 @@
 
 import rclpy
 from rclpy.node import Node
-from ai_src import make_carla_env
 
 # pytorch stablebaseline gymansium
 class Brain(Node):
@@ -16,18 +15,6 @@ class Brain(Node):
         super().__init__("brain")
 
         self.get_logger().info("Brain node started...")
-
-        env = make_carla_env(eval=True)
-
-        obs, _ = env.reset()
-        while True:
-            action = [2, 1]
-            obs, r, terminated, truncated, _ = env.step(action)
-            done = terminated or truncated
-            print(f'reward: {r}')
-            if done:
-                # obs = env.reset()
-                print('welp here went nothing')
 
 
 def main(args=None):
