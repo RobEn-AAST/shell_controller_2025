@@ -92,8 +92,8 @@ class CarlaEnv(gym.Env):
         print("connecting to Carla server...")
         client = carla.Client("localhost", params["port"])  # type: ignore
         client.set_timeout(20.0)
-        # self.world = client.get_world() if self.evaluate else client.load_world(params["town"])
-        self.world = client.get_world()
+        self.world = client.get_world() if self.evaluate else client.load_world(params["town"])
+        # self.world = client.get_world()
         print("Carla server connected!")
 
         # Set weather
@@ -154,67 +154,52 @@ class CarlaEnv(gym.Env):
             x, y = x.flatten(), y.flatten()
             self.pixel_grid = np.vstack((x, y)).T
 
-        self.collision_sensor = None
-        self.lidar_sensor = None
-        self.camera_sensor = None
+        self.collision_sensor = None 
+        self.lidar_sensor = None 
+        self.camera_sensor = None 
 
-    def reset(self, seed=None, options=None):
-        # Cleanup phase --------------------------------------------------
-        original_sync_mode = self.world.get_settings().synchronous_mode
-        
-        # Enable sync mode for reliable destruction
-        settings = self.world.get_settings()
-        settings.synchronous_mode = True
-        self.world.apply_settings(settings)
-        
-        # Destroy existing actors
-        if not self.evaluate:
-            self._clear_all_actors([
-                "sensor.other.collision", 
-                "sensor.lidar.ray_cast",
-                "sensor.camera.rgb",
-                "vehicle.*", 
-                "controller.ai.walker",
-                "walker.*"
-            ])
-            # Process destruction commands
-            self.world.tick()
-        
-        # Reset internal state
-        self.collision_hist = []
-        self.vehicle_polygons = []
-        self.walker_polygons = []
+    def reset(self): 
+        # Clear sensor objects
+        if self.collision_sensor is not None and self.collision_sensor.is_listening:
+            self.collision_sensor.stop()
+            self.lidar_sensor.stop()
+            self.camera_sensor.stop()
 
-        # Spawning phase -------------------------------------------------
-        # Disable sync mode for faster spawning
-        settings.synchronous_mode = False
-        self.world.apply_settings(settings)
+        self.collision_sensor = None 
+        self.lidar_sensor = None 
+        self.camera_sensor = None 
+        
+        # Delete sensors, vehicles and walkers 
+        self._clear_all_actors(['sensor.other.collision', 'sensor.lidar.ray_cast', 'sensor.camera.rgb', 'vehicle.*', 'controller.ai.walker', 'walker.*'])
+        
+        # Disable sync mode
+        self._set_synchronous_mode(False)
 
-        if not self.evaluate:
-            # Spawn surrounding vehicles
-            random.shuffle(self.vehicle_spawn_points)
-            count = self.number_of_vehicles
-            if count > 0:
-                for spawn_point in self.vehicle_spawn_points:
-                    if self._try_spawn_random_vehicle_at(spawn_point, number_of_wheels=[4]):
-                        count -= 1
-                    if count <= 0:
-                        break
-            while count > 0:
-                if self._try_spawn_random_vehicle_at(random.choice(self.vehicle_spawn_points), number_of_wheels=[4]):
+        # Spawn surrounding vehicles
+        random.shuffle(self.vehicle_spawn_points)
+        count = self.number_of_vehicles
+        if count > 0:
+            for spawn_point in self.vehicle_spawn_points:
+                if self._try_spawn_random_vehicle_at(spawn_point, number_of_wheels=[4]):
                     count -= 1
-            # Spawn pedestrians
-            random.shuffle(self.walker_spawn_points)
-            count = self.number_of_walkers
-            if count > 0:
-                for spawn_point in self.walker_spawn_points:
-                    if self._try_spawn_random_walker_at(spawn_point):
-                        count -= 1
-                    if count <= 0:
-                        break
-            while count > 0:
-                if self._try_spawn_random_walker_at(random.choice(self.walker_spawn_points)):
+                if count <= 0:
+                    break
+        while count > 0:
+            if self._try_spawn_random_vehicle_at(random.choice(self.vehicle_spawn_points), number_of_wheels=[4]):
+                count -= 1
+
+        # Spawn pedestrians
+        random.shuffle(self.walker_spawn_points)
+        count = self.number_of_walkers
+        if count > 0:
+            for spawn_point in self.walker_spawn_points:
+                if self._try_spawn_random_walker_at(spawn_point):
                     count -= 1
+                if count <= 0:
+                    break
+        while count > 0:
+            if self._try_spawn_random_walker_at(random.choice(self.walker_spawn_points)):
+                count -= 1
 
         # Get actors polygon list
         self.vehicle_polygons = []
@@ -263,7 +248,6 @@ class CarlaEnv(gym.Env):
         self.lidar_sensor = self.world.spawn_actor(self.lidar_bp, self.lidar_trans, attach_to=self.ego)
         self.lidar_sensor.listen(lambda data: get_lidar_data(data))
 
-        
         def get_lidar_data(data):
             self.lidar_data = data
 
@@ -283,8 +267,8 @@ class CarlaEnv(gym.Env):
         self.reset_step += 1
 
         # Enable sync mode
-        self.settings.synchronous_mode = original_sync_mode # TODO (not self.evaluate)
-        self.world.apply_settings(settings)
+        self.settings.synchronous_mode = True
+        self.world.apply_settings(self.settings)
 
         self.routeplanner = RoutePlanner(self.ego, self.max_waypt)
         self.waypoints, _, self.vehicle_front = self.routeplanner.run_step()
@@ -387,7 +371,7 @@ class CarlaEnv(gym.Env):
         birdeye_params = {"screen_size": [self.display_size, self.display_size], "pixels_per_meter": pixels_per_meter, "pixels_ahead_vehicle": pixels_ahead_vehicle}
         self.birdeye_render = BirdeyeRender(self.world, birdeye_params)
 
-    def _set_synchronous_mode(self, synchronous):
+    def _set_synchronous_mode(self, synchronous=True):
         """Set whether to use the synchronous mode."""
         self.settings.synchronous_mode = synchronous
         self.world.apply_settings(self.settings)
@@ -487,35 +471,26 @@ class CarlaEnv(gym.Env):
         """
         actor_poly_dict = {}
         for actor in self.world.get_actors().filter(filt):
-            try:
-                if not actor.is_alive or math.isnan(actor.get_location().x):
-                    continue
-                # Get x, y and yaw of the actor
-                trans = actor.get_transform()
-                x = trans.location.x
-                y = trans.location.y
-                yaw = trans.rotation.yaw / 180 * np.pi
-                # Get length and width
-                bb = actor.bounding_box
-                l = bb.extent.x
-                w = bb.extent.y
-                # Get bounding box polygon in the actor's local coordinate
-                poly_local = np.array([[l, w], [l, -w], [-l, -w], [-l, w]]).transpose()
-                # Get rotation matrix to transform to global coordinate
-                R = np.array([[np.cos(yaw), -np.sin(yaw)], [np.sin(yaw), np.cos(yaw)]])
-                # Get global bounding box polygon
-                poly = np.matmul(R, poly_local).transpose() + np.repeat([[x, y]], 4, axis=0)
-                actor_poly_dict[actor.id] = poly
-            except RuntimeError:
-                print("got runtime error at _get_actor_polygons")
-                continue
+            # Get x, y and yaw of the actor
+            trans = actor.get_transform()
+            x = trans.location.x
+            y = trans.location.y
+            yaw = trans.rotation.yaw / 180 * np.pi
+            # Get length and width
+            bb = actor.bounding_box
+            l = bb.extent.x
+            w = bb.extent.y
+            # Get bounding box polygon in the actor's local coordinate
+            poly_local = np.array([[l, w], [l, -w], [-l, -w], [-l, w]]).transpose()
+            # Get rotation matrix to transform to global coordinate
+            R = np.array([[np.cos(yaw), -np.sin(yaw)], [np.sin(yaw), np.cos(yaw)]])
+            # Get global bounding box polygon
+            poly = np.matmul(R, poly_local).transpose() + np.repeat([[x, y]], 4, axis=0)
+            actor_poly_dict[actor.id] = poly
         return actor_poly_dict
 
     def _get_obs(self):
-        """
-        Get the observation
-        Returns:
-        """
+        """Get the observations."""
         ## Birdeye rendering
         self.birdeye_render.vehicle_polygons = self.vehicle_polygons
         self.birdeye_render.walker_polygons = self.walker_polygons
@@ -654,8 +629,6 @@ class CarlaEnv(gym.Env):
         return obs
 
     def _get_reward(self):
-        # todo instead of having a target speed rather add penality ffor exceeeding max speed
-        # todo always add penality for leaving the right lane
         """Calculate the step reward."""
         # reward for speed tracking
         v = self.ego.get_velocity()
@@ -720,62 +693,10 @@ class CarlaEnv(gym.Env):
         return False, False
 
     def _clear_all_actors(self, actor_filters):
-        """Safer actor cleanup with existence checks and error handling"""
-        # Destroy sensors first (keep existing code)
-        # ...
-
-        # Destroy other actors with existence checks
-        for filter_pattern in actor_filters:
-            for actor in self.world.get_actors().filter(filter_pattern):
+        """Clear specific actors."""
+        for actor_filter in actor_filters:
+            for actor in self.world.get_actors().filter(actor_filter):
                 if actor.is_alive:
-                    try:
-                        if actor.type_id == "controller.ai.walker":
-                            # Modified controller handling
-                            try:
-                                if actor.parent and actor.parent.is_alive:  # Check if walker exists
-                                    actor.stop()
-                            except RuntimeError as e:
-                                print(f"Failed to stop controller: {str(e)}")
-                    except AttributeError:
-                        pass  # In case parent property doesn't exist
-                    
-                    try:
-                        actor.destroy()
-                    except RuntimeError as e:
-                        if "not found" not in str(e):
-                            raise
-                    except Exception as e:
-                        print(f"Error destroying {actor.type_id}: {str(e)}")
-
-
-
-    # def _clear_all_actors(self, actor_filters):
-    #     """Clear specific actors."""
-    #     # Destroy sensors FIRST
-    #     for sensor in [self.collision_sensor, self.lidar_sensor, self.camera_sensor]:
-    #         if sensor is not None and sensor.is_alive:
-    #             sensor.destroy()
-
-    #     # Then destroy vehicles and walkers
-    #     for actor_filter in ["vehicle.*", "controller.ai.walker", "walker.*"]:
-    #         for actor in self.world.get_actors().filter(actor_filter):
-    #             if actor.is_alive:
-    #                 try:
-    #                     if actor.type_id == "controller.ai.walker":
-    #                         actor.stop()
-    #                     actor.destroy()
-    #                 except RuntimeError:  # Already destroyed
-    #                     pass
-
-    #     # Double-check for any remaining sensors
-    #     for actor_filter in actor_filters:
-    #         for actor in self.world.get_actors().filter(actor_filter):
-    #             if actor.is_alive:
-    #                 if actor.type_id == 'controller.ai.walker':
-    #                     actor.stop()
-    #             actor.destroy()
-
-    #     # Force 2 ticks to ensure destruction
-    #     if self.world.get_settings().synchronous_mode:
-    #         self.world.tick()
-    #         self.world.tick()
+                    if actor.type_id == "controller.ai.walker":
+                        actor.stop()
+                    actor.destroy()
