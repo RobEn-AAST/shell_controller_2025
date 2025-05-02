@@ -16,3 +16,10 @@
 
 2. run opuna_study for getting behyperparameters
     python3 optuna_study.py
+
+
+
+
+REQUIREMENTS TRACKER
+pip install flit
+flit install --symlink
