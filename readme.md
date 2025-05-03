@@ -25,4 +25,5 @@ pip install flit
 CD into GymCarla then execute this: # note i had to do pip3 uninstall alembic
     flit install --symlink
 
+pip3 install ortools
 
