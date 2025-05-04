@@ -6,6 +6,7 @@ from navigator.wp_utils import xyz_to_right_lane
 from navigator.visualize import CarlaVisualizer
 from navigator.tsp_solver import optimize_route_order
 from navigator.route_generator import generate_full_route
+from navigator.test import spawn_traffic
 
 
 client = carla.Client("localhost", 2000)
@@ -55,6 +56,9 @@ visualizer = CarlaVisualizer(
     map_size=(1200, 1200)  # Adjust based on your map
 )
 visualizer.start()
+
+# ========= Test spawn vehicles ==============
+spawn_traffic(client, num_vehicles=100, num_pedestrians=100)
 
 # ======= MOVE VEHICLE ========
 agent = BasicAgent(ego_vehicle)

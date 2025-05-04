@@ -1,4 +1,5 @@
 import carla
+import random
 
 def validate_route_lanes(full_route):
     right_lane_count = 0
@@ -15,3 +16,87 @@ def validate_route_lanes(full_route):
         total_waypoints += 1
         
     print(f"Right lane adherence: {right_lane_count/total_waypoints:.1%}")
+
+
+def spawn_traffic(client, num_vehicles=20, num_pedestrians=30):
+    """
+    Spawns vehicles and pedestrians with proper CARLA API usage
+    client: carla.Client object connected to the server
+    """
+    world = client.get_world()
+    traffic_manager = client.get_trafficmanager()
+    settings = world.get_settings()
+    
+    try:
+        # Configure traffic manager
+        traffic_manager.set_global_distance_to_leading_vehicle(2.5)
+        traffic_manager.set_random_device_seed(42)
+        traffic_manager.set_synchronous_mode(True)
+        
+        # ========== VEHICLES ==========
+        blueprints = world.get_blueprint_library().filter('vehicle.*')
+        spawn_points = world.get_map().get_spawn_points()
+        
+        # Filter out problematic blueprints
+        blueprints = [bp for bp in blueprints if int(bp.get_attribute('number_of_wheels')) == 4]
+        
+        # Randomize spawn points
+        random.shuffle(spawn_points)
+        
+        vehicles = []
+        for i in range(min(num_vehicles, len(spawn_points))):
+            bp = random.choice(blueprints)
+            transform = spawn_points[i]
+            
+            # Set color if vehicle
+            if bp.has_attribute('color'):
+                color = random.choice(bp.get_attribute('color').recommended_values)
+                bp.set_attribute('color', color)
+            
+            vehicle = world.try_spawn_actor(bp, transform)
+            if vehicle:
+                vehicles.append(vehicle)
+        
+        # Batch enable autopilot
+        traffic_manager.global_percentage_speed_difference(30.0)  # 30% slower than speed limit
+        for vehicle in vehicles:
+            vehicle.set_autopilot(True, traffic_manager.get_port())
+        
+        # ========== PEDESTRIANS ==========
+        pedestrian_blueprints = world.get_blueprint_library().filter('walker.pedestrian.*')
+        controller_bp = world.get_blueprint_library().find('controller.ai.walker')
+        
+        pedestrians = []
+        controllers = []
+        
+        for _ in range(num_pedestrians):
+            spawn_location = world.get_random_location_from_navigation()
+            if spawn_location:
+                bp = random.choice(pedestrian_blueprints)
+                transform = carla.Transform(spawn_location, carla.Rotation())
+                
+                pedestrian = world.try_spawn_actor(bp, transform)
+                if pedestrian:
+                    pedestrians.append(pedestrian)
+                    
+                    # Create AI controller
+                    controller = world.spawn_actor(controller_bp, carla.Transform(), pedestrian)
+                    controllers.append(controller)
+        
+        # Start pedestrian movement
+        for controller in controllers:
+            controller.start()
+            controller.go_to_location(world.get_random_location_from_navigation())
+            controller.set_max_speed(1.5)  # 1.5 m/s ~ 5.4 km/h
+        
+        # Set synchronous mode if needed
+        settings.synchronous_mode = True
+        settings.fixed_delta_seconds = 0.05
+        world.apply_settings(settings)
+        
+        return vehicles, pedestrians, controllers
+        
+    except Exception as e:
+        print(f"Traffic spawn failed: {str(e)}")
+        world.apply_settings(settings)
+        raise  # Better CPU performance
