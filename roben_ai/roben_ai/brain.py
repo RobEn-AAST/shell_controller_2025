@@ -62,7 +62,7 @@ class Brain(Node):
         # ======= MOVE VEHICLE ========
         agent = BasicAgent(ego_vehicle)
         agent.ignore_traffic_lights(True)
-        agent.set_target_speed(13)
+        agent.set_target_speed(45)
         agent.set_global_plan(full_route)
 
         self.get_logger().info("Brain node started... about to move")
