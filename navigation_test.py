@@ -1,11 +1,11 @@
 import carla
-import matplotlib.pyplot as plt
-import networkx as nx
 import numpy as np
-import threading
+from threading import Thread
+import cv2
 from ortools.constraint_solver import routing_enums_pb2
 from ortools.constraint_solver import pywrapcp
 from car_dreamer.toolkit.planner.agents.navigation.global_route_planner import GlobalRoutePlanner
+from car_dreamer.toolkit.planner.agents.navigation.basic_agent import BasicAgent
 
 
 def optimize_route_order(start_location, target_locations, grp: GlobalRoutePlanner):
@@ -101,13 +101,98 @@ def generate_simple_path(start_loc, targets, grp: GlobalRoutePlanner):
     return full_path
 
 
+def visualize(carla_map, target_locations, full_route, ego_location):
+    # ========= VISUALIZE ===============
+    print(f"map name: {carla_map.name}")
+    plt.figure(figsize=(12, 12))
+
+    # Draw map topology
+    for edge in carla_map.get_topology():
+        x = [edge[0].transform.location.x, edge[1].transform.location.x]
+        y = [edge[0].transform.location.y, edge[1].transform.location.y]
+        plt.plot(x, y, "k-", alpha=0.2)
+
+    # Draw car
+    plt.plot(ego_location.x, ego_location.y, "ro", markersize=10, label="Ego Vehicle")
+
+    # Mark positions
+    for target_loc in target_locations:
+        plt.plot(target_loc.x, target_loc.y, "g*", markersize=8, label="Target")
+
+    # Draw full route with color progression
+    route_x = [wp.x for wp in full_route]
+    route_y = [wp.y for wp in full_route]
+    plt.plot(route_x, route_y, color="blue", linewidth=2)
+
+    plt.legend()
+    plt.xlabel("X (m)")
+    plt.ylabel("Y (m)")
+    plt.title("CARLA Map Topology")
+    plt.show()
+
+class CarlaVisualizer(Thread):
+    def __init__(self, agent_route, targets, carla_map, map_size=(1000, 1000)):
+        super().__init__()
+        self.running = True
+        self.agent_route = agent_route
+        self.targets = targets  # List of carla.Location
+        self.carla_map = carla_map
+        self.map_scale = 0.2  # 1px = 0.2 meters
+        self.map_size = map_size
+        self.current_pos = (0, 0)
+        
+        # Precompute road network lines
+        self.road_lines = []
+        for wp_start, wp_end in carla_map.get_topology():
+            start = self._world_to_pixel(wp_start.transform.location)
+            end = self._world_to_pixel(wp_end.transform.location)
+            self.road_lines.append((start, end))
+            
+        # Precompute target positions
+        self.target_points = [self._world_to_pixel(t) for t in targets]
+        
+    def _world_to_pixel(self, location):
+        return (
+            int(location.x * self.map_scale + self.map_size[0]/2),
+            int(-location.y * self.map_scale + self.map_size[1]/2)
+        )
+        
+    def run(self):
+        canvas = np.zeros((self.map_size[1], self.map_size[0], 3), dtype=np.uint8)
+        
+        # Draw road network (yellow)
+        for start, end in self.road_lines:
+            cv2.line(canvas, start, end, (0, 255, 255), 1, lineType=cv2.LINE_AA)
+            
+        # Draw planned path (blue)
+        path_points = [self._world_to_pixel(wp[0].transform.location) for wp in self.agent_route]
+        for i in range(1, len(path_points)):
+            cv2.line(canvas, path_points[i-1], path_points[i], (255, 0, 0), 1, lineType=cv2.LINE_AA)
+            
+        # Draw targets (green circles)
+        for point in self.target_points:
+            cv2.circle(canvas, point, 4, (0, 255, 0), -1, lineType=cv2.LINE_AA)
+            
+        while self.running:
+            frame = canvas.copy()
+            
+            # Draw vehicle (small red dot)
+            cv2.circle(frame, self.current_pos, 2, (0, 0, 255), -1, lineType=cv2.LINE_AA)
+            
+            cv2.imshow("CARLA Navigation", frame)
+            if cv2.waitKey(20) == ord('q'):
+                self.running = False
+                
+    def update_position(self, location):
+        self.current_pos = self._world_to_pixel(location)
+
+
 client = carla.Client("localhost", 2000)
 client.set_timeout(20)
 world = client.get_world()
 carla_map = world.get_map()
 
 ego_vehicle = next(v for v in world.get_actors().filter("vehicle.*") if v.attributes.get("role_name") == "ego_vehicle")
-ego_location = ego_vehicle.get_location()
 
 spawn_points = carla_map.get_spawn_points()
 target_points = [
@@ -143,43 +228,29 @@ optimized_targets = optimize_route_order(
     grp,
 )
 
-full_route = generate_simple_path(ego_vehicle.get_location(), target_locations, grp)
-
-# ========= VISUALIZE ===============
-print(f"map name: {carla_map.name}")
-topology = carla_map.get_topology()
-
-plt.figure(figsize=(12, 12))
-
-# Draw map topology
-for edge in carla_map.get_topology():
-    x = [edge[0].transform.location.x, edge[1].transform.location.x]
-    y = [edge[0].transform.location.y, edge[1].transform.location.y]
-    plt.plot(x, y, "k-", alpha=0.2)
+full_route = generate_full_route(ego_vehicle.get_location(), optimized_targets, grp)
 
 
-# Draw car
-plt.plot(ego_location.x, ego_location.y, "ro", markersize=10, label="Ego Vehicle")
+# Initialize with map and targets
+visualizer = CarlaVisualizer(
+    agent_route=full_route,
+    targets=optimized_targets,  # List of carla.Location
+    carla_map=carla_map,
+    map_size=(1200, 1200)  # Adjust based on your map
+)
 
-# Mark positions
-for target_loc in target_locations:
-    plt.plot(target_loc.x, target_loc.y, "g*", markersize=8, label="Target")
+visualizer.start()
 
-# Draw full route with color progression
-route_x = [wp.x for wp in full_route]
-route_y = [wp.y for wp in full_route]
-plt.plot(route_x, route_y, color="blue", linewidth=2)
+# ======= MOVE VEHICLE ========
+agent = BasicAgent(ego_vehicle)
+agent.ignore_traffic_lights(True) 
+agent.set_target_speed(13) 
+agent.set_global_plan(full_route)
 
+while True:
+    control = agent.run_step()  # Auto-generates throttle/brake/steering
+    ego_vehicle.apply_control(control)
 
-plt.legend()
-plt.xlabel("X (m)")
-plt.ylabel("Y (m)")
-plt.title("CARLA Map Topology")
-plt.show()
-
-
-# # Make vehicle follow path (pseudo-code)
-# for location in simple_path:
-#     vehicle.set_velocity(calculate_speed_to(location))
-#     vehicle.steer(calculate_steering(location))
-#     time.sleep(0.1)
+    print(control)
+    curr_location = ego_vehicle.get_location()
+    visualizer.update_position(curr_location)
