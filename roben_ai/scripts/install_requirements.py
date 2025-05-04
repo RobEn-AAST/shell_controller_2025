@@ -50,16 +50,12 @@ def install_requirements():
     # List of packages to install
     packages = [
         "setuptools",
-        "numpy==1.26.4",
-        "torch",
-        "torchvision",
-        "torchaudio",
+        "numpy==1.24.3",
         "opencv-python",
         "gymnasium",
-        "stable-baselines3",
         "matplotlib",
-        "optuna",
         "scikit-image",
+        "typing_extensions==4.5.0"
     ]
 
     # Try to install each package separately

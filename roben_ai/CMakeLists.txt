@@ -25,8 +25,6 @@ find_package(carla_msgs REQUIRED)
 ament_python_install_package(${PROJECT_NAME})
 # Install AI source directory
 ament_python_install_package(ai_src)
-# Install config directory
-ament_python_install_package(config)
 
 #############
 ## Install ##

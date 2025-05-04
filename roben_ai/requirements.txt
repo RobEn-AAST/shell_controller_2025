@@ -1,12 +1,7 @@
 --index-url https://download.pytorch.org/whl/cpu
 setuptools
 colcon build
-torch
-torchvision
-torchaudio
 opencv-python
 gymnasium
-stable-baselines3
 matplotlib
-optuna
 scikit-image
