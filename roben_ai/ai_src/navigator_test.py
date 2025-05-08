@@ -7,6 +7,11 @@ from navigator.visualize import CarlaVisualizer
 from navigator.tsp_solver import optimize_route_order
 from navigator.route_generator import generate_full_route
 from navigator.test import spawn_traffic
+# import torch
+# import os  
+from car_dreamer import create_task
+from dreamerv3 import embodied
+from dreamerv3.embodied.core import Driver  
 
 
 client = carla.Client("localhost", 2000)
@@ -48,7 +53,7 @@ optimized_targets = optimize_route_order(
 full_route = generate_full_route(ego_vehicle.get_location(), optimized_targets, grp)
 
 
-# Initialize with map and targets
+# VISUALIZER
 visualizer = CarlaVisualizer(
     agent_route=full_route,
     targets=optimized_targets,  # List of carla.Location
@@ -57,19 +62,72 @@ visualizer = CarlaVisualizer(
 )
 visualizer.start()
 
-# ========= Test spawn vehicles ==============
+# ========= SPAWN TRAFFIC ==============
 spawn_traffic(client, num_vehicles=100, num_pedestrians=100)
 
+
 # ======= MOVE VEHICLE ========
-agent = BasicAgent(ego_vehicle)
-agent.ignore_traffic_lights(True) 
-agent.set_target_speed(13) 
-agent.set_global_plan(full_route)
+task_name = "carla_navigation"  
+task, config = create_task(task_name)  
 
-while True:
-    control = agent.run_step()  # Auto-generates throttle/brake/steering
-    ego_vehicle.apply_control(control)
+# Load the pretrained model  
+checkpoint_path = "./navigator/navigation.ckpt"
+config = embodied.Config()  
+config = config.update({"logdir": "./logdir/eval"})  
+agent = embodied.make_agent(config)  
+agent.load(checkpoint_path)  
 
-    print(control)
-    curr_location = ego_vehicle.get_location()
+driver = Driver(agent)  
+env = CarlaEnv(  
+    client=client,  
+    world=world,  
+    ego_vehicle=ego_vehicle,  
+    route=full_route,  
+    config=config  
+)  
+
+while True:  
+    obs = env.get_observation()  
+    action = driver.step(obs)  
+      
+    control = carla.VehicleControl(  
+        throttle=float(action['throttle']),  
+        steer=float(action['steer']),  
+        brake=float(action['brake'])  
+    )  
+
+    ego_vehicle.apply_control(control)  
+    curr_location = ego_vehicle.get_location()  
     visualizer.update_position(curr_location)
+
+
+# agent = BasicAgent(ego_vehicle)
+# agent.ignore_traffic_lights(True) 
+# agent.set_target_speed(13) 
+# agent.set_global_plan(full_route)
+
+# while True:
+#     control = agent.run_step()  # Auto-generates throttle/brake/steering
+#     ego_vehicle.apply_control(control)
+
+#     print(control)
+#     curr_location = ego_vehicle.get_location()
+#     visualizer.update_position(curr_location)
+
+
+# four_lane.ckpt
+# lane_merge.ckpt
+# left_turn_hard.ckpt
+# left_turn_medium.ckpt
+# left_turn_simple.ckpt
+# navigation.ckpt
+# overtake.ckpt
+# right_turn_fov.ckpt
+# right_turn_hard.ckpt
+# right_turn_medium.ckpt
+# right_turn_raw.ckpt
+# right_turn_sfov.ckpt
+# right_turn_simple.ckpt
+# roundabout.ckpt
+# stop_sign.ckpt
+# traffic_light.ckpt

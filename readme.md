@@ -22,8 +22,9 @@
 
 REQUIREMENTS TRACKER
 pip install flit
-CD into GymCarla then execute this: # note i had to do pip3 uninstall alembic
+CD into CarDreamer then execute this:
     flit install --symlink
+    cd to dreamerv3
+        pip install -r requirements.txt
 
 pip3 install ortools
-
