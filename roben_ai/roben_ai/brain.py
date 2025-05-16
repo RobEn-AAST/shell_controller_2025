@@ -8,7 +8,7 @@ from geometry_msgs.msg import PoseStamped, PoseWithCovarianceStamped   # for /in
 from nav_msgs.msg import Path, Odometry                               # for /carla/.../waypoints and odometry :contentReference[oaicite:3]{index=3}
 
 # CARLA Python API
-from carla import Client, Transform, Location, Rotation, Color
+from carla import Client  #, Color
 from carla.ros2.types import CarlaEgoVehicleControl
 from carla.agents.navigation.controller import VehiclePIDController
 from carla.agents.navigation.global_route_planner import GlobalRoutePlanner
@@ -296,11 +296,11 @@ class Brain(Node):
                  
  
                 # Draw waypoints on the Carla map
-                for w in self.waypoints_list:
-                    # print("self.waypoints_list: ",w.location)
-                    self.world.debug.draw_string(w.location, 'O', draw_shadow=False,
-                                                 color=Color(r=255, g=0, b=0), life_time=5000000.0,
-                                                 persistent_lines=True)
+                # for w in self.waypoints_list:
+                #     # print("self.waypoints_list: ",w.location)
+                #     self.world.debug.draw_string(w.location, 'O', draw_shadow=False,
+                #                                  color=Color(r=255, g=0, b=0), life_time=5000000.0,
+                #                                  persistent_lines=True)
                  
                  
                 # drive the vehicle
