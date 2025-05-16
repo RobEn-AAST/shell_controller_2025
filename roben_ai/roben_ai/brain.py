@@ -13,6 +13,7 @@ from carla_msgs.msg import CarlaEgoVehicleControl
 from carla_others.agents.navigation.controller import VehiclePIDController
 from carla_others.agents.navigation.global_route_planner import GlobalRoutePlanner
 # from carla.LaneMarkingColor import GREEN
+from std_msgs.msg import Float64, String
 import carla
 
 # TF conversions
@@ -51,9 +52,21 @@ class Brain(Node):
             10)
         
  
-        self.vehicle_control_publisher = self.create_publisher(CarlaEgoVehicleControl, 
-                                                      '/carla/ego_vehicle/vehicle_control_cmd', 
+        self.throttle_command_publisher = self.create_publisher(Float64, 
+                                                      '/throttle_command', 
                                                       10)
+        self.brake_command_publisher = self.create_publisher(Float64, 
+                                                      '/brake_command', 
+                                                      10)
+        self.steering_command_publisher = self.create_publisher(Float64, 
+                                                      '/steering_command', 
+                                                      10)
+        self.gear_command_publisher = self.create_publisher(String, 
+                                                      '/gear_command', 
+                                                      10)
+        # self.vehicle_control_publisher = self.create_publisher(CarlaEgoVehicleControl, 
+        #                                               '/carla/ego_vehicle/vehicle_control_cmd', 
+        #                                               10)
      
         # Initialize Carla client and map
         self.client = Client('localhost', 2000)
@@ -107,7 +120,8 @@ class Brain(Node):
 
  
         # Placeholders for start and end poses
-        self.start_pose = None
+        # self.start_pose = None
+        self.start_pose = self.vehicle.get_location()
         self.end_pose = None
         self.waypoints_list = []
         self.odom = None
@@ -116,6 +130,26 @@ class Brain(Node):
         # self.tf_buffer = Buffer()
         # self.tf_listener = TransformListener(self.tf_buffer, self)
         # self.vehicle_loc = None
+ 
+    def vehicle_control_publisher(self, throttle, steer, brake):
+        print(f'{throttle} {steer} {brake}')
+        throttle_msg = Float64()
+        throttle_msg.data = throttle
+
+        steer_msg = Float64()
+        steer_msg.data = steer
+
+        brake_msg = Float64()
+        brake_msg.data = brake
+        
+        gear_msg = String()
+        gear_msg.data = "1"
+        
+        self.throttle_command_publisher.publish(throttle_msg)
+        self.steering_command_publisher.publish(steer_msg)
+        self.brake_command_publisher.publish(brake_msg)
+        self.gear_command_publisher.publish(gear_msg)
+
  
     def odometry_callback(self, msg):
          
@@ -233,7 +267,9 @@ class Brain(Node):
          
         i=0
         waypt_cnt = len(planned_route)-1
+
         target=planned_route[0]
+        target_wp = self.world.get_map().get_waypoint(target.location)
  
         cnt = 0
         while True:
@@ -248,12 +284,13 @@ class Brain(Node):
             distance_v = self.find_dist_veh(vehicle_loc,target)
              
  
-            control = PID.run_step(speed,target)
+            control = PID.run_step(speed,target_wp)
             # vehicle.apply_control(control)
-            ctrl_msg = self.create_ctrl_msg(control.throttle,
+            print(f'----{control.throttle}')
+            ctrl_msg = self.vehicle_control_publisher(control.throttle,
                                             control.steer,
                                             control.brake)
-            self.vehicle_control_publisher.publish(ctrl_msg)
+            # self.vehicle_control_publisher.publish(ctrl_msg)
              
             if i==(len(planned_route)-1):
                 print("last waypoint reached")
@@ -262,12 +299,12 @@ class Brain(Node):
              
             if (distance_v<3.5):
                  
-                control = PID.run_step(speed,target)
+                control = PID.run_step(speed,target_wp)
                 # vehicle.apply_control(control)
-                ctrl_msg = self.create_ctrl_msg(control.throttle,
+                ctrl_msg = self.vehicle_control_publisher(control.throttle,
                             control.steer,
                             control.brake)
-                self.vehicle_control_publisher.publish(ctrl_msg)
+                # self.vehicle_control_publisher.publish(ctrl_msg)
                 i=i+1
                 target=planned_route[i]
  
@@ -289,10 +326,10 @@ class Brain(Node):
              
         control = PID.run_step(0,planned_route[len(planned_route)-1])
         # vehicle.apply_control(control)
-        ctrl_msg = self.create_ctrl_msg(control.throttle,
+        ctrl_msg = self.vehicle_control_publisher(control.throttle,
                             control.steer,
                             control.brake)
-        self.vehicle_control_publisher.publish(ctrl_msg)
+        # self.vehicle_control_publisher.publish(ctrl_msg)
  
  
     def run(self):

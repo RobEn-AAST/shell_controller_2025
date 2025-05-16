@@ -19,9 +19,18 @@ def generate_launch_description():
         name='brain',
         output='screen'
     )
+
+    remap_node = Node(
+        package='roben_ai',
+        namespace='',
+        executable='remap_goal.py',
+        name='remap_goal',
+        output='screen'
+    )
     
     return LaunchDescription([  
         # Nodes
         # example_control,
+        remap_node,
         brain_node
     ])

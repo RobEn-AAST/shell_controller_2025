@@ -38,6 +38,9 @@ setup(
     license="TODO: License declaration",
     tests_require=["pytest"],
     entry_points={
-        "console_scripts": ["brain = roben_ai.brain:main"],
+        "console_scripts": [
+            "brain = roben_ai.brain:main",
+            "remap_goal = roben_ai.remap_goal:main",
+            ],
     },
 )
