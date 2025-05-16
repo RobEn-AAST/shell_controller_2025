@@ -49,7 +49,7 @@ class Brain(Node):
             '/carla/ego_vehicle/odometry',
             self.odometry_callback,
             10)
- 
+        
  
         self.vehicle_control_publisher = self.create_publisher(CarlaEgoVehicleControl, 
                                                       '/carla/ego_vehicle/vehicle_control_cmd', 
