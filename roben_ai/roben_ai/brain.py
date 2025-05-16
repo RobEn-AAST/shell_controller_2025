@@ -64,13 +64,15 @@ class Brain(Node):
  
  
         # Check if Town01 is already loaded
-        #! TODO DISABLE THIS
-        if 'Town01' not in self.world.get_map().name:
-            print("Town01 is not loaded. Loading Town01...")
-            self.world = self.client.load_world('Town01')
-            print("Done!")
-        else:
-            print("Town01 is already loaded.")
+        print("\n\n\n\n")
+        print(f"Town Name: {self.world.get_map().name}")
+        print("\n\n\n\n")
+        # if 'Town01' not in self.world.get_map().name:
+        #     print("Town01 is not loaded. Loading Town01...")
+        #     self.world = self.client.load_world('Town01')
+        #     print("Done!")
+        # else:
+        #     print("Town01 is already loaded.")
  
  
         self.map = self.world.get_map()
@@ -81,8 +83,28 @@ class Brain(Node):
         self.actors = self.world.get_actors()
  
         # Filter to get only the vehicles get the 0-th veh as there is only one veh
-        #! TODO GET EGO VEHICLE AS OLD CODE, NOT THIS
-        self.vehicle = self.actors.filter('vehicle.*')[0]
+        # self.vehicle = self.actors.filter('vehicle.*')[0] <- bad way
+        self.vehicle = None
+        retry_attempts = 40
+        retry_wait_duration = 1
+        
+        for i in range(retry_attempts):
+            all_vehicles = self.world.get_actors().filter("vehicle.*")
+
+            for vehicle in all_vehicles:
+                if vehicle.attributes.get("role_name") == "ego_vehicle":  # Adjust this criteria as needed
+                    self.vehicle = vehicle
+                    break
+            if self.vehicle is not None:
+                break
+            print(f"attempt {i}/{retry_attempts} failed, waiting {retry_wait_duration} seconds...")
+            time.sleep(retry_wait_duration)
+            
+        if self.vehicle is None:
+            raise RuntimeError("No existing ego vehicle found in the environment")
+        # self.world.actor_dict[self.ego.id] = self.ego
+
+
  
         # Placeholders for start and end poses
         self.start_pose = None
@@ -322,3 +344,44 @@ def main(args=None):
 
 if __name__ == '__main__':
     main()
+
+
+
+# # get ego vehicle
+# self.ego = None
+# retry_attempts = 40
+# retry_wait_duration = 1
+
+# for i in range(retry_attempts):
+#     all_vehicles = self._world._world.get_actors().filter("vehicle.*")
+
+#     for vehicle in all_vehicles:
+#         if vehicle.attributes.get("role_name") == "ego_vehicle":  # Adjust this criteria as needed
+#             self.ego = vehicle
+#             break
+#     if self.ego is not None:
+#         break
+#     print(f"attempt {i}/{retry_attempts} failed, waiting {retry_wait_duration} seconds...")
+#     time.sleep(retry_wait_duration)
+    
+# if self.ego is None:
+#     raise RuntimeError("No existing ego vehicle found in the environment")
+# self._world.actor_dict[self.ego.id] = self.ego
+
+# self.competition_target_pnts = [
+#     [280.363739, 133.306351, 0.001746],
+#     [334.949799, 161.106171, 0.001736],
+#     [339.100037, 258.568939, 0.001679],
+#     [396.295319, 183.195740, 0.001678],
+#     [267.657074, 1.983160, 0.001678],
+#     [153.868896, 26.115866, 0.001678],
+#     [290.515564, 56.175072, 0.001677],
+#     [92.325722, 86.063644, 0.001677],
+#     [88.384346, 287.468567, 0.001728],
+#     [177.594101, 326.386902, 0.001677],
+#     [-1.646942, 197.501282, 0.001555],
+#     [59.701321, 1.970804, 0.001467],
+#     [122.100121, 55.142044, 0.001596],
+#     [161.030975, 129.313187, 0.001679],
+#     [184.758713, 199.424271, 0.001680],
+# ]
