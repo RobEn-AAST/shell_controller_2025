@@ -8,10 +8,10 @@ from geometry_msgs.msg import PoseStamped, PoseWithCovarianceStamped   # for /in
 from nav_msgs.msg import Path, Odometry                               # for /carla/.../waypoints and odometry :contentReference[oaicite:3]{index=3}
 
 # CARLA Python API
-from carla import Client  #, Color
-from carla.ros2.types import CarlaEgoVehicleControl
-from carla.agents.navigation.controller import VehiclePIDController
-from carla.agents.navigation.global_route_planner import GlobalRoutePlanner
+from carla import Client, Color   # type: ignore
+from carla_msgs.msg import CarlaEgoVehicleControl
+from carla_others.agents.navigation.controller import VehiclePIDController
+from carla_others.agents.navigation.global_route_planner import GlobalRoutePlanner
 # from carla.LaneMarkingColor import GREEN
 import carla
 
@@ -57,13 +57,14 @@ class Brain(Node):
      
         # Initialize Carla client and map
         self.client = Client('localhost', 2000)
-        self.client.set_timeout(10.0)
+        self.client.set_timeout(30.0)
  
         # Get the current world
         self.world = self.client.get_world()
  
  
         # Check if Town01 is already loaded
+        #! TODO DISABLE THIS
         if 'Town01' not in self.world.get_map().name:
             print("Town01 is not loaded. Loading Town01...")
             self.world = self.client.load_world('Town01')
@@ -80,6 +81,7 @@ class Brain(Node):
         self.actors = self.world.get_actors()
  
         # Filter to get only the vehicles get the 0-th veh as there is only one veh
+        #! TODO GET EGO VEHICLE AS OLD CODE, NOT THIS
         self.vehicle = self.actors.filter('vehicle.*')[0]
  
         # Placeholders for start and end poses
@@ -296,11 +298,11 @@ class Brain(Node):
                  
  
                 # Draw waypoints on the Carla map
-                # for w in self.waypoints_list:
-                #     # print("self.waypoints_list: ",w.location)
-                #     self.world.debug.draw_string(w.location, 'O', draw_shadow=False,
-                #                                  color=Color(r=255, g=0, b=0), life_time=5000000.0,
-                #                                  persistent_lines=True)
+                for w in self.waypoints_list:
+                    # print("self.waypoints_list: ",w.location)
+                    self.world.debug.draw_string(w.location, 'O', draw_shadow=False,
+                                                 color=Color(r=255, g=0, b=0), life_time=5000000.0,
+                                                 persistent_lines=True)
                  
                  
                 # drive the vehicle
@@ -312,9 +314,11 @@ class Brain(Node):
  
                 # After processing, break the loop if needed
                 break
- 
 def main(args=None):
     rclpy.init(args=args)
     route_planner = Brain()
     route_planner.run()
     rclpy.shutdown()
+
+if __name__ == '__main__':
+    main()
