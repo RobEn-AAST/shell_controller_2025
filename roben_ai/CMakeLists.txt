@@ -34,7 +34,6 @@ ament_python_install_package(ai_src)
 install(PROGRAMS
   scripts/install_requirements.py
   ${PROJECT_NAME}/brain.py
-  ${PROJECT_NAME}/remap_goal.py
   DESTINATION lib/${PROJECT_NAME}
   PERMISSIONS OWNER_READ OWNER_WRITE OWNER_EXECUTE GROUP_READ GROUP_EXECUTE WORLD_READ WORLD_EXECUTE
 )
@@ -44,7 +43,6 @@ install(CODE
   "execute_process(
     COMMAND ${CMAKE_COMMAND} -E create_symlink 
     ${CMAKE_INSTALL_PREFIX}/lib/${PROJECT_NAME}/brain.py
-    ${CMAKE_INSTALL_PREFIX}/lib/${PROJECT_NAME}/remap_goal.py
     ${CMAKE_INSTALL_PREFIX}/lib/${PROJECT_NAME}/brain
   )"
 )
@@ -68,7 +66,6 @@ add_custom_target(install_requirements ALL
 # Make brain the main target
 add_custom_target(brain ALL
   DEPENDS install_requirements ${PROJECT_SOURCE_DIR}/${PROJECT_NAME}/brain.py
-  DEPENDS install_requirements ${PROJECT_SOURCE_DIR}/${PROJECT_NAME}/remap_goal.py
   COMMENT "Building brain node target"
 )
 
