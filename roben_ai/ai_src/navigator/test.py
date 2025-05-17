@@ -24,7 +24,7 @@ def spawn_traffic(client, num_vehicles=20, num_pedestrians=30):
     client: carla.Client object connected to the server
     """
     world = client.get_world()
-    traffic_manager = client.get_trafficmanager()
+    traffic_manager = client.get_trafficmanager(8001)
     settings = world.get_settings()
     
     try:

@@ -11,11 +11,11 @@ def xyz_to_right_lane(wps, carla_map):
         
         # Find rightmost drivable lane
         current_wp = wp
-        while True:
-            next_wp = current_wp.get_right_lane()
-            if not next_wp or next_wp.lane_type not in [carla.LaneType.Driving, carla.LaneType.Shoulder]: # type: ignore
-                break
-            current_wp = next_wp
+        # while True:
+        #     next_wp = current_wp.get_right_lane()
+        #     if not next_wp or next_wp.lane_type not in [carla.LaneType.Driving, carla.LaneType.Shoulder]: # type: ignore
+        #         break
+        #     current_wp = next_wp
         
         target_locations.append(current_wp.transform.location)
     

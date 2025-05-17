@@ -9,7 +9,7 @@ from ai_src.carla_others.agents.navigation.global_route_planner import GlobalRou
 from ai_src.carla_others.agents.navigation.behavior_agent import BehaviorAgent
 from ai_src.navigator.wp_utils import xyz_to_right_lane
 from ai_src.navigator.tsp_solver import optimize_route_order
-from ai_src.navigator.route_generator import generate_full_route
+import time
 
 
 # pytorch stablebaseline gymansium
@@ -26,8 +26,18 @@ class Brain(Node):
         client = carla.Client("localhost", 2000) # type: ignore
         client.set_timeout(20)
         world = client.get_world()
+
         carla_map = world.get_map()
-        ego_vehicle = next(v for v in world.get_actors().filter("vehicle.*") if v.attributes.get("role_name") == "ego_vehicle")
+        ego_vehicle = None
+        total_connect_attempts = 40
+        for i in range(total_connect_attempts):
+            try:
+                ego_vehicle = next(v for v in world.get_actors().filter("vehicle.*") if v.attributes.get("role_name") == "ego_vehicle")
+            except Exception:
+                self.get_logger().info(f"attempt {i/total_connect_attempts} failed, retrying in 1 scond")
+                time.sleep(1)
+
+            
 
         target_points = [
             [280.363739, 133.306351, 0.001746],
@@ -58,6 +68,12 @@ class Brain(Node):
             grp,
         )
 
+        
+        self.get_logger().info("\n\n\n\nOPTIMIZED TARGETS ORDER START\n\n\n\n")  
+        for i, point in enumerate(optimized_targets):
+            self.get_logger().info(f"point {i}: x= {point.x}, y={point.y}, z={point.z}")  
+        self.get_logger().info("\n\n\n\nOPTIMIZED TARGETS ORDER END\n\n\n\n")  
+
         # ======= MOVE VEHICLE ========  
         agent = BehaviorAgent(ego_vehicle, behavior='normal')  # cautious, normal, aggressive  
         agent.ignore_traffic_lights(True)  
@@ -73,6 +89,8 @@ class Brain(Node):
         
         self.get_logger().info("Brain node started...")  
         while True:  
+            current_location = ego_vehicle.get_location()
+            self.get_logger().info(f"{current_location.x:.2f}, {current_location.y:.2f}, {current_location.z:.2f} => {destination.x:.2f},{destination.y:.2f},{destination.z:.2f}")
             # Get and apply control  
             control = agent.run_step()  # Auto-generates throttle/brake/steering  
             ego_vehicle.apply_control(control)  
