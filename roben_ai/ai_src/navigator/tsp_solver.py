@@ -1,6 +1,6 @@
 from ortools.constraint_solver import routing_enums_pb2
 from ortools.constraint_solver import pywrapcp
-from car_dreamer.toolkit.planner.agents.navigation.global_route_planner import GlobalRoutePlanner
+from ai_src.carla_others.agents.navigation.global_route_planner import GlobalRoutePlanner
 import numpy as np
 
 def optimize_route_order(start_location, target_locations, grp: GlobalRoutePlanner):

@@ -1,4 +1,4 @@
-from car_dreamer.toolkit.planner.agents.navigation.global_route_planner import GlobalRoutePlanner
+from ai_src.carla_others.agents.navigation.global_route_planner import GlobalRoutePlanner
 
 
 

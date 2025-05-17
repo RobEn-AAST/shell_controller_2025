@@ -4,8 +4,8 @@ import rclpy
 from rclpy.node import Node
 import carla
 import numpy as np
-from car_dreamer.toolkit.planner.agents.navigation.global_route_planner import GlobalRoutePlanner
-from car_dreamer.toolkit.planner.agents.navigation.basic_agent import BasicAgent
+from ai_src.carla_others.agents.navigation.global_route_planner import GlobalRoutePlanner
+from ai_src.carla_others.agents.navigation.basic_agent import BasicAgent
 from ai_src.navigator.wp_utils import xyz_to_right_lane
 from ai_src.navigator.tsp_solver import optimize_route_order
 from ai_src.navigator.route_generator import generate_full_route
