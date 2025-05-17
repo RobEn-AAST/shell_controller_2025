@@ -1,14 +1,16 @@
 #!/usr/bin/env python3
 
+import random
 import rclpy
 from rclpy.node import Node
 import carla
 import numpy as np
 from ai_src.carla_others.agents.navigation.global_route_planner import GlobalRoutePlanner
-from ai_src.carla_others.agents.navigation.basic_agent import BasicAgent
+from ai_src.carla_others.agents.navigation.behavior_agent import BehaviorAgent
 from ai_src.navigator.wp_utils import xyz_to_right_lane
 from ai_src.navigator.tsp_solver import optimize_route_order
 from ai_src.navigator.route_generator import generate_full_route
+
 
 # pytorch stablebaseline gymansium
 class Brain(Node):
@@ -56,18 +58,39 @@ class Brain(Node):
             grp,
         )
 
-        full_route = generate_full_route(ego_vehicle.get_location(), optimized_targets, grp)
-
-        # ======= MOVE VEHICLE ========
-        agent = BasicAgent(ego_vehicle)
-        agent.ignore_traffic_lights(True)
+        # ======= MOVE VEHICLE ========  
+        agent = BehaviorAgent(ego_vehicle, behavior='normal')  # cautious, normal, aggressive  
+        agent.ignore_traffic_lights(True)  
         agent.set_target_speed(45)
-        agent.set_global_plan(full_route)
-
-        self.get_logger().info("Brain node started... about to move")
-        while True:
-            control = agent.run_step()  # Auto-generates throttle/brake/steering
-            ego_vehicle.apply_control(control)
+        
+        # Initialize waypoint index  
+        current_waypoint_index = 0  
+        total_waypoints = len(optimized_targets)  
+        
+        # Set initial destination  
+        destination = optimized_targets[current_waypoint_index]  
+        agent.set_destination(destination)  
+        
+        self.get_logger().info("Brain node started...")  
+        while True:  
+            # Get and apply control  
+            control = agent.run_step()  # Auto-generates throttle/brake/steering  
+            ego_vehicle.apply_control(control)  
+            
+            # Check if we've reached the current destination  
+            if agent._local_planner.done():  
+                # Move to next waypoint  
+                current_waypoint_index += 1  
+                
+                # Check if we've reached the end of our waypoints  
+                if current_waypoint_index >= total_waypoints:  
+                    self.get_logger().info("All waypoints reached!")  
+                    break  
+                
+                # Set the next destination  
+                destination = optimized_targets[current_waypoint_index]  
+                self.get_logger().info(f"Moving to waypoint {current_waypoint_index}/{total_waypoints-1}")  
+                agent.set_destination(destination)
 
 
 def main(args=None):
