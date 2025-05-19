@@ -5,6 +5,7 @@ import rclpy
 from rclpy.node import Node
 import carla
 import numpy as np
+from ai_src.carla_others.agents.tools.misc import get_speed
 from ai_src.carla_others.agents.navigation.global_route_planner import GlobalRoutePlanner
 from ai_src.carla_others.agents.navigation.behavior_agent import BehaviorAgent
 from ai_src.navigator.wp_utils import xyz_to_right_lane
@@ -36,9 +37,7 @@ class Brain(Node):
             except Exception:
                 self.get_logger().info(f"attempt {i/total_connect_attempts} failed, retrying in 1 scond")
                 time.sleep(1)
-
             
-
         target_points = [
             [280.363739, 133.306351, 0.001746],
             [334.949799, 161.106171, 0.001736],
@@ -75,14 +74,15 @@ class Brain(Node):
         self.get_logger().info("\n\n\n\nOPTIMIZED TARGETS ORDER END\n\n\n\n")  
 
         # ======= MOVE VEHICLE ========  
-        agent = BehaviorAgent(ego_vehicle, behavior='normal')  # cautious, normal, aggressive  
+        agent = BehaviorAgent(ego_vehicle, behavior='aggressive')  # cautious, normal, aggressive  
         agent.ignore_traffic_lights(True)  
-        agent.set_target_speed(45)
+        agent._behavior.max_speed(48)
+        # agent.set_target_speed(47)
         
         # Initialize waypoint index  
         current_waypoint_index = 0  
-        total_waypoints = len(optimized_targets)  
         
+        total_waypoints = len(optimized_targets)  
         # Set initial destination  
         destination = optimized_targets[current_waypoint_index]  
         agent.set_destination(destination)  
@@ -90,7 +90,8 @@ class Brain(Node):
         self.get_logger().info("Brain node started...")  
         while True:  
             current_location = ego_vehicle.get_location()
-            self.get_logger().info(f"{current_location.x:.2f}, {current_location.y:.2f}, {current_location.z:.2f} => {destination.x:.2f},{destination.y:.2f},{destination.z:.2f}")
+            speed_kmh = get_speed(ego_vehicle)
+            self.get_logger().info(f"speed: {speed_kmh}, loc: {current_location.x:.2f}, {current_location.y:.2f}, {current_location.z:.2f} => {destination.x:.2f},{destination.y:.2f},{destination.z:.2f}")
             # Get and apply control  
             control = agent.run_step()  # Auto-generates throttle/brake/steering  
             ego_vehicle.apply_control(control)  

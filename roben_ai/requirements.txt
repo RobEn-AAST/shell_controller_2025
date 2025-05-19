@@ -1,6 +1,7 @@
 --index-url https://download.pytorch.org/whl/cpu
 setuptools
 colcon build
+transforms3d
 opencv-python
 gymnasium
 matplotlib

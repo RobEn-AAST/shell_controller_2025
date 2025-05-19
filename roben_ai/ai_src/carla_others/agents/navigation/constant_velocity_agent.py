@@ -11,7 +11,7 @@ It can also make use of the global route planner to follow a specifed route
 
 import carla
 
-from agents.navigation.basic_agent import BasicAgent
+from ai_src.carla_others.agents.navigation.basic_agent import BasicAgent
 
 class ConstantVelocityAgent(BasicAgent):
     """
