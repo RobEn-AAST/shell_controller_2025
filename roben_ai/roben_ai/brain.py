@@ -35,7 +35,7 @@ class Brain(Node):
             try:
                 ego_vehicle = next(v for v in world.get_actors().filter("vehicle.*") if v.attributes.get("role_name") == "ego_vehicle")
             except Exception:
-                self.get_logger().info(f"attempt {i/total_connect_attempts} failed, retrying in 1 scond")
+                self.get_logger().info(f"attempt {i}/{total_connect_attempts} failed, retrying in 1 scond")
                 time.sleep(1)
             
         target_points = [
@@ -76,7 +76,7 @@ class Brain(Node):
         # ======= MOVE VEHICLE ========  
         agent = BehaviorAgent(ego_vehicle, behavior='aggressive')  # cautious, normal, aggressive  
         agent.ignore_traffic_lights(True)  
-        agent._behavior.max_speed(48)
+        agent._behavior.max_speed = 47
         # agent.set_target_speed(47)
         
         # Initialize waypoint index  

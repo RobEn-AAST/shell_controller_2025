@@ -3,6 +3,6 @@ setuptools
 colcon build
 transforms3d
 opencv-python
-gymnasium
+ortools
+shapely
 matplotlib
-scikit-image

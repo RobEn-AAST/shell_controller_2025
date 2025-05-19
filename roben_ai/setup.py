@@ -26,10 +26,10 @@ setup(
         "setuptools",
         "numpy==1.24.3",
         "transforms3d",
+        "shapely",
+        "ortools"
         "opencv-python",
-        "gymnasium",
         "matplotlib",
-        "scikit-image",
         "typing_extensions==4.5.0",
     ],
     zip_safe=True,

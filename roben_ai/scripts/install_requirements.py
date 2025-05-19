@@ -53,9 +53,9 @@ def install_requirements():
         "numpy==1.24.3",
         "transforms3d",
         "opencv-python",
-        "gymnasium",
+        "ortools",
+        "shapely",
         "matplotlib",
-        "scikit-image",
         "typing_extensions==4.5.0"
     ]
 
