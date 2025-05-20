@@ -4,5 +4,8 @@ colcon build
 transforms3d
 opencv-python
 ortools
+numpy==1.24.3
+networkx
+distro
 shapely
 matplotlib

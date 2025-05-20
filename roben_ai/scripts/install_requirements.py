@@ -51,6 +51,8 @@ def install_requirements():
     packages = [
         "setuptools",
         "numpy==1.24.3",
+        "networkx",
+        "distro",
         "transforms3d",
         "opencv-python",
         "ortools",
