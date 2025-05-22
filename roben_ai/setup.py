@@ -26,8 +26,6 @@ setup(
         "setuptools",
         "numpy==1.24.3",
         "transforms3d",
-        "shapely",
-        "ortools"
         "opencv-python",
         "matplotlib",
         "typing_extensions==4.5.0",

@@ -1,7 +1,25 @@
 #!/usr/bin/env python3
 
+#### PATH SETTING UP, THIS MUST STAY MOST TOP ####
 from pathlib import Path
 import sys
+
+base_dir = Path(__file__).resolve().parent
+
+# Add shapely to sys.path
+shapely_dir = (base_dir / '..' / 'ai_src' / 'vendor' / 'shapely').resolve()
+sys.path.insert(0, str(shapely_dir))
+
+# Add ortools to sys.path
+ortools_dir = (base_dir / '..' / 'ai_src' / 'vendor' / 'ortools').resolve()
+sys.path.insert(0, str(ortools_dir))
+
+print("SHAPELY PATH:", shapely_dir)
+print("ORTOOLS PATH:", ortools_dir)
+
+#### END PATH SETTING ####
+
+
 import random
 import rclpy
 from rclpy.node import Node
@@ -114,20 +132,7 @@ class Brain(Node):
 
 
 def main(args=None):
-    # get the parent folder of this file
-    base_dir = Path(__file__).resolve().parent
-
-    vendor_dir = (base_dir 
-                / '..'  
-                / 'ai_src' 
-                / 'vendor' 
-                / 'shapely'
-                ).resolve()
-
-    print("THE PATH IS:", vendor_dir)
-
-    sys.path.insert(0, str(vendor_dir))
-
+    # start ros node
     rclpy.init(args=args)
 
     node = Brain()
