@@ -2,55 +2,6 @@
 
 from pathlib import Path
 import sys
-
-# get the parent folder of this file
-base_dir = Path(__file__).resolve().parent
-
-vendor_dir = (base_dir 
-              / '..'  
-              / 'ai_src' 
-              / 'vendor' 
-              / 'shapely'
-             ).resolve()
-
-print("THE PATH IS:", vendor_dir)
-
-sys.path.insert(0, str(vendor_dir))
-
-
-# FOR TESTING
-try:
-    import networkx
-    print("imported networkx")
-except Exception:
-    print("failed to import networkx")
-
-try:
-    import ortools
-    print("imported ortools")
-except Exception:
-    print("failed to import ortools")
-
-try:
-    import shapely
-    print("imported shapely")
-except Exception:
-    print("failed to import shapely")
-
-try:
-    import numpy
-    print("imported numpy")
-except Exception:
-    print("failed to import numpy")
-
-try:
-    import carla
-    print("imported carla")
-except Exception:
-    print("failed to import carla")
-
-# END FOR TESTING
-
 import random
 import rclpy
 from rclpy.node import Node
@@ -163,6 +114,20 @@ class Brain(Node):
 
 
 def main(args=None):
+    # get the parent folder of this file
+    base_dir = Path(__file__).resolve().parent
+
+    vendor_dir = (base_dir 
+                / '..'  
+                / 'ai_src' 
+                / 'vendor' 
+                / 'shapely'
+                ).resolve()
+
+    print("THE PATH IS:", vendor_dir)
+
+    sys.path.insert(0, str(vendor_dir))
+
     rclpy.init(args=args)
 
     node = Brain()
