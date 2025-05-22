@@ -1,4 +1,48 @@
 #!/usr/bin/env python3
+import os, sys
+
+# __file__ is something like ".../roben_ai/brain.py"
+vendor_dir = os.path.join(
+    os.path.dirname(__file__),  # .../roben_ai
+    '..',                        # up one: .../
+    'ai_src',                    # .../ai_src
+    'vendor',                     # .../ai_src/vendor
+    'shapely',
+)
+sys.path.insert(0, vendor_dir)
+
+# FOR TESTING
+try:
+    import networkx
+    print("imported networkx")
+except Exception:
+    print("failed to import networkx")
+
+try:
+    import ortools
+    print("imported ortools")
+except Exception:
+    print("failed to import ortools")
+
+try:
+    import shapely
+    print("imported shapely")
+except Exception:
+    print("failed to import shapely")
+
+try:
+    import numpy
+    print("imported numpy")
+except Exception:
+    print("failed to import numpy")
+
+try:
+    import carla
+    print("imported carla")
+except Exception:
+    print("failed to import carla")
+
+# END FOR TESTING
 
 import random
 import rclpy
