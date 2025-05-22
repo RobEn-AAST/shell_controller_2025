@@ -49,16 +49,16 @@ def install_requirements():
 
     # List of packages to install
     packages = [
-        "setuptools",
-        "numpy==1.24.3",
-        "networkx",
-        "distro",
-        "transforms3d",
-        "opencv-python",
-        "ortools",
-        "shapely",
-        "matplotlib",
-        "typing_extensions==4.5.0"
+        # "setuptools",
+        # "numpy==1.24.3",
+        # "networkx",
+        # "distro",
+        # "transforms3d",
+        # "opencv-python",
+        # "ortools",
+        # "shapely",
+        # "matplotlib",
+        # "typing_extensions==4.5.0"
     ]
 
     # Try to install each package separately

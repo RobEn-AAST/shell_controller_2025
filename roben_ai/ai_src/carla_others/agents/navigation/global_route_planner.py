@@ -10,7 +10,7 @@ This module provides GlobalRoutePlanner implementation.
 
 import math
 import numpy as np
-import networkx as nx
+from ai_src.vendor.networkx import networkx as nx
 
 import carla
 from ai_src.carla_others.agents.navigation.local_planner import RoadOption
