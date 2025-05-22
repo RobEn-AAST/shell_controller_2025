@@ -1,15 +1,22 @@
 #!/usr/bin/env python3
-import os, sys
 
-# __file__ is something like ".../roben_ai/brain.py"
-vendor_dir = os.path.join(
-    os.path.dirname(__file__),  # .../roben_ai
-    '..',                        # up one: .../
-    'ai_src',                    # .../ai_src
-    'vendor',                     # .../ai_src/vendor
-    'shapely',
-)
-sys.path.insert(0, vendor_dir)
+from pathlib import Path
+import sys
+
+# get the parent folder of this file
+base_dir = Path(__file__).resolve().parent
+
+vendor_dir = (base_dir 
+              / '..'  
+              / 'ai_src' 
+              / 'vendor' 
+              / 'shapely'
+             ).resolve()
+
+print("THE PATH IS:", vendor_dir)
+
+sys.path.insert(0, str(vendor_dir))
+
 
 # FOR TESTING
 try:

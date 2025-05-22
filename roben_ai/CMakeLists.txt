@@ -43,6 +43,11 @@ install(PROGRAMS
 #   DESTINATION lib/${PROJECT_NAME}
 # )
 
+install(DIRECTORY
+  ai_src/
+  DESTINATION lib/ai_src/
+)
+
 install(FILES
   requirements.txt
   DESTINATION share/${PROJECT_NAME}

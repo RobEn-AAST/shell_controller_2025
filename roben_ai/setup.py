@@ -23,8 +23,6 @@ setup(
         (os.path.join('share', package_name, 'config'), glob('config/*.py')),
     ],
     install_requires=[
-        "distro",
-        "networkx",
         "setuptools",
         "numpy==1.24.3",
         "transforms3d",
