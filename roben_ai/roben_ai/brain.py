@@ -3,6 +3,7 @@
 #### PATH SETTING UP, THIS MUST STAY MOST TOP ####
 from pathlib import Path
 import sys
+import os
 
 base_dir = Path(__file__).resolve().parent
 
@@ -55,7 +56,9 @@ class Brain(Node):
         """
         super().__init__("brain")
 
-        client = carla.Client("ec2-50-19-120-242.compute-1.amazonaws.com", 2000) # type: ignore
+        carla_host = os.getenv('CARLA_SERVER', 'ec2-50-19-120-242.compute-1.amazonaws.com')  
+        print(f"carla_host: {carla_host}")
+        client = carla.Client(carla_host, 2000) # type: ignore
         client.set_timeout(20)
         world = client.get_world()
 
@@ -119,9 +122,6 @@ class Brain(Node):
         
         self.get_logger().info("Brain node started...")  
         while True:  
-            current_location = ego_vehicle.get_location()
-            speed_kmh = get_speed(ego_vehicle)
-            self.get_logger().info(f"speed: {speed_kmh}, loc: {current_location.x:.2f}, {current_location.y:.2f}, {current_location.z:.2f} => {destination.x:.2f},{destination.y:.2f},{destination.z:.2f}")
             # Get and apply control  
             control = agent.run_step()  # Auto-generates throttle/brake/steering  
             ego_vehicle.apply_control(control)  
@@ -138,8 +138,13 @@ class Brain(Node):
                 
                 # Set the next destination  
                 destination = optimized_targets[current_waypoint_index]  
-                self.get_logger().info(f"Moving to waypoint {current_waypoint_index}/{total_waypoints-1}")  
                 agent.set_destination(destination)
+                
+                # LOGGING INFO FOR DEBUGGING
+                current_location = ego_vehicle.get_location()
+                speed_kmh = get_speed(ego_vehicle)
+                self.get_logger().info(f"speed: {speed_kmh}, loc: {current_location.x:.2f}, {current_location.y:.2f}, {current_location.z:.2f} => {destination.x:.2f},{destination.y:.2f},{destination.z:.2f}")
+                self.get_logger().info(f"Moving to waypoint {current_waypoint_index}/{total_waypoints-1}")  
 
 
 def main(args=None):
