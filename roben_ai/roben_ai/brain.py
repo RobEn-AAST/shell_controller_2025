@@ -56,8 +56,10 @@ class Brain(Node):
         """
         super().__init__("brain")
 
+        debug_data_timeout = 30
+        self.last_debug_time = time.time()
         carla_host = os.getenv('CARLA_SERVER', 'ec2-50-19-120-242.compute-1.amazonaws.com')  
-        print(f"carla_host: {carla_host}")
+
         client = carla.Client(carla_host, 2000) # type: ignore
         client.set_timeout(20)
         world = client.get_world()
@@ -121,6 +123,7 @@ class Brain(Node):
         agent.set_destination(destination)  
         
         self.get_logger().info("Brain node started...")  
+
         while True:  
             # Get and apply control  
             control = agent.run_step()  # Auto-generates throttle/brake/steering  
@@ -141,11 +144,16 @@ class Brain(Node):
                 agent.set_destination(destination)
                 
                 # LOGGING INFO FOR DEBUGGING
+                self.get_logger().info(f"Moving to waypoint {current_waypoint_index}/{total_waypoints-1}")  
+
+            # DEBUG LOG DATA
+            current_time = time.time()
+            if current_time - self.last_debug_time >= debug_data_timeout:
                 current_location = ego_vehicle.get_location()
                 speed_kmh = get_speed(ego_vehicle)
                 self.get_logger().info(f"speed: {speed_kmh}, loc: {current_location.x:.2f}, {current_location.y:.2f}, {current_location.z:.2f} => {destination.x:.2f},{destination.y:.2f},{destination.z:.2f}")
-                self.get_logger().info(f"Moving to waypoint {current_waypoint_index}/{total_waypoints-1}")  
 
+                self.last_debug_time = current_time
 
 def main(args=None):
     # start ros node
