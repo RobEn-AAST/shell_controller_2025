@@ -55,7 +55,7 @@ class Brain(Node):
         """
         super().__init__("brain")
 
-        client = carla.Client("localhost", 2000) # type: ignore
+        client = carla.Client("ec2-50-19-120-242.compute-1.amazonaws.com", 2000) # type: ignore
         client.set_timeout(20)
         world = client.get_world()
 
