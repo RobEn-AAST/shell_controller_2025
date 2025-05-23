@@ -14,8 +14,19 @@ sys.path.insert(0, str(shapely_dir))
 ortools_dir = (base_dir / '..' / 'ai_src' / 'vendor' / 'ortools').resolve()
 sys.path.insert(0, str(ortools_dir))
 
+# Add google to sys.path
+google_dir = (base_dir / '..' / 'ai_src' / 'vendor' / 'google').resolve()
+sys.path.insert(0, str(google_dir))
+
+# Add protobuf to sys.path
+protobuf = (base_dir / '..' / 'ai_src' / 'vendor' / 'protobuf').resolve()
+sys.path.insert(0, str(protobuf))
+
+
 print("SHAPELY PATH:", shapely_dir)
 print("ORTOOLS PATH:", ortools_dir)
+print("GOOGLE PATH:", google_dir)
+print("GOOGLE PATH:", google_dir)
 
 #### END PATH SETTING ####
 

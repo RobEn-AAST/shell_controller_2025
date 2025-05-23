@@ -5,4 +5,4 @@ import os
 sys.path.insert(0, os.path.join(os.path.dirname(__file__), "vendor"))
 
 # Import all dependencies
-__all__ = ["networkx", "transforms3d", "shapely", "ortools"]
+__all__ = ["networkx", "shapely", "ortools", "google"]
