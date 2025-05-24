@@ -4,6 +4,7 @@
 from pathlib import Path
 import sys
 import os
+os.environ["SDL_VIDEODRIVER"] = "dummy" # disable pygame gui (untested)
 
 base_dir = Path(__file__).resolve().parent
 
