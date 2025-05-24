@@ -17,10 +17,10 @@ Last updated: 09/24/2022
 import numpy as np
 from math import pi, sin, cos, radians, sqrt
 
-from agents.navigation.local_planner import RoadOption
-from agents.navigation.local_waypoint import LocalWaypoint
-from agents.tools.misc import get_poly_y
-from math import *
+from ai_src.carla_others.agents.navigation.local_planner import RoadOption
+from ai_src.carla_others.agents.navigation.local_waypoint import LocalWaypoint
+from ai_src.carla_others.agents.tools.misc import get_poly_y
+import math
 
 
 class BezierTurn():
@@ -72,8 +72,8 @@ class BezierTurn():
         y0 = ref1[1]
         x2 = ref2[0]
         y2 = ref2[1]
-        h0 = tan(np.deg2rad(ref1[2]))
-        hf = tan(np.deg2rad(ref2[2]))
+        h0 = math.tan(np.deg2rad(ref1[2]))
+        hf = math.tan(np.deg2rad(ref2[2]))
 
         # Bezier curve planning for right turns 
         if (((x2-x0)>0 and (y2-y0)>0) or ((x2-x0)<0 and (y2-y0)<0)) and self.right_flag:
@@ -190,11 +190,11 @@ class BezierOverTake():
         y0 = ref1[1]
         x2 = x0 + 50
         y2 = y0 - 3.2
-        h0 = tan(np.deg2rad(ref1[2]-10))
-        hf = tan(np.deg2rad(ref1[2]))
+        h0 = math.tan(np.deg2rad(ref1[2]-10))
+        hf = math.tan(np.deg2rad(ref1[2]))
 
         r =  sqrt((x0-x2)**2 + (y0-y2)**2)
-        theta = atan2((y2-y0), (x2-x0))
+        theta = math.atan2((y2-y0), (x2-x0))
 
 
         # Bezier curve planning for right turns
@@ -262,8 +262,8 @@ class BezierOverTake():
         y0 = wp_y[-1]
         x2 = x0 + 30
         y2 = y0 + 4.4
-        h0 = tan(np.deg2rad(ref1[2]-10))
-        hf = tan(np.deg2rad(ref1[2]))
+        h0 = math.tan(np.deg2rad(ref1[2]-10))
+        hf = math.tan(np.deg2rad(ref1[2]))
         x1 = x0 + 10
         y1 = y2
 

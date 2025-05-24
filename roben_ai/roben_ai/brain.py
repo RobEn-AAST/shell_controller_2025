@@ -39,7 +39,7 @@ import carla
 import numpy as np
 from ai_src.carla_others.agents.tools.misc import get_speed
 from ai_src.carla_others.agents.navigation.global_route_planner import GlobalRoutePlanner
-from ai_src.carla_others.agents.navigation.behavior_agent import BehaviorAgent
+from ai_src.carla_others.agents.navigation.autonomous_agent import AutonomousAgent
 from ai_src.navigator.wp_utils import xyz_to_right_lane
 from ai_src.navigator.tsp_solver import optimize_route_order
 from ai_src.navigator.test import spawn_traffic
@@ -110,10 +110,7 @@ class Brain(Node):
         self.get_logger().info("\n\n\n\nOPTIMIZED TARGETS ORDER END\n\n\n\n")  
 
         # ======= MOVE VEHICLE ========  
-        self.agent = BehaviorAgent(self.ego_vehicle, behavior='aggressive')  # cautious, normal, aggressive  
-        self.agent.ignore_traffic_lights(True)  
-        self.agent._behavior.max_speed = 47
-        # self.agent.set_target_speed(47)
+        self.agent = AutonomousAgent(self.ego_vehicle)  # cautious, normal, aggressive  
         
         # Initialize waypoint index  
         current_waypoint_index = 0  

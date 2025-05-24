@@ -216,3 +216,17 @@ def transform_to_frame(frame, points, inverse=False):
         matrix = np.linalg.inv(matrix)
 
     return np.matmul(matrix, points_m)[0:3,:]
+
+
+
+def get_poly_y(x, param):
+    """
+    Compute polynomial y given x and polynomial parameters
+    :param x: a numpy vector of x
+    :param param: polynomial parameters
+    :return: a numpy vector of y
+    """
+    t_m = np.array([np.power(x, 0), np.power(x, 1), np.power(x, 2),
+                    np.power(x, 3), np.power(x, 4), np.power(x, 5)])
+    y = np.matmul(param, t_m)
+    return y

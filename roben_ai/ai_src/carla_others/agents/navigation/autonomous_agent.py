@@ -37,6 +37,7 @@ class AutonomousAgent(Agent):
         :param ego: ego to apply to local planner logic onto
         """
         super(AutonomousAgent, self).__init__(ego.player)
+        self._ignore_traffic_lights = True  # Add this line
         self._world_obj = ego
 
         self._THW = 2
@@ -74,7 +75,7 @@ class AutonomousAgent(Agent):
 
     def update_parameters(self):
         self._THW = 2
-        self._target_speed = 30
+        self._target_speed = 47
 
         CONTROLLER_TYPE = 'PID' # options: MPC, PID, STANLEY
         args_lateral_dict = {'K_P': 1.0, 'K_I': 0.4, 'K_D': 0.01, 'control_type': CONTROLLER_TYPE}
