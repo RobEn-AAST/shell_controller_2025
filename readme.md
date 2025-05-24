@@ -37,3 +37,8 @@ now make a dedicated forlder and unzip the wheel there
 `zeyadcode_jammy@zeyadcodeUbuntuJammy:~/Downloads/Lane-Navigation-for-Self-Driving-Car/agents/navigation$ unzip ~/Downloads/casadi-3.7.0-cp310-none-manylinux2014_x86_64.whl -d ~/ros_ws/src/shell_controller_2025/roben_ai/ai_src/vendor/casadi/`
 
 now add it as a sys path for the code as shown in the first few lines in brain.py
+
+
+
+# Based on
+https://github.com/jagani-aditya/Lane-Navigation-for-Self-Driving-Car

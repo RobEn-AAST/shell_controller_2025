@@ -23,7 +23,6 @@ sys.path.insert(0, str(google_dir))
 protobuf_dir = (base_dir / '..' / 'ai_src' / 'vendor' / 'protobuf').resolve()
 sys.path.insert(0, str(protobuf_dir))
 
-
 # Add casadi
 casadi_dir = (base_dir / '..' / 'ai_src' / 'vendor' / 'casadi').resolve()
 sys.path.insert(0, str(casadi_dir))
