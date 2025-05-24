@@ -63,8 +63,8 @@ class Brain(Node):
         self.client.set_timeout(20)
         self.world = self.client.get_world()
 
-        if carla_host == 'localhost':
-            spawn_traffic(self.client, 50, 30)
+        # if carla_host == 'localhost':
+        #     spawn_traffic(self.client, 70, 30)
 
         self.carla_map = self.world.get_map()
         self.ego_vehicle = None
@@ -104,7 +104,6 @@ class Brain(Node):
             grp,
         )
 
-        
         self.get_logger().info("\n\n\n\nOPTIMIZED TARGETS ORDER START\n\n\n\n")  
         for i, point in enumerate(optimized_targets):
             self.get_logger().info(f"point {i}: x= {point.x}, y={point.y}, z={point.z}")  
@@ -137,7 +136,7 @@ class Brain(Node):
         self.original_lane_id = None 
         
         while True: 
-            self._overtake()
+            # self._overtake()
             # Get and apply control  
             control = self.agent.run_step()  # Auto-generates throttle/brake/steering  
             self.ego_vehicle.apply_control(control)  
@@ -162,11 +161,14 @@ class Brain(Node):
             # DEBUG LOG DATA
             current_time = time.time()
             if current_time - self.last_debug_time >= self.debug_data_timeout:
-                current_location = self.ego_vehicle.get_location()
                 speed_kmh = get_speed(self.ego_vehicle)
+                current_location = self.ego_vehicle.get_location()
+
                 self.get_logger().info(f"speed: {speed_kmh}, loc: {current_location.x:.2f}, {current_location.y:.2f}, {current_location.z:.2f} => {destination.x:.2f},{destination.y:.2f},{destination.z:.2f}")
+                
 
                 self.last_debug_time = current_time
+
     
     def _overtake(self):
         # Check if vehicle is stuck behind another vehicle  
@@ -175,14 +177,17 @@ class Brain(Node):
         ego_waypoint = self.carla_map.get_waypoint(ego_location)  
         
         # Detect if there's a slow/stopped vehicle ahead  
-        affected_by_vehicle, blocking_vehicle, distance = self.agent._vehicle_obstacle_detected(vehicle_list, 15.0)  
+        overtake_thresh_dist = 15
+        affected_by_vehicle, blocking_vehicle, distance = self.agent._vehicle_obstacle_detected(vehicle_list, overtake_thresh_dist)  
         
         if affected_by_vehicle and not self.overtaking:  
             # Check if the blocking vehicle is moving slowly  
             blocking_speed = blocking_vehicle.get_velocity().length()  
+            self.get_logger().info(f"a vehicle with speed {blocking_speed} is currently affecting us...")
             if blocking_speed < 1.0:  # Less than 1 m/s  
                 self.stuck_timer += 0.05  # Assuming 20 FPS  
                 if self.stuck_timer > self.stuck_threshold:  
+                    self.get_logger().info("Attempting overtake...")
                     # Initiate overtaking  
                     self.overtaking = True  
                     self.original_lane_id = ego_waypoint.lane_id  
@@ -196,7 +201,8 @@ class Brain(Node):
             current_waypoint = self.ego_vehicle.get_world().get_map().get_waypoint(ego_location)  
             if current_waypoint.lane_id != self.original_lane_id: 
                 # Check if we've passed the obstacle  
-                if not affected_by_vehicle or distance > 20.0:  
+                if not affected_by_vehicle:  
+                    self.get_logger().info('overtake done...')
                     # Return to original lane  
                     if self.original_lane_id < current_waypoint.lane_id:  
                         self.agent.lane_change('right')  
@@ -204,6 +210,7 @@ class Brain(Node):
                         self.agent.lane_change('left')  
                     self.overtaking = False  
 
+                    
 def main(args=None):
     # start ros node
     rclpy.init(args=args)

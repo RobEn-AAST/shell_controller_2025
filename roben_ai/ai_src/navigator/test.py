@@ -57,10 +57,10 @@ def spawn_traffic(client, num_vehicles=20, num_pedestrians=30):
             if vehicle:
                 vehicles.append(vehicle)
         
-        # Batch enable autopilot
-        traffic_manager.global_percentage_speed_difference(30.0)  # 30% slower than speed limit
-        for vehicle in vehicles:
-            vehicle.set_autopilot(True, traffic_manager.get_port())
+        # # Batch enable autopilot
+        # traffic_manager.global_percentage_speed_difference(30.0)  # 30% slower than speed limit
+        # for vehicle in vehicles:
+        #     vehicle.set_autopilot(True, traffic_manager.get_port())
         
         # ========== PEDESTRIANS ==========
         pedestrian_blueprints = world.get_blueprint_library().filter('walker.pedestrian.*')
