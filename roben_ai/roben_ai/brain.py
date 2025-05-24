@@ -42,6 +42,7 @@ from ai_src.carla_others.agents.navigation.global_route_planner import GlobalRou
 from ai_src.carla_others.agents.navigation.behavior_agent import BehaviorAgent
 from ai_src.navigator.wp_utils import xyz_to_right_lane
 from ai_src.navigator.tsp_solver import optimize_route_order
+from ai_src.navigator.test import spawn_traffic
 import time
 
 
@@ -56,20 +57,21 @@ class Brain(Node):
         """
         super().__init__("brain")
 
-        debug_data_timeout = 30
-        self.last_debug_time = time.time()
         carla_host = os.getenv('CARLA_SERVER', 'ec2-50-19-120-242.compute-1.amazonaws.com')  
 
-        client = carla.Client(carla_host, 2000) # type: ignore
-        client.set_timeout(20)
-        world = client.get_world()
+        self.client = carla.Client(carla_host, 2000) # type: ignore
+        self.client.set_timeout(20)
+        self.world = self.client.get_world()
 
-        carla_map = world.get_map()
-        ego_vehicle = None
+        if carla_host == 'localhost':
+            spawn_traffic(self.client, 50, 30)
+
+        self.carla_map = self.world.get_map()
+        self.ego_vehicle = None
         total_connect_attempts = 40
         for i in range(total_connect_attempts):
             try:
-                ego_vehicle = next(v for v in world.get_actors().filter("vehicle.*") if v.attributes.get("role_name") == "ego_vehicle")
+                self.ego_vehicle = next(v for v in self.world.get_actors().filter("vehicle.*") if v.attributes.get("role_name") == "ego_vehicle")
             except Exception:
                 self.get_logger().info(f"attempt {i}/{total_connect_attempts} failed, retrying in 1 scond")
                 time.sleep(1)
@@ -92,12 +94,12 @@ class Brain(Node):
         ]
         sampling_resolution = 1.0
 
-        target_locations = xyz_to_right_lane(target_points, carla_map)
+        target_locations = xyz_to_right_lane(target_points, self.carla_map)
 
-        grp = GlobalRoutePlanner(carla_map, sampling_resolution)
+        grp = GlobalRoutePlanner(self.carla_map, sampling_resolution)
 
         optimized_targets = optimize_route_order(
-            ego_vehicle.get_location(),
+            self.ego_vehicle.get_location(),
             target_locations,
             grp,
         )
@@ -109,10 +111,10 @@ class Brain(Node):
         self.get_logger().info("\n\n\n\nOPTIMIZED TARGETS ORDER END\n\n\n\n")  
 
         # ======= MOVE VEHICLE ========  
-        agent = BehaviorAgent(ego_vehicle, behavior='aggressive')  # cautious, normal, aggressive  
-        agent.ignore_traffic_lights(True)  
-        agent._behavior.max_speed = 47
-        # agent.set_target_speed(47)
+        self.agent = BehaviorAgent(self.ego_vehicle, behavior='aggressive')  # cautious, normal, aggressive  
+        self.agent.ignore_traffic_lights(True)  
+        self.agent._behavior.max_speed = 47
+        # self.agent.set_target_speed(47)
         
         # Initialize waypoint index  
         current_waypoint_index = 0  
@@ -120,17 +122,28 @@ class Brain(Node):
         total_waypoints = len(optimized_targets)  
         # Set initial destination  
         destination = optimized_targets[current_waypoint_index]  
-        agent.set_destination(destination)  
+        self.agent.set_destination(destination)  
         
         self.get_logger().info("Brain node started...")  
 
-        while True:  
+        # Thresholds
+        self.debug_data_timeout = 30 # seconds
+        self.stuck_threshold = 3 # seconds
+
+        # Flags
+        self.last_debug_time = time.time()
+        self.stuck_timer = 0  
+        self.overtaking = False  
+        self.original_lane_id = None 
+        
+        while True: 
+            self._overtake()
             # Get and apply control  
-            control = agent.run_step()  # Auto-generates throttle/brake/steering  
-            ego_vehicle.apply_control(control)  
+            control = self.agent.run_step()  # Auto-generates throttle/brake/steering  
+            self.ego_vehicle.apply_control(control)  
             
             # Check if we've reached the current destination  
-            if agent._local_planner.done():  
+            if self.agent._local_planner.done():  
                 # Move to next waypoint  
                 current_waypoint_index += 1  
                 
@@ -141,19 +154,55 @@ class Brain(Node):
                 
                 # Set the next destination  
                 destination = optimized_targets[current_waypoint_index]  
-                agent.set_destination(destination)
+                self.agent.set_destination(destination)
                 
                 # LOGGING INFO FOR DEBUGGING
                 self.get_logger().info(f"Moving to waypoint {current_waypoint_index}/{total_waypoints-1}")  
 
             # DEBUG LOG DATA
             current_time = time.time()
-            if current_time - self.last_debug_time >= debug_data_timeout:
-                current_location = ego_vehicle.get_location()
-                speed_kmh = get_speed(ego_vehicle)
+            if current_time - self.last_debug_time >= self.debug_data_timeout:
+                current_location = self.ego_vehicle.get_location()
+                speed_kmh = get_speed(self.ego_vehicle)
                 self.get_logger().info(f"speed: {speed_kmh}, loc: {current_location.x:.2f}, {current_location.y:.2f}, {current_location.z:.2f} => {destination.x:.2f},{destination.y:.2f},{destination.z:.2f}")
 
                 self.last_debug_time = current_time
+    
+    def _overtake(self):
+        # Check if vehicle is stuck behind another vehicle  
+        vehicle_list = self.world.get_actors().filter("*vehicle*")  
+        ego_location = self.ego_vehicle.get_location()  
+        ego_waypoint = self.carla_map.get_waypoint(ego_location)  
+        
+        # Detect if there's a slow/stopped vehicle ahead  
+        affected_by_vehicle, blocking_vehicle, distance = self.agent._vehicle_obstacle_detected(vehicle_list, 15.0)  
+        
+        if affected_by_vehicle and not self.overtaking:  
+            # Check if the blocking vehicle is moving slowly  
+            blocking_speed = blocking_vehicle.get_velocity().length()  
+            if blocking_speed < 1.0:  # Less than 1 m/s  
+                self.stuck_timer += 0.05  # Assuming 20 FPS  
+                if self.stuck_timer > self.stuck_threshold:  
+                    # Initiate overtaking  
+                    self.overtaking = True  
+                    self.original_lane_id = ego_waypoint.lane_id  
+                    # Try left lane first, then right  
+                    self.agent.lane_change('left')  
+                    self.stuck_timer = 0  
+            else:  
+                self.stuck_timer = 0  
+        elif self.overtaking:  
+            # Check if we can return to original lane  
+            current_waypoint = self.ego_vehicle.get_world().get_map().get_waypoint(ego_location)  
+            if current_waypoint.lane_id != self.original_lane_id: 
+                # Check if we've passed the obstacle  
+                if not affected_by_vehicle or distance > 20.0:  
+                    # Return to original lane  
+                    if self.original_lane_id < current_waypoint.lane_id:  
+                        self.agent.lane_change('right')  
+                    else:  
+                        self.agent.lane_change('left')  
+                    self.overtaking = False  
 
 def main(args=None):
     # start ros node
