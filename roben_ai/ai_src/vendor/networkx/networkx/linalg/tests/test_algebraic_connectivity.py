@@ -5,7 +5,7 @@ import pytest
 np = pytest.importorskip("numpy")
 
 
-from ai_src.vendor.networkx import networkx as nx
+import networkx as nx
 
 methods = ("tracemin_pcg", "tracemin_lu", "lanczos", "lobpcg")
 

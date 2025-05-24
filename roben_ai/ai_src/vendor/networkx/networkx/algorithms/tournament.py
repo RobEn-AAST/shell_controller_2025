@@ -23,9 +23,9 @@ To access the functions in this module, you must access them through the
 
 from itertools import combinations
 
-from ai_src.vendor.networkx import networkx as nx
-from ai_src.vendor.networkx.networkx.algorithms.simple_paths import is_simple_path as is_path
-from ai_src.vendor.networkx.networkx.utils import arbitrary_element, not_implemented_for, py_random_state
+import networkx as nx
+from networkx.algorithms.simple_paths import is_simple_path as is_path
+from networkx.utils import arbitrary_element, not_implemented_for, py_random_state
 
 __all__ = [
     "hamiltonian_path",

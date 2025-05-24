@@ -3,8 +3,8 @@
 import itertools
 import math
 
-from ai_src.vendor.networkx import networkx as nx
-from ai_src.vendor.networkx.networkx.utils import py_random_state
+import networkx as nx
+from networkx.utils import py_random_state
 
 __all__ = [
     "caveman_graph",
@@ -948,7 +948,7 @@ def LFR_benchmark_graph(
     --------
     Basic usage::
 
-        >>> from ai_src.vendor.networkx.networkx.generators.community import LFR_benchmark_graph
+        >>> from networkx.generators.community import LFR_benchmark_graph
         >>> n = 250
         >>> tau1 = 3
         >>> tau2 = 1.5

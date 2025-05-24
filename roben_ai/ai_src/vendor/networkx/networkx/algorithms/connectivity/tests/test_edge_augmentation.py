@@ -3,16 +3,16 @@ import random
 
 import pytest
 
-from ai_src.vendor.networkx import networkx as nx
-from ai_src.vendor.networkx.networkx.algorithms.connectivity import k_edge_augmentation
-from ai_src.vendor.networkx.networkx.algorithms.connectivity.edge_augmentation import (
+import networkx as nx
+from networkx.algorithms.connectivity import k_edge_augmentation
+from networkx.algorithms.connectivity.edge_augmentation import (
     _unpack_available_edges,
     collapse,
     complement_edges,
     is_k_edge_connected,
     is_locally_k_edge_connected,
 )
-from ai_src.vendor.networkx.networkx.utils import pairwise
+from networkx.utils import pairwise
 
 # This should be set to the largest k for which an efficient algorithm is
 # explicitly defined.

@@ -1,15 +1,15 @@
 """Flow based node and edge disjoint paths."""
 
-from ai_src.vendor.networkx import networkx as nx
+import networkx as nx
 
 # Define the default maximum flow function to use for the underlying
 # maximum flow computations
-from ai_src.vendor.networkx.networkx.algorithms.flow import (
+from networkx.algorithms.flow import (
     edmonds_karp,
     preflow_push,
     shortest_augmenting_path,
 )
-from ai_src.vendor.networkx.networkx.exception import NetworkXNoPath
+from networkx.exception import NetworkXNoPath
 
 default_flow_func = edmonds_karp
 from itertools import filterfalse as _filterfalse
@@ -115,11 +115,11 @@ def edge_disjoint_paths(
     >>> import itertools
     >>> # You also have to explicitly import the function for
     >>> # building the auxiliary digraph from the connectivity package
-    >>> from ai_src.vendor.networkx.networkx.algorithms.connectivity import build_auxiliary_edge_connectivity
+    >>> from networkx.algorithms.connectivity import build_auxiliary_edge_connectivity
     >>> H = build_auxiliary_edge_connectivity(G)
     >>> # And the function for building the residual network from the
     >>> # flow package
-    >>> from ai_src.vendor.networkx.networkx.algorithms.flow import build_residual_network
+    >>> from networkx.algorithms.flow import build_residual_network
     >>> # Note that the auxiliary digraph has an edge attribute named capacity
     >>> R = build_residual_network(H, "capacity")
     >>> result = {n: {} for n in G}
@@ -138,7 +138,7 @@ def edge_disjoint_paths(
     networks with highly skewed degree distributions. Alternative flow
     functions have to be explicitly imported from the flow package.
 
-    >>> from ai_src.vendor.networkx.networkx.algorithms.flow import shortest_augmenting_path
+    >>> from networkx.algorithms.flow import shortest_augmenting_path
     >>> len(list(nx.edge_disjoint_paths(G, 0, 6, flow_func=shortest_augmenting_path)))
     5
 
@@ -315,11 +315,11 @@ def node_disjoint_paths(
 
     >>> # You also have to explicitly import the function for
     >>> # building the auxiliary digraph from the connectivity package
-    >>> from ai_src.vendor.networkx.networkx.algorithms.connectivity import build_auxiliary_node_connectivity
+    >>> from networkx.algorithms.connectivity import build_auxiliary_node_connectivity
     >>> H = build_auxiliary_node_connectivity(G)
     >>> # And the function for building the residual network from the
     >>> # flow package
-    >>> from ai_src.vendor.networkx.networkx.algorithms.flow import build_residual_network
+    >>> from networkx.algorithms.flow import build_residual_network
     >>> # Note that the auxiliary digraph has an edge attribute named capacity
     >>> R = build_residual_network(H, "capacity")
     >>> # Reuse the auxiliary digraph and the residual network by passing them
@@ -334,7 +334,7 @@ def node_disjoint_paths(
     networks with highly skewed degree distributions. Alternative flow
     functions have to be explicitly imported from the flow package.
 
-    >>> from ai_src.vendor.networkx.networkx.algorithms.flow import shortest_augmenting_path
+    >>> from networkx.algorithms.flow import shortest_augmenting_path
     >>> len(list(nx.node_disjoint_paths(G, 0, 6, flow_func=shortest_augmenting_path)))
     5
 

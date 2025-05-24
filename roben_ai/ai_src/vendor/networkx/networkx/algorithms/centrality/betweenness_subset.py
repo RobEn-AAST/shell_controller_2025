@@ -1,13 +1,13 @@
 """Betweenness centrality measures for subsets of nodes."""
 
-from ai_src.vendor.networkx import networkx as nx
-from ai_src.vendor.networkx.networkx.algorithms.centrality.betweenness import (
+import networkx as nx
+from networkx.algorithms.centrality.betweenness import (
     _add_edge_keys,
 )
-from ai_src.vendor.networkx.networkx.algorithms.centrality.betweenness import (
+from networkx.algorithms.centrality.betweenness import (
     _single_source_dijkstra_path_basic as dijkstra,
 )
-from ai_src.vendor.networkx.networkx.algorithms.centrality.betweenness import (
+from networkx.algorithms.centrality.betweenness import (
     _single_source_shortest_path_basic as shortest_path,
 )
 

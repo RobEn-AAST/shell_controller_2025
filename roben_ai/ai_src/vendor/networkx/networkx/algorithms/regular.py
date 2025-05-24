@@ -1,7 +1,7 @@
 """Functions for computing and verifying regular graphs."""
 
-from ai_src.vendor.networkx import networkx as nx
-from ai_src.vendor.networkx.networkx.utils import not_implemented_for
+import networkx as nx
+from networkx.utils import not_implemented_for
 
 __all__ = ["is_regular", "is_k_regular", "k_factor"]
 
@@ -110,7 +110,7 @@ def k_factor(G, k, matching_weight="weight"):
        Information processing letters, 2009.
     """
 
-    from ai_src.vendor.networkx.networkx.algorithms.matching import is_perfect_matching, max_weight_matching
+    from networkx.algorithms.matching import is_perfect_matching, max_weight_matching
 
     class LargeKGadget:
         def __init__(self, k, degree, node, g):

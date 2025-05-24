@@ -1,7 +1,7 @@
 """Degree centrality measures."""
 
-from ai_src.vendor.networkx import networkx as nx
-from ai_src.vendor.networkx.networkx.utils.decorators import not_implemented_for
+import networkx as nx
+from networkx.utils.decorators import not_implemented_for
 
 __all__ = ["degree_centrality", "in_degree_centrality", "out_degree_centrality"]
 

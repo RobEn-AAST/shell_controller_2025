@@ -4,9 +4,9 @@ import math
 
 import pytest
 
-from ai_src.vendor.networkx import networkx as nx
-from ai_src.vendor.networkx.networkx.generators.interval_graph import interval_graph
-from ai_src.vendor.networkx.networkx.utils import edges_equal
+import networkx as nx
+from networkx.generators.interval_graph import interval_graph
+from networkx.utils import edges_equal
 
 
 class TestIntervalGraph:

@@ -9,7 +9,7 @@ the root.
 
 __all__ = ["nonisomorphic_trees", "number_of_nonisomorphic_trees"]
 
-from ai_src.vendor.networkx import networkx as nx
+import networkx as nx
 
 
 @nx._dispatchable(graphs=None, returns_graph=True)

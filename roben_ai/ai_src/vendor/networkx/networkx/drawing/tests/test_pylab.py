@@ -13,7 +13,7 @@ plt = pytest.importorskip("matplotlib.pyplot")
 plt.rcParams["text.usetex"] = False
 
 
-from ai_src.vendor.networkx import networkx as nx
+import networkx as nx
 
 barbell = nx.barbell_graph(4, 6)
 

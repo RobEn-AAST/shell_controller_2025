@@ -1,7 +1,7 @@
 """Original NetworkX graph tests"""
 
 import networkx
-from ai_src.vendor.networkx import networkx as nx
+import networkx as nx
 
 from .historical_tests import HistoricalTests
 

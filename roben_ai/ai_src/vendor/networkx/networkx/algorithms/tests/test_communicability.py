@@ -5,8 +5,8 @@ import pytest
 pytest.importorskip("numpy")
 pytest.importorskip("scipy")
 
-from ai_src.vendor.networkx import networkx as nx
-from ai_src.vendor.networkx.networkx.algorithms.communicability_alg import communicability, communicability_exp
+import networkx as nx
+from networkx.algorithms.communicability_alg import communicability, communicability_exp
 
 
 class TestCommunicability:

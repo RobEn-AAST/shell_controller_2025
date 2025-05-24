@@ -2,10 +2,10 @@
 
 from collections import Counter
 
-from ai_src.vendor.networkx import networkx as nx
-from ai_src.vendor.networkx.networkx.algorithms.components import is_connected
-from ai_src.vendor.networkx.networkx.exception import NetworkXError
-from ai_src.vendor.networkx.networkx.utils import groups, not_implemented_for, py_random_state
+import networkx as nx
+from networkx.algorithms.components import is_connected
+from networkx.exception import NetworkXError
+from networkx.utils import groups, not_implemented_for, py_random_state
 
 __all__ = ["asyn_fluidc"]
 

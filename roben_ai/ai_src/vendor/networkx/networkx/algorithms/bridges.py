@@ -2,8 +2,8 @@
 
 from itertools import chain
 
-from ai_src.vendor.networkx import networkx as nx
-from ai_src.vendor.networkx.networkx.utils import not_implemented_for
+import networkx as nx
+from networkx.utils import not_implemented_for
 
 __all__ = ["bridges", "has_bridges", "local_bridges"]
 

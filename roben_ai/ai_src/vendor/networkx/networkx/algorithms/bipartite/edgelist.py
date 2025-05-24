@@ -25,8 +25,8 @@ For each edge (u, v) the node u is assigned to part 0 and the node v to part 1.
 
 __all__ = ["generate_edgelist", "write_edgelist", "parse_edgelist", "read_edgelist"]
 
-from ai_src.vendor.networkx import networkx as nx
-from ai_src.vendor.networkx.networkx.utils import not_implemented_for, open_file
+import networkx as nx
+from networkx.utils import not_implemented_for, open_file
 
 
 @open_file(1, mode="wb")
@@ -104,7 +104,7 @@ def generate_edgelist(G, delimiter=" ", data=True):
 
     Examples
     --------
-    >>> from ai_src.vendor.networkx.networkx.algorithms import bipartite
+    >>> from networkx.algorithms import bipartite
     >>> G = nx.path_graph(4)
     >>> G.add_nodes_from([0, 2], bipartite=0)
     >>> G.add_nodes_from([1, 3], bipartite=1)
@@ -179,7 +179,7 @@ def parse_edgelist(
     --------
     Edgelist with no data:
 
-    >>> from ai_src.vendor.networkx.networkx.algorithms import bipartite
+    >>> from networkx.algorithms import bipartite
     >>> lines = ["1 2", "2 3", "3 4"]
     >>> G = bipartite.parse_edgelist(lines, nodetype=int)
     >>> sorted(G.nodes())
@@ -311,7 +311,7 @@ def read_edgelist(
 
     Examples
     --------
-    >>> from ai_src.vendor.networkx.networkx.algorithms import bipartite
+    >>> from networkx.algorithms import bipartite
     >>> G = nx.path_graph(4)
     >>> G.add_nodes_from([0, 2], bipartite=0)
     >>> G.add_nodes_from([1, 3], bipartite=1)

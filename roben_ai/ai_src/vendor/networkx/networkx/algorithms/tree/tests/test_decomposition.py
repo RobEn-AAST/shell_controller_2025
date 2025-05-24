@@ -1,5 +1,5 @@
-from ai_src.vendor.networkx import networkx as nx
-from ai_src.vendor.networkx.networkx.algorithms.tree.decomposition import junction_tree
+import networkx as nx
+from networkx.algorithms.tree.decomposition import junction_tree
 
 
 def test_junction_tree_directed_confounders():

@@ -1,6 +1,6 @@
 """Functions for computing communities based on centrality notions."""
 
-from ai_src.vendor.networkx import networkx as nx
+import networkx as nx
 
 __all__ = ["girvan_newman"]
 
@@ -82,7 +82,7 @@ def girvan_newman(G, most_valuable_edge=None):
     To utilize edge weights when choosing an edge with, for example, the
     highest betweenness centrality::
 
-        >>> from ai_src.vendor.networkx.networkx import edge_betweenness_centrality as betweenness
+        >>> from networkx import edge_betweenness_centrality as betweenness
         >>> def most_central_edge(G):
         ...     centrality = betweenness(G, weight="weight")
         ...     return max(centrality, key=centrality.get)
@@ -95,7 +95,7 @@ def girvan_newman(G, most_valuable_edge=None):
     To specify a different ranking algorithm for edges, use the
     `most_valuable_edge` keyword argument::
 
-        >>> from ai_src.vendor.networkx.networkx import edge_betweenness_centrality
+        >>> from networkx import edge_betweenness_centrality
         >>> from random import random
         >>> def most_central_edge(G):
         ...     centrality = edge_betweenness_centrality(G)

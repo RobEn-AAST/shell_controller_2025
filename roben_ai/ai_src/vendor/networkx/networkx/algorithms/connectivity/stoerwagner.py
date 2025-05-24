@@ -4,7 +4,7 @@ Stoer-Wagner minimum cut algorithm.
 
 from itertools import islice
 
-from ai_src.vendor.networkx import networkx as nx
+import networkx as nx
 
 from ...utils import BinaryHeap, arbitrary_element, not_implemented_for
 

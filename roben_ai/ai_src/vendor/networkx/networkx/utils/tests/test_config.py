@@ -3,8 +3,8 @@ import pickle
 
 import pytest
 
-from ai_src.vendor.networkx import networkx as nx
-from ai_src.vendor.networkx.networkx.utils.configs import BackendPriorities, Config
+import networkx as nx
+from networkx.utils.configs import BackendPriorities, Config
 
 
 # Define this at module level so we can test pickling

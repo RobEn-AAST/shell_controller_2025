@@ -2,7 +2,7 @@
 Unit tests for VoteRank.
 """
 
-from ai_src.vendor.networkx import networkx as nx
+import networkx as nx
 
 
 class TestVoteRankCentrality:

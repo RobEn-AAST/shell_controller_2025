@@ -16,8 +16,8 @@ for format information.
 
 import warnings
 
-from ai_src.vendor.networkx import networkx as nx
-from ai_src.vendor.networkx.networkx.utils import open_file
+import networkx as nx
+from networkx.utils import open_file
 
 __all__ = ["read_pajek", "parse_pajek", "generate_pajek", "write_pajek"]
 

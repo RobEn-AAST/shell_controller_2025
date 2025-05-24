@@ -3,9 +3,9 @@ graph.
 
 """
 
-from ai_src.vendor.networkx import networkx as nx
-from ai_src.vendor.networkx.networkx.classes import DiGraph, MultiDiGraph
-from ai_src.vendor.networkx.networkx.utils import not_implemented_for
+import networkx as nx
+from networkx.classes import DiGraph, MultiDiGraph
+from networkx.utils import not_implemented_for
 
 __all__ = ["stochastic_graph"]
 

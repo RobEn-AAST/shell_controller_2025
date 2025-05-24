@@ -31,9 +31,9 @@ __all__ = [
 
 from functools import wraps
 
-from ai_src.vendor.networkx import networkx as nx
-from ai_src.vendor.networkx.networkx.exception import NetworkXError
-from ai_src.vendor.networkx.networkx.generators.classic import (
+import networkx as nx
+from networkx.exception import NetworkXError
+from networkx.generators.classic import (
     complete_graph,
     cycle_graph,
     empty_graph,

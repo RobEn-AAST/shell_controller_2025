@@ -2,9 +2,9 @@
 Mixing matrices for node attributes and degree.
 """
 
-from ai_src.vendor.networkx import networkx as nx
-from ai_src.vendor.networkx.networkx.algorithms.assortativity.pairs import node_attribute_xy, node_degree_xy
-from ai_src.vendor.networkx.networkx.utils import dict_to_numpy_array
+import networkx as nx
+from networkx.algorithms.assortativity.pairs import node_attribute_xy, node_degree_xy
+from networkx.utils import dict_to_numpy_array
 
 __all__ = [
     "attribute_mixing_matrix",

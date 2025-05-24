@@ -2,9 +2,9 @@ import itertools as it
 
 import pytest
 
-from ai_src.vendor.networkx import networkx as nx
-from ai_src.vendor.networkx.networkx import vf2pp_is_isomorphic, vf2pp_isomorphism
-from ai_src.vendor.networkx.networkx.algorithms.isomorphism.vf2pp import (
+import networkx as nx
+from networkx import vf2pp_is_isomorphic, vf2pp_isomorphism
+from networkx.algorithms.isomorphism.vf2pp import (
     _consistent_PT,
     _cut_PT,
     _feasibility,

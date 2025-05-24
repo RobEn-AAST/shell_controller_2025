@@ -1,7 +1,7 @@
 from pytest import approx
 
-from ai_src.vendor.networkx.networkx import is_connected, neighbors
-from ai_src.vendor.networkx.networkx.generators.internet_as_graphs import random_internet_as_graph
+from networkx import is_connected, neighbors
+from networkx.generators.internet_as_graphs import random_internet_as_graph
 
 
 class TestInternetASTopology:

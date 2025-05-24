@@ -7,6 +7,11 @@ import os
 
 base_dir = Path(__file__).resolve().parent
 
+
+# Add networkx to sys.path
+networkx_dir = (base_dir / ".." / "ai_src" / "vendor" / "networkx").resolve()
+sys.path.insert(0, str(networkx_dir))
+
 # Add shapely to sys.path
 shapely_dir = (base_dir / ".." / "ai_src" / "vendor" / "shapely").resolve()
 sys.path.insert(0, str(shapely_dir))

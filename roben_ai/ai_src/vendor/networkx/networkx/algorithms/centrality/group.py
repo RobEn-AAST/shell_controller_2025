@@ -2,13 +2,13 @@
 
 from copy import deepcopy
 
-from ai_src.vendor.networkx import networkx as nx
-from ai_src.vendor.networkx.networkx.algorithms.centrality.betweenness import (
+import networkx as nx
+from networkx.algorithms.centrality.betweenness import (
     _accumulate_endpoints,
     _single_source_dijkstra_path_basic,
     _single_source_shortest_path_basic,
 )
-from ai_src.vendor.networkx.networkx.utils.decorators import not_implemented_for
+from networkx.utils.decorators import not_implemented_for
 
 __all__ = [
     "group_betweenness_centrality",

@@ -2,8 +2,8 @@
 
 import pytest
 
-from ai_src.vendor.networkx import networkx as nx
-from ai_src.vendor.networkx.networkx.utils import arbitrary_element, edges_equal, nodes_equal
+import networkx as nx
+from networkx.utils import arbitrary_element, edges_equal, nodes_equal
 
 
 def test_quotient_graph_complete_multipartite():

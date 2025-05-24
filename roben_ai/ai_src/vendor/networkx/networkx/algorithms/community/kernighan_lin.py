@@ -2,9 +2,9 @@
 
 from itertools import count
 
-from ai_src.vendor.networkx import networkx as nx
-from ai_src.vendor.networkx.networkx.algorithms.community.community_utils import is_partition
-from ai_src.vendor.networkx.networkx.utils import BinaryHeap, not_implemented_for, py_random_state
+import networkx as nx
+from networkx.algorithms.community.community_utils import is_partition
+from networkx.utils import BinaryHeap, not_implemented_for, py_random_state
 
 __all__ = ["kernighan_lin_bisection"]
 

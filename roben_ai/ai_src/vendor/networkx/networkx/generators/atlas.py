@@ -8,7 +8,7 @@ import os
 import os.path
 from itertools import islice
 
-from ai_src.vendor.networkx import networkx as nx
+import networkx as nx
 
 __all__ = ["graph_atlas", "graph_atlas_g"]
 
@@ -41,8 +41,8 @@ NUM_GRAPHS = 1253
 #: the following::
 #:
 #:     import gzip
-#:     from ai_src.vendor.networkx.networkx.generators.atlas import graph_atlas_g
-#:     from ai_src.vendor.networkx.networkx.readwrite.edgelist import write_edgelist
+#:     from networkx.generators.atlas import graph_atlas_g
+#:     from networkx.readwrite.edgelist import write_edgelist
 #:
 #:     with gzip.open('atlas.dat.gz', 'wb') as f:
 #:         for i, G in enumerate(graph_atlas_g()):
@@ -52,7 +52,7 @@ NUM_GRAPHS = 1253
 #:
 
 # Path to the atlas file
-ATLAS_FILE = importlib.resources.files("ai_src.vendor.networkx.networkx.generators") / "atlas.dat.gz"
+ATLAS_FILE = importlib.resources.files("networkx.generators") / "atlas.dat.gz"
 
 
 def _generate_graphs():

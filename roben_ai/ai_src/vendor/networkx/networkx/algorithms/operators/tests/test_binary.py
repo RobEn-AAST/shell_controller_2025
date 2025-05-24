@@ -2,8 +2,8 @@ import os
 
 import pytest
 
-from ai_src.vendor.networkx import networkx as nx
-from ai_src.vendor.networkx.networkx.utils import edges_equal
+import networkx as nx
+from networkx.utils import edges_equal
 
 
 def test_union_attributes():

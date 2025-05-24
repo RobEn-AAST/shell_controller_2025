@@ -2,7 +2,7 @@ from itertools import chain
 
 import pytest
 
-from ai_src.vendor.networkx import networkx as nx
+import networkx as nx
 
 
 def _check_partition(G, cut_value, partition, weight):

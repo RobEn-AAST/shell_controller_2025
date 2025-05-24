@@ -1,6 +1,6 @@
 """Unit tests for the :mod:`networkx.generators.cographs` module."""
 
-from ai_src.vendor.networkx import networkx as nx
+import networkx as nx
 
 
 def test_random_cograph():

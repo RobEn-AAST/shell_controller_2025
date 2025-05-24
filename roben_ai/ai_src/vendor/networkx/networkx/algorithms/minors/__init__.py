@@ -10,7 +10,7 @@ References
 .. [1] https://en.wikipedia.org/wiki/Graph_minor
 """
 
-from ai_src.vendor.networkx.networkx.algorithms.minors.contraction import (
+from networkx.algorithms.minors.contraction import (
     contracted_edge,
     contracted_nodes,
     equivalence_classes,

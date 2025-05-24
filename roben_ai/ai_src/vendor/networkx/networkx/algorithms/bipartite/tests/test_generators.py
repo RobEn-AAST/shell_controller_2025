@@ -2,7 +2,7 @@ import numbers
 
 import pytest
 
-from ai_src.vendor.networkx import networkx as nx
+import networkx as nx
 
 from ..generators import (
     alternating_havel_hakimi_graph,

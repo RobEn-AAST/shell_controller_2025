@@ -1,7 +1,7 @@
 import pytest
 
-from ai_src.vendor.networkx import networkx as nx
-from ai_src.vendor.networkx.networkx.algorithms.community import (
+import networkx as nx
+from networkx.algorithms.community import (
     greedy_modularity_communities,
     naive_greedy_modularity_communities,
 )

@@ -11,7 +11,7 @@ nodes in *S* that are outside *S*.
 
 from itertools import chain
 
-from ai_src.vendor.networkx import networkx as nx
+import networkx as nx
 
 __all__ = ["edge_boundary", "node_boundary"]
 

@@ -2,8 +2,8 @@ import random
 
 import pytest
 
-from ai_src.vendor.networkx import networkx as nx
-from ai_src.vendor.networkx.networkx.utils import arbitrary_element, graphs_equal
+import networkx as nx
+from networkx.utils import arbitrary_element, graphs_equal
 
 
 @pytest.mark.parametrize("prefix_tree_fn", (nx.prefix_tree, nx.prefix_tree_recursive))

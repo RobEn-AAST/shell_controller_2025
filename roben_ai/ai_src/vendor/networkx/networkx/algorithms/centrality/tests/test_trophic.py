@@ -5,7 +5,7 @@ import pytest
 np = pytest.importorskip("numpy")
 pytest.importorskip("scipy")
 
-from ai_src.vendor.networkx import networkx as nx
+import networkx as nx
 
 
 def test_trophic_levels():

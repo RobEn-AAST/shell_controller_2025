@@ -7,7 +7,7 @@ __all__ = ["capacity_scaling"]
 from itertools import chain
 from math import log
 
-from ai_src.vendor.networkx import networkx as nx
+import networkx as nx
 
 from ...utils import BinaryHeap, arbitrary_element, not_implemented_for
 

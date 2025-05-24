@@ -2,7 +2,7 @@
 
 import math
 
-from ai_src.vendor.networkx import networkx as nx
+import networkx as nx
 
 
 def test_example_tree_broadcast():

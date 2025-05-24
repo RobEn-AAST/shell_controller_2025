@@ -2,7 +2,7 @@
 Maximum flow (and minimum cut) algorithms on capacitated graphs.
 """
 
-from ai_src.vendor.networkx import networkx as nx
+import networkx as nx
 
 from .boykovkolmogorov import boykov_kolmogorov
 from .dinitz_alg import dinitz
@@ -140,7 +140,7 @@ def maximum_flow(flowG, _s, _t, capacity="capacity", flow_func=None, **kwargs):
     You can also use alternative algorithms for computing the
     maximum flow by using the flow_func parameter.
 
-    >>> from ai_src.vendor.networkx.networkx.algorithms.flow import shortest_augmenting_path
+    >>> from networkx.algorithms.flow import shortest_augmenting_path
     >>> flow_value == nx.maximum_flow(G, "x", "y", flow_func=shortest_augmenting_path)[
     ...     0
     ... ]
@@ -281,7 +281,7 @@ def maximum_flow_value(flowG, _s, _t, capacity="capacity", flow_func=None, **kwa
     You can also use alternative algorithms for computing the
     maximum flow by using the flow_func parameter.
 
-    >>> from ai_src.vendor.networkx.networkx.algorithms.flow import shortest_augmenting_path
+    >>> from networkx.algorithms.flow import shortest_augmenting_path
     >>> flow_value == nx.maximum_flow_value(
     ...     G, "x", "y", flow_func=shortest_augmenting_path
     ... )
@@ -432,7 +432,7 @@ def minimum_cut(flowG, _s, _t, capacity="capacity", flow_func=None, **kwargs):
     You can also use alternative algorithms for computing the
     minimum cut by using the flow_func parameter.
 
-    >>> from ai_src.vendor.networkx.networkx.algorithms.flow import shortest_augmenting_path
+    >>> from networkx.algorithms.flow import shortest_augmenting_path
     >>> cut_value == nx.minimum_cut(G, "x", "y", flow_func=shortest_augmenting_path)[0]
     True
 
@@ -581,7 +581,7 @@ def minimum_cut_value(flowG, _s, _t, capacity="capacity", flow_func=None, **kwar
     You can also use alternative algorithms for computing the
     minimum cut by using the flow_func parameter.
 
-    >>> from ai_src.vendor.networkx.networkx.algorithms.flow import shortest_augmenting_path
+    >>> from networkx.algorithms.flow import shortest_augmenting_path
     >>> cut_value == nx.minimum_cut_value(
     ...     G, "x", "y", flow_func=shortest_augmenting_path
     ... )

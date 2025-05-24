@@ -1,7 +1,7 @@
 import pytest
 
-from ai_src.vendor.networkx import networkx as nx
-from ai_src.vendor.networkx.networkx.algorithms import bipartite
+import networkx as nx
+from networkx.algorithms import bipartite
 
 
 class TestBipartiteCentrality:

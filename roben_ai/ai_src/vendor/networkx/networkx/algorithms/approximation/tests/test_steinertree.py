@@ -1,12 +1,12 @@
 import pytest
 
-from ai_src.vendor.networkx import networkx as nx
-from ai_src.vendor.networkx.networkx.algorithms.approximation.steinertree import (
+import networkx as nx
+from networkx.algorithms.approximation.steinertree import (
     _remove_nonterminal_leaves,
     metric_closure,
     steiner_tree,
 )
-from ai_src.vendor.networkx.networkx.utils import edges_equal
+from networkx.utils import edges_equal
 
 
 class TestSteinerTree:

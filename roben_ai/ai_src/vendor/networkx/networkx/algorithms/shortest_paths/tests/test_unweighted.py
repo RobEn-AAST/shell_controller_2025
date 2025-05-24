@@ -1,6 +1,6 @@
 import pytest
 
-from ai_src.vendor.networkx import networkx as nx
+import networkx as nx
 
 
 def validate_grid_path(r, c, s, t, p):
@@ -21,7 +21,7 @@ def validate_grid_path(r, c, s, t, p):
 class TestUnweightedPath:
     @classmethod
     def setup_class(cls):
-        from ai_src.vendor.networkx.networkx import convert_node_labels_to_integers as cnlti
+        from networkx import convert_node_labels_to_integers as cnlti
 
         cls.grid = cnlti(nx.grid_2d_graph(4, 4), first_label=1, ordering="sorted")
         cls.cycle = nx.cycle_graph(7)

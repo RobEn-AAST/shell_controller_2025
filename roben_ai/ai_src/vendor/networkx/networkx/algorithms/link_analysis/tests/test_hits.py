@@ -1,11 +1,11 @@
 import pytest
 
-from ai_src.vendor.networkx import networkx as nx
+import networkx as nx
 
 np = pytest.importorskip("numpy")
 sp = pytest.importorskip("scipy")
 
-from ai_src.vendor.networkx.networkx.algorithms.link_analysis.hits_alg import (
+from networkx.algorithms.link_analysis.hits_alg import (
     _hits_numpy,
     _hits_python,
     _hits_scipy,

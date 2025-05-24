@@ -4,10 +4,10 @@ from collections import deque
 from heapq import heappop, heappush
 from itertools import count
 
-from ai_src.vendor.networkx import networkx as nx
-from ai_src.vendor.networkx.networkx.algorithms.shortest_paths.weighted import _weight_function
-from ai_src.vendor.networkx.networkx.utils import py_random_state
-from ai_src.vendor.networkx.networkx.utils.decorators import not_implemented_for
+import networkx as nx
+from networkx.algorithms.shortest_paths.weighted import _weight_function
+from networkx.utils import py_random_state
+from networkx.utils.decorators import not_implemented_for
 
 __all__ = ["betweenness_centrality", "edge_betweenness_centrality"]
 

@@ -1,8 +1,8 @@
 """Functions for computing large cliques and maximum independent sets."""
 
-from ai_src.vendor.networkx import networkx as nx
-from ai_src.vendor.networkx.networkx.algorithms.approximation import ramsey
-from ai_src.vendor.networkx.networkx.utils import not_implemented_for
+import networkx as nx
+from networkx.algorithms.approximation import ramsey
+from networkx.utils import not_implemented_for
 
 __all__ = [
     "clique_removal",

@@ -2,8 +2,8 @@ import pytest
 
 pytest.importorskip("scipy")
 
-from ai_src.vendor.networkx import networkx as nx
-from ai_src.vendor.networkx.networkx.algorithms.bipartite import spectral_bipartivity as sb
+import networkx as nx
+from networkx.algorithms.bipartite import spectral_bipartivity as sb
 
 # Examples from Figure 1
 # E. Estrada and J. A. Rodríguez-Velázquez, "Spectral measures of

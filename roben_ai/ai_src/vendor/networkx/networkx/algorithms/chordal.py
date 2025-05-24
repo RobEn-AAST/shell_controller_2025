@@ -8,9 +8,9 @@ https://en.wikipedia.org/wiki/Chordal_graph
 
 import sys
 
-from ai_src.vendor.networkx import networkx as nx
-from ai_src.vendor.networkx.networkx.algorithms.components import connected_components
-from ai_src.vendor.networkx.networkx.utils import arbitrary_element, not_implemented_for
+import networkx as nx
+from networkx.algorithms.components import connected_components
+from networkx.utils import arbitrary_element, not_implemented_for
 
 __all__ = [
     "is_chordal",
@@ -407,7 +407,7 @@ def complete_to_chordal_graph(G):
 
     Examples
     --------
-    >>> from ai_src.vendor.networkx.networkx.algorithms.chordal import complete_to_chordal_graph
+    >>> from networkx.algorithms.chordal import complete_to_chordal_graph
     >>> G = nx.wheel_graph(10)
     >>> H, alpha = complete_to_chordal_graph(G)
     """

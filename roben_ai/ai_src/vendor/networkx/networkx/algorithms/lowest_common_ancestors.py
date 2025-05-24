@@ -4,8 +4,8 @@ from collections import defaultdict
 from collections.abc import Mapping, Set
 from itertools import combinations_with_replacement
 
-from ai_src.vendor.networkx import networkx as nx
-from ai_src.vendor.networkx.networkx.utils import UnionFind, arbitrary_element, not_implemented_for
+import networkx as nx
+from networkx.utils import UnionFind, arbitrary_element, not_implemented_for
 
 __all__ = [
     "all_pairs_lowest_common_ancestor",

@@ -4,8 +4,8 @@ import itertools
 
 import pytest
 
-from ai_src.vendor.networkx import networkx as nx
-from ai_src.vendor.networkx.networkx.algorithms.bipartite.matching import (
+import networkx as nx
+from networkx.algorithms.bipartite.matching import (
     eppstein_matching,
     hopcroft_karp_matching,
     maximum_matching,

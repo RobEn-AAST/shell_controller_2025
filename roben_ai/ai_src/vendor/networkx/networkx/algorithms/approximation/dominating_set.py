@@ -11,7 +11,7 @@ incident to an endpoint of at least one edge in *F*.
 
 """
 
-from ai_src.vendor.networkx import networkx as nx
+import networkx as nx
 
 from ...utils import not_implemented_for
 from ..matching import maximal_matching

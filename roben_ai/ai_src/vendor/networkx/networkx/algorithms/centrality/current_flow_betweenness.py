@@ -1,13 +1,13 @@
 """Current-flow betweenness centrality measures."""
 
-from ai_src.vendor.networkx import networkx as nx
-from ai_src.vendor.networkx.networkx.algorithms.centrality.flow_matrix import (
+import networkx as nx
+from networkx.algorithms.centrality.flow_matrix import (
     CGInverseLaplacian,
     FullInverseLaplacian,
     SuperLUInverseLaplacian,
     flow_matrix_row,
 )
-from ai_src.vendor.networkx.networkx.utils import (
+from networkx.utils import (
     not_implemented_for,
     py_random_state,
     reverse_cuthill_mckee_ordering,

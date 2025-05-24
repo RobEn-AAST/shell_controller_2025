@@ -2,7 +2,7 @@
 Functions for constructing matrix-like objects from graph attributes.
 """
 
-from ai_src.vendor.networkx import networkx as nx
+import networkx as nx
 
 __all__ = ["attr_matrix", "attr_sparse_matrix"]
 

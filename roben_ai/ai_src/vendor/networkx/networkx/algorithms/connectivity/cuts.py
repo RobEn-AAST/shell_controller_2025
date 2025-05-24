@@ -4,11 +4,11 @@ Flow based cut algorithms
 
 import itertools
 
-from ai_src.vendor.networkx import networkx as nx
+import networkx as nx
 
 # Define the default maximum flow function to use in all flow based
 # cut algorithms.
-from ai_src.vendor.networkx.networkx.algorithms.flow import build_residual_network, edmonds_karp
+from networkx.algorithms.flow import build_residual_network, edmonds_karp
 
 default_flow_func = edmonds_karp
 
@@ -88,7 +88,7 @@ def minimum_st_edge_cut(G, s, t, flow_func=None, auxiliary=None, residual=None):
     This function is not imported in the base NetworkX namespace, so you
     have to explicitly import it from the connectivity package:
 
-    >>> from ai_src.vendor.networkx.networkx.algorithms.connectivity import minimum_st_edge_cut
+    >>> from networkx.algorithms.connectivity import minimum_st_edge_cut
 
     We use in this example the platonic icosahedral graph, which has edge
     connectivity 5.
@@ -110,11 +110,11 @@ def minimum_st_edge_cut(G, s, t, flow_func=None, auxiliary=None, residual=None):
     >>> import itertools
     >>> # You also have to explicitly import the function for
     >>> # building the auxiliary digraph from the connectivity package
-    >>> from ai_src.vendor.networkx.networkx.algorithms.connectivity import build_auxiliary_edge_connectivity
+    >>> from networkx.algorithms.connectivity import build_auxiliary_edge_connectivity
     >>> H = build_auxiliary_edge_connectivity(G)
     >>> # And the function for building the residual network from the
     >>> # flow package
-    >>> from ai_src.vendor.networkx.networkx.algorithms.flow import build_residual_network
+    >>> from networkx.algorithms.flow import build_residual_network
     >>> # Note that the auxiliary digraph has an edge attribute named capacity
     >>> R = build_residual_network(H, "capacity")
     >>> result = dict.fromkeys(G, dict())
@@ -133,7 +133,7 @@ def minimum_st_edge_cut(G, s, t, flow_func=None, auxiliary=None, residual=None):
     networks with highly skewed degree distributions. Alternative flow
     functions have to be explicitly imported from the flow package.
 
-    >>> from ai_src.vendor.networkx.networkx.algorithms.flow import shortest_augmenting_path
+    >>> from networkx.algorithms.flow import shortest_augmenting_path
     >>> len(minimum_st_edge_cut(G, 0, 6, flow_func=shortest_augmenting_path))
     5
 
@@ -212,7 +212,7 @@ def minimum_st_node_cut(G, s, t, flow_func=None, auxiliary=None, residual=None):
     This function is not imported in the base NetworkX namespace, so you
     have to explicitly import it from the connectivity package:
 
-    >>> from ai_src.vendor.networkx.networkx.algorithms.connectivity import minimum_st_node_cut
+    >>> from networkx.algorithms.connectivity import minimum_st_node_cut
 
     We use in this example the platonic icosahedral graph, which has node
     connectivity 5.
@@ -232,11 +232,11 @@ def minimum_st_node_cut(G, s, t, flow_func=None, auxiliary=None, residual=None):
 
     >>> # You also have to explicitly import the function for
     >>> # building the auxiliary digraph from the connectivity package
-    >>> from ai_src.vendor.networkx.networkx.algorithms.connectivity import build_auxiliary_node_connectivity
+    >>> from networkx.algorithms.connectivity import build_auxiliary_node_connectivity
     >>> H = build_auxiliary_node_connectivity(G)
     >>> # And the function for building the residual network from the
     >>> # flow package
-    >>> from ai_src.vendor.networkx.networkx.algorithms.flow import build_residual_network
+    >>> from networkx.algorithms.flow import build_residual_network
     >>> # Note that the auxiliary digraph has an edge attribute named capacity
     >>> R = build_residual_network(H, "capacity")
     >>> # Reuse the auxiliary digraph and the residual network by passing them
@@ -251,7 +251,7 @@ def minimum_st_node_cut(G, s, t, flow_func=None, auxiliary=None, residual=None):
     networks with highly skewed degree distributions. Alternative flow
     functions have to be explicitly imported from the flow package.
 
-    >>> from ai_src.vendor.networkx.networkx.algorithms.flow import shortest_augmenting_path
+    >>> from networkx.algorithms.flow import shortest_augmenting_path
     >>> len(minimum_st_node_cut(G, 0, 6, flow_func=shortest_augmenting_path))
     5
 
@@ -353,7 +353,7 @@ def minimum_node_cut(G, s=None, t=None, flow_func=None):
     sparse networks with highly skewed degree distributions. Alternative
     flow functions have to be explicitly imported from the flow package.
 
-    >>> from ai_src.vendor.networkx.networkx.algorithms.flow import shortest_augmenting_path
+    >>> from networkx.algorithms.flow import shortest_augmenting_path
     >>> node_cut == nx.minimum_node_cut(G, flow_func=shortest_augmenting_path)
     True
 
@@ -499,7 +499,7 @@ def minimum_edge_cut(G, s=None, t=None, flow_func=None):
     Alternative flow functions have to be explicitly imported
     from the flow package.
 
-    >>> from ai_src.vendor.networkx.networkx.algorithms.flow import shortest_augmenting_path
+    >>> from networkx.algorithms.flow import shortest_augmenting_path
     >>> len(nx.minimum_edge_cut(G, flow_func=shortest_augmenting_path))
     5
 

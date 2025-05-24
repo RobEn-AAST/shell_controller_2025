@@ -1,12 +1,12 @@
 """Current-flow closeness centrality measures."""
 
-from ai_src.vendor.networkx import networkx as nx
-from ai_src.vendor.networkx.networkx.algorithms.centrality.flow_matrix import (
+import networkx as nx
+from networkx.algorithms.centrality.flow_matrix import (
     CGInverseLaplacian,
     FullInverseLaplacian,
     SuperLUInverseLaplacian,
 )
-from ai_src.vendor.networkx.networkx.utils import not_implemented_for, reverse_cuthill_mckee_ordering
+from networkx.utils import not_implemented_for, reverse_cuthill_mckee_ordering
 
 __all__ = ["current_flow_closeness_centrality", "information_centrality"]
 

@@ -1,6 +1,6 @@
 """Helper functions for community-finding algorithms."""
 
-from ai_src.vendor.networkx import networkx as nx
+import networkx as nx
 
 __all__ = ["is_partition"]
 

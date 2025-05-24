@@ -5,8 +5,8 @@ Greedy graph coloring using various strategies.
 import itertools
 from collections import defaultdict, deque
 
-from ai_src.vendor.networkx import networkx as nx
-from ai_src.vendor.networkx.networkx.utils import arbitrary_element, py_random_state
+import networkx as nx
+from networkx.utils import arbitrary_element, py_random_state
 
 __all__ = [
     "greedy_color",

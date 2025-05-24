@@ -1,8 +1,8 @@
 import pytest
 
-from ai_src.vendor.networkx import networkx as nx
-from ai_src.vendor.networkx.networkx.algorithms import edge_dfs
-from ai_src.vendor.networkx.networkx.algorithms.traversal.edgedfs import FORWARD, REVERSE
+import networkx as nx
+from networkx.algorithms import edge_dfs
+from networkx.algorithms.traversal.edgedfs import FORWARD, REVERSE
 
 # These tests can fail with hash randomization. The easiest and clearest way
 # to write these unit tests is for the edges to be output in an expected total

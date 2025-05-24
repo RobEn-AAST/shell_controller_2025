@@ -4,8 +4,8 @@ import math
 from bisect import bisect_left
 from itertools import accumulate, combinations, product
 
-from ai_src.vendor.networkx import networkx as nx
-from ai_src.vendor.networkx.networkx.utils import py_random_state
+import networkx as nx
+from networkx.utils import py_random_state
 
 __all__ = [
     "geometric_edges",

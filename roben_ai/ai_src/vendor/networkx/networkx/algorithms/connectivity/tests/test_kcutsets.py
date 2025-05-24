@@ -4,9 +4,9 @@ import itertools
 
 import pytest
 
-from ai_src.vendor.networkx import networkx as nx
-from ai_src.vendor.networkx.networkx.algorithms import flow
-from ai_src.vendor.networkx.networkx.algorithms.connectivity.kcutsets import _is_separating_set
+import networkx as nx
+from networkx.algorithms import flow
+from networkx.algorithms.connectivity.kcutsets import _is_separating_set
 
 MAX_CUTSETS_TO_TEST = 4  # originally 100. cut to decrease testing time
 

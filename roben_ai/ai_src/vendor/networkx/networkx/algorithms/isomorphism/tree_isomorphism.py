@@ -18,8 +18,8 @@ by Matthew Suderman
 http://crypto.cs.mcgill.ca/~crepeau/CS250/2004/HW5+.pdf
 """
 
-from ai_src.vendor.networkx import networkx as nx
-from ai_src.vendor.networkx.networkx.utils.decorators import not_implemented_for
+import networkx as nx
+from networkx.utils.decorators import not_implemented_for
 
 __all__ = ["rooted_tree_isomorphism", "tree_isomorphism"]
 

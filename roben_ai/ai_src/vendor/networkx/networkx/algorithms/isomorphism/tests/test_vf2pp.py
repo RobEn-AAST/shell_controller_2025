@@ -2,8 +2,8 @@ import itertools as it
 
 import pytest
 
-from ai_src.vendor.networkx import networkx as nx
-from ai_src.vendor.networkx.networkx import vf2pp_is_isomorphic, vf2pp_isomorphism
+import networkx as nx
+from networkx import vf2pp_is_isomorphic, vf2pp_isomorphism
 
 labels_same = ["blue"]
 

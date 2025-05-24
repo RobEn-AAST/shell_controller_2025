@@ -1,6 +1,6 @@
 """Function for computing walks in a graph."""
 
-from ai_src.vendor.networkx import networkx as nx
+import networkx as nx
 
 __all__ = ["number_of_walks"]
 

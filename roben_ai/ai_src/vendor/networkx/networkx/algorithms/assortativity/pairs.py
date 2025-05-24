@@ -1,6 +1,6 @@
 """Generators of x-y pairs of node data."""
 
-from ai_src.vendor.networkx import networkx as nx
+import networkx as nx
 
 __all__ = ["node_attribute_xy", "node_degree_xy"]
 

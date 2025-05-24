@@ -3,7 +3,7 @@ from functools import partial
 
 import pytest
 
-from ai_src.vendor.networkx import networkx as nx
+import networkx as nx
 
 
 def _test_func(G, ebunch, expected, predict_func, **kwargs):

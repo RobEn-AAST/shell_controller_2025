@@ -4,7 +4,7 @@ Ego graph.
 
 __all__ = ["ego_graph"]
 
-from ai_src.vendor.networkx import networkx as nx
+import networkx as nx
 
 
 @nx._dispatchable(preserve_all_attrs=True, returns_graph=True)

@@ -6,8 +6,8 @@ Biadjacency matrices
 
 import itertools
 
-from ai_src.vendor.networkx import networkx as nx
-from ai_src.vendor.networkx.networkx.convert_matrix import _generate_weighted_edges
+import networkx as nx
+from networkx.convert_matrix import _generate_weighted_edges
 
 __all__ = ["biadjacency_matrix", "from_biadjacency_matrix"]
 

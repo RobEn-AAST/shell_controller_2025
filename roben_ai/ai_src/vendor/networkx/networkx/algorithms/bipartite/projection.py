@@ -1,8 +1,8 @@
 """One-mode (unipartite) projections of bipartite graphs."""
 
-from ai_src.vendor.networkx import networkx as nx
-from ai_src.vendor.networkx.networkx.exception import NetworkXAlgorithmError
-from ai_src.vendor.networkx.networkx.utils import not_implemented_for
+import networkx as nx
+from networkx.exception import NetworkXAlgorithmError
+from networkx.utils import not_implemented_for
 
 __all__ = [
     "projected_graph",
@@ -43,7 +43,7 @@ def projected_graph(B, nodes, multigraph=False):
 
     Examples
     --------
-    >>> from ai_src.vendor.networkx.networkx.algorithms import bipartite
+    >>> from networkx.algorithms import bipartite
     >>> B = nx.path_graph(4)
     >>> G = bipartite.projected_graph(B, [1, 3])
     >>> list(G)
@@ -151,7 +151,7 @@ def weighted_projected_graph(B, nodes, ratio=False):
 
     Examples
     --------
-    >>> from ai_src.vendor.networkx.networkx.algorithms import bipartite
+    >>> from networkx.algorithms import bipartite
     >>> B = nx.path_graph(4)
     >>> G = bipartite.weighted_projected_graph(B, [1, 3])
     >>> list(G)
@@ -258,7 +258,7 @@ def collaboration_weighted_projected_graph(B, nodes):
 
     Examples
     --------
-    >>> from ai_src.vendor.networkx.networkx.algorithms import bipartite
+    >>> from networkx.algorithms import bipartite
     >>> B = nx.path_graph(5)
     >>> B.add_edge(1, 5)
     >>> G = bipartite.collaboration_weighted_projected_graph(B, [0, 2, 4, 5])
@@ -356,7 +356,7 @@ def overlap_weighted_projected_graph(B, nodes, jaccard=True):
 
     Examples
     --------
-    >>> from ai_src.vendor.networkx.networkx.algorithms import bipartite
+    >>> from networkx.algorithms import bipartite
     >>> B = nx.path_graph(5)
     >>> nodes = [0, 2, 4]
     >>> G = bipartite.overlap_weighted_projected_graph(B, nodes)
@@ -447,7 +447,7 @@ def generic_weighted_projected_graph(B, nodes, weight_function=None):
 
     Examples
     --------
-    >>> from ai_src.vendor.networkx.networkx.algorithms import bipartite
+    >>> from networkx.algorithms import bipartite
     >>> # Define some custom weight functions
     >>> def jaccard(G, u, v):
     ...     unbrs = set(G[u])

@@ -3,9 +3,9 @@ from random import Random
 
 import pytest
 
-from ai_src.vendor.networkx import networkx as nx
-from ai_src.vendor.networkx.networkx import convert_node_labels_to_integers as cnlti
-from ai_src.vendor.networkx.networkx.algorithms.distance_measures import _extrema_bounding
+import networkx as nx
+from networkx import convert_node_labels_to_integers as cnlti
+from networkx.algorithms.distance_measures import _extrema_bounding
 
 
 def test__extrema_bounding_invalid_compute_kwarg():

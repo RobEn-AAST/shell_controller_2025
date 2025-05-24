@@ -9,7 +9,7 @@ edges; that is, no two edges share a common vertex.
 `Wikipedia: Matching <https://en.wikipedia.org/wiki/Matching_(graph_theory)>`_
 """
 
-from ai_src.vendor.networkx import networkx as nx
+import networkx as nx
 
 __all__ = ["min_maximal_matching"]
 

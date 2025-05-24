@@ -28,8 +28,8 @@ nx_agraph, nx_pydot
 import itertools
 from collections import defaultdict
 
-from ai_src.vendor.networkx import networkx as nx
-from ai_src.vendor.networkx.networkx.utils import not_implemented_for
+import networkx as nx
+from networkx.utils import not_implemented_for
 
 __all__ = [
     "from_pandas_adjacency",

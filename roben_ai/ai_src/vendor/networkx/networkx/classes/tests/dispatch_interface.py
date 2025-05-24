@@ -10,9 +10,9 @@
 # NetworkX have been augmented to test normal and dispatch mode.
 # Searching for `dispatch_interface` should locate the specific tests.
 
-from ai_src.vendor.networkx import networkx as nx
-from ai_src.vendor.networkx.networkx import DiGraph, Graph, MultiDiGraph, MultiGraph, PlanarEmbedding
-from ai_src.vendor.networkx.networkx.classes.reportviews import NodeView
+import networkx as nx
+from networkx import DiGraph, Graph, MultiDiGraph, MultiGraph, PlanarEmbedding
+from networkx.classes.reportviews import NodeView
 
 
 class LoopbackGraph(Graph):

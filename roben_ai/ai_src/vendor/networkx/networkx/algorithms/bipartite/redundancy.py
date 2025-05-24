@@ -2,8 +2,8 @@
 
 from itertools import combinations
 
-from ai_src.vendor.networkx import networkx as nx
-from ai_src.vendor.networkx.networkx import NetworkXError
+import networkx as nx
+from networkx import NetworkXError
 
 __all__ = ["node_redundancy"]
 
@@ -46,7 +46,7 @@ def node_redundancy(G, nodes=None):
     --------
     Compute the redundancy coefficient of each node in a graph::
 
-        >>> from ai_src.vendor.networkx.networkx.algorithms import bipartite
+        >>> from networkx.algorithms import bipartite
         >>> G = nx.cycle_graph(4)
         >>> rc = bipartite.node_redundancy(G)
         >>> rc[0]
@@ -54,7 +54,7 @@ def node_redundancy(G, nodes=None):
 
     Compute the average redundancy for the graph::
 
-        >>> from ai_src.vendor.networkx.networkx.algorithms import bipartite
+        >>> from networkx.algorithms import bipartite
         >>> G = nx.cycle_graph(4)
         >>> rc = bipartite.node_redundancy(G)
         >>> sum(rc.values()) / len(G)
@@ -62,7 +62,7 @@ def node_redundancy(G, nodes=None):
 
     Compute the average redundancy for a set of nodes::
 
-        >>> from ai_src.vendor.networkx.networkx.algorithms import bipartite
+        >>> from networkx.algorithms import bipartite
         >>> G = nx.cycle_graph(4)
         >>> rc = bipartite.node_redundancy(G)
         >>> nodes = [0, 2]

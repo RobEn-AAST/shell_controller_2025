@@ -1,7 +1,7 @@
 """Distance measures approximated metrics."""
 
-from ai_src.vendor.networkx import networkx as nx
-from ai_src.vendor.networkx.networkx.utils.decorators import py_random_state
+import networkx as nx
+from networkx.utils.decorators import py_random_state
 
 __all__ = ["diameter"]
 

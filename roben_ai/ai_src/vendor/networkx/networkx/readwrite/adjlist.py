@@ -24,8 +24,8 @@ adjacency list (anything following the # in a line is a comment)::
 
 __all__ = ["generate_adjlist", "write_adjlist", "parse_adjlist", "read_adjlist"]
 
-from ai_src.vendor.networkx import networkx as nx
-from ai_src.vendor.networkx.networkx.utils import open_file
+import networkx as nx
+from networkx.utils import open_file
 
 
 def generate_adjlist(G, delimiter=" "):

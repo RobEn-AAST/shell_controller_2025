@@ -1,9 +1,9 @@
 import pytest
 
-from ai_src.vendor.networkx import networkx as nx
-from ai_src.vendor.networkx.networkx.algorithms import flow
-from ai_src.vendor.networkx.networkx.algorithms.connectivity import minimum_st_edge_cut, minimum_st_node_cut
-from ai_src.vendor.networkx.networkx.utils import arbitrary_element
+import networkx as nx
+from networkx.algorithms import flow
+from networkx.algorithms.connectivity import minimum_st_edge_cut, minimum_st_node_cut
+from networkx.utils import arbitrary_element
 
 flow_funcs = [
     flow.boykov_kolmogorov,

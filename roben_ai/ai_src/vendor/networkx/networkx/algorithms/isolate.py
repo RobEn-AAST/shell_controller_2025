@@ -2,7 +2,7 @@
 Functions for identifying isolate (degree zero) nodes.
 """
 
-from ai_src.vendor.networkx import networkx as nx
+import networkx as nx
 
 __all__ = ["is_isolate", "isolates", "number_of_isolates"]
 

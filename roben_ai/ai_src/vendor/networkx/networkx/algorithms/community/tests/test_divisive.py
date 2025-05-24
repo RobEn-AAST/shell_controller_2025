@@ -1,6 +1,6 @@
 import pytest
 
-from ai_src.vendor.networkx import networkx as nx
+import networkx as nx
 
 
 def test_edge_betweenness_partition():

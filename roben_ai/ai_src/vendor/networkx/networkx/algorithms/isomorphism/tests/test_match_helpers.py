@@ -1,7 +1,7 @@
 from operator import eq
 
-from ai_src.vendor.networkx import networkx as nx
-from ai_src.vendor.networkx.networkx.algorithms import isomorphism as iso
+import networkx as nx
+from networkx.algorithms import isomorphism as iso
 
 
 def test_categorical_node_match():

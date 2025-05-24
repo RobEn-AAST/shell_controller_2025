@@ -2,8 +2,8 @@ from collections import UserDict
 
 import pytest
 
-from ai_src.vendor.networkx import networkx as nx
-from ai_src.vendor.networkx.networkx.utils import edges_equal
+import networkx as nx
+from networkx.utils import edges_equal
 
 from .test_graph import BaseAttrGraphTester
 from .test_graph import TestGraph as _TestGraph

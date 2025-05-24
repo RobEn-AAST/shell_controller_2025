@@ -11,11 +11,11 @@ For directed graphs see DiGraph and MultiDiGraph.
 from copy import deepcopy
 from functools import cached_property
 
-from ai_src.vendor.networkx import networkx as nx
-from ai_src.vendor.networkx.networkx import convert
-from ai_src.vendor.networkx.networkx.classes.coreviews import AdjacencyView
-from ai_src.vendor.networkx.networkx.classes.reportviews import DegreeView, EdgeView, NodeView
-from ai_src.vendor.networkx.networkx.exception import NetworkXError
+import networkx as nx
+from networkx import convert
+from networkx.classes.coreviews import AdjacencyView
+from networkx.classes.reportviews import DegreeView, EdgeView, NodeView
+from networkx.exception import NetworkXError
 
 __all__ = ["Graph"]
 

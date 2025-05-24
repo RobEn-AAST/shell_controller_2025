@@ -2,7 +2,7 @@
 
 from itertools import chain
 
-from ai_src.vendor.networkx import networkx as nx
+import networkx as nx
 
 __all__ = [
     "boundary_expansion",

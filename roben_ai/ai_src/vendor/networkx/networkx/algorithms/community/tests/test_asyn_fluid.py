@@ -1,8 +1,8 @@
 import pytest
 
-from ai_src.vendor.networkx import networkx as nx
-from ai_src.vendor.networkx.networkx import Graph, NetworkXError
-from ai_src.vendor.networkx.networkx.algorithms.community import asyn_fluidc
+import networkx as nx
+from networkx import Graph, NetworkXError
+from networkx.algorithms.community import asyn_fluidc
 
 
 @pytest.mark.parametrize("graph_constructor", (nx.DiGraph, nx.MultiGraph))

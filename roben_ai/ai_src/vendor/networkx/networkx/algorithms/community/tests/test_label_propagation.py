@@ -2,7 +2,7 @@ from itertools import chain, combinations
 
 import pytest
 
-from ai_src.vendor.networkx import networkx as nx
+import networkx as nx
 
 
 def test_directed_not_supported():

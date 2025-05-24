@@ -7,7 +7,7 @@ the `networkx.algorithms.node_classification` modules,
 then accessing the functions as attributes of `node_classification`.
 For example:
 
-  >>> from ai_src.vendor.networkx.networkx.algorithms import node_classification
+  >>> from networkx.algorithms import node_classification
   >>> G = nx.path_graph(4)
   >>> G.edges()
   EdgeView([(0, 1), (1, 2), (2, 3)])
@@ -23,7 +23,7 @@ Semi-supervised learning using gaussian fields and harmonic functions.
 In ICML (Vol. 3, pp. 912-919).
 """
 
-from ai_src.vendor.networkx import networkx as nx
+import networkx as nx
 
 __all__ = ["harmonic_function", "local_and_global_consistency"]
 
@@ -55,7 +55,7 @@ def harmonic_function(G, max_iter=30, label_name="label"):
 
     Examples
     --------
-    >>> from ai_src.vendor.networkx.networkx.algorithms import node_classification
+    >>> from networkx.algorithms import node_classification
     >>> G = nx.path_graph(4)
     >>> G.nodes[0]["label"] = "A"
     >>> G.nodes[3]["label"] = "B"
@@ -134,7 +134,7 @@ def local_and_global_consistency(G, alpha=0.99, max_iter=30, label_name="label")
 
     Examples
     --------
-    >>> from ai_src.vendor.networkx.networkx.algorithms import node_classification
+    >>> from networkx.algorithms import node_classification
     >>> G = nx.path_graph(4)
     >>> G.nodes[0]["label"] = "A"
     >>> G.nodes[3]["label"] = "B"

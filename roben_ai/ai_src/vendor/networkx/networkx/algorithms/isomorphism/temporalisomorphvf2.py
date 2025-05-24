@@ -65,7 +65,7 @@ Handles directed and undirected graphs and graphs with parallel edges.
 
 """
 
-from ai_src.vendor.networkx import networkx as nx
+import networkx as nx
 
 from .isomorphvf2 import DiGraphMatcher, GraphMatcher
 
@@ -83,7 +83,7 @@ class TimeRespectingGraphMatcher(GraphMatcher):
         To create a TimeRespectingGraphMatcher which checks for
         syntactic and semantic feasibility:
 
-        >>> from ai_src.vendor.networkx.networkx.algorithms import isomorphism
+        >>> from networkx.algorithms import isomorphism
         >>> from datetime import timedelta
         >>> G1 = nx.Graph(nx.path_graph(4, create_using=nx.Graph()))
 
@@ -152,7 +152,7 @@ class TimeRespectingDiGraphMatcher(DiGraphMatcher):
         To create a TimeRespectingDiGraphMatcher which checks for
         syntactic and semantic feasibility:
 
-        >>> from ai_src.vendor.networkx.networkx.algorithms import isomorphism
+        >>> from networkx.algorithms import isomorphism
         >>> from datetime import timedelta
         >>> G1 = nx.DiGraph(nx.path_graph(4, create_using=nx.DiGraph()))
 

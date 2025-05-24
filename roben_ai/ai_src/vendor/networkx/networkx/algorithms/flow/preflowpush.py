@@ -5,7 +5,7 @@ Highest-label preflow-push algorithm for maximum flow problems.
 from collections import deque
 from itertools import islice
 
-from ai_src.vendor.networkx import networkx as nx
+import networkx as nx
 
 from ...utils import arbitrary_element
 from .utils import (
@@ -387,7 +387,7 @@ def preflow_push(
 
     Examples
     --------
-    >>> from ai_src.vendor.networkx.networkx.algorithms.flow import preflow_push
+    >>> from networkx.algorithms.flow import preflow_push
 
     The functions that implement flow algorithms and output a residual
     network, such as this one, are not imported to the base NetworkX

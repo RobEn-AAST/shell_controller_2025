@@ -7,8 +7,8 @@ import os
 import random
 import struct
 
-from ai_src.vendor.networkx import networkx as nx
-from ai_src.vendor.networkx.networkx.algorithms import isomorphism as iso
+import networkx as nx
+from networkx.algorithms import isomorphism as iso
 
 
 class TestWikipediaExample:
@@ -119,7 +119,7 @@ class TestVF2GraphDB:
         return graph
 
     def test_graph(self):
-        head = importlib.resources.files("ai_src.vendor.networkx.networkx.algorithms.isomorphism.tests")
+        head = importlib.resources.files("networkx.algorithms.isomorphism.tests")
         g1 = self.create_graph(head / "iso_r01_s80.A99")
         g2 = self.create_graph(head / "iso_r01_s80.B99")
         gm = iso.GraphMatcher(g1, g2)
@@ -128,7 +128,7 @@ class TestVF2GraphDB:
     def test_subgraph(self):
         # A is the subgraph
         # B is the full graph
-        head = importlib.resources.files("ai_src.vendor.networkx.networkx.algorithms.isomorphism.tests")
+        head = importlib.resources.files("networkx.algorithms.isomorphism.tests")
         subgraph = self.create_graph(head / "si2_b06_m200.A99")
         graph = self.create_graph(head / "si2_b06_m200.B99")
         gm = iso.GraphMatcher(graph, subgraph)
@@ -144,7 +144,7 @@ class TestAtlas:
     @classmethod
     def setup_class(cls):
         global atlas
-        from ai_src.vendor.networkx.networkx.generators import atlas
+        from networkx.generators import atlas
 
         cls.GAG = atlas.graph_atlas_g()
 

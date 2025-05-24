@@ -4,7 +4,7 @@ Testing
 
 General guidelines for writing good tests:
 
-- doctests always assume ``from ai_src.vendor.networkx import networkx as nx`` so don't add that
+- doctests always assume ``import networkx as nx`` so don't add that
 - prefer pytest fixtures over classes with setup methods.
 - use the ``@pytest.mark.parametrize``  decorator
 - use ``pytest.importorskip`` for numpy, scipy, pandas, and matplotlib b/c of PyPy.

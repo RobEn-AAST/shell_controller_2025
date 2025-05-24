@@ -1,7 +1,7 @@
 import warnings
 from itertools import count
 
-from ai_src.vendor.networkx import networkx as nx
+import networkx as nx
 
 __all__ = ["node_link_data", "node_link_graph"]
 

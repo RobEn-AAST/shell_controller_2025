@@ -1,7 +1,7 @@
 import pytest
 
-from ai_src.vendor.networkx import networkx as nx
-from ai_src.vendor.networkx.networkx.utils import nodes_equal
+import networkx as nx
+from networkx.utils import nodes_equal
 
 from .test_graph import BaseAttrGraphTester, BaseGraphTester
 from .test_graph import TestEdgeSubgraph as _TestGraphEdgeSubgraph

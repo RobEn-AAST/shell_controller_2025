@@ -5,10 +5,10 @@ from collections import defaultdict
 from collections.abc import Mapping
 from functools import cached_property
 
-from ai_src.vendor.networkx import networkx as nx
-from ai_src.vendor.networkx.networkx.algorithms.approximation import local_node_connectivity
-from ai_src.vendor.networkx.networkx.exception import NetworkXError
-from ai_src.vendor.networkx.networkx.utils import not_implemented_for
+import networkx as nx
+from networkx.algorithms.approximation import local_node_connectivity
+from networkx.exception import NetworkXError
+from networkx.utils import not_implemented_for
 
 __all__ = ["k_components"]
 
@@ -53,7 +53,7 @@ def k_components(G, min_density=0.95):
     --------
     >>> # Petersen graph has 10 nodes and it is triconnected, thus all
     >>> # nodes are in a single component on all three connectivity levels
-    >>> from ai_src.vendor.networkx.networkx.algorithms import approximation as apxa
+    >>> from networkx.algorithms import approximation as apxa
     >>> G = nx.petersen_graph()
     >>> k_components = apxa.k_components(G)
 

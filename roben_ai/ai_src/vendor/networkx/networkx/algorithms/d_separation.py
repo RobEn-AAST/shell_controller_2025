@@ -216,8 +216,8 @@ References
 from collections import deque
 from itertools import chain
 
-from ai_src.vendor.networkx import networkx as nx
-from ai_src.vendor.networkx.networkx.utils import UnionFind, not_implemented_for
+import networkx as nx
+from networkx.utils import UnionFind, not_implemented_for
 
 __all__ = [
     "is_d_separator",

@@ -2,7 +2,7 @@
 Famous social networks.
 """
 
-from ai_src.vendor.networkx import networkx as nx
+import networkx as nx
 
 __all__ = [
     "karate_club_graph",

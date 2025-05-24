@@ -6,7 +6,7 @@ from random import sample
 
 import pytest
 
-from ai_src.vendor.networkx import networkx as nx
+import networkx as nx
 
 
 def test_all_triplets_deprecated():

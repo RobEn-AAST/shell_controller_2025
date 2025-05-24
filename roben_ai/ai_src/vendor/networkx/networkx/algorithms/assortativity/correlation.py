@@ -1,11 +1,11 @@
 """Node assortativity coefficients and correlation measures."""
 
-from ai_src.vendor.networkx import networkx as nx
-from ai_src.vendor.networkx.networkx.algorithms.assortativity.mixing import (
+import networkx as nx
+from networkx.algorithms.assortativity.mixing import (
     attribute_mixing_matrix,
     degree_mixing_matrix,
 )
-from ai_src.vendor.networkx.networkx.algorithms.assortativity.pairs import node_degree_xy
+from networkx.algorithms.assortativity.pairs import node_degree_xy
 
 __all__ = [
     "degree_pearson_correlation_coefficient",

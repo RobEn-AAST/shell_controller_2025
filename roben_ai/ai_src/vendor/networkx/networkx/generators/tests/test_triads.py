@@ -2,7 +2,7 @@
 
 import pytest
 
-from ai_src.vendor.networkx.networkx import triad_graph
+from networkx import triad_graph
 
 
 def test_triad_graph():

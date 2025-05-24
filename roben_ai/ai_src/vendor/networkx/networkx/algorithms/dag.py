@@ -11,8 +11,8 @@ from functools import partial
 from itertools import chain, combinations, product, starmap
 from math import gcd
 
-from ai_src.vendor.networkx import networkx as nx
-from ai_src.vendor.networkx.networkx.utils import arbitrary_element, not_implemented_for, pairwise
+import networkx as nx
+from networkx.utils import arbitrary_element, not_implemented_for, pairwise
 
 __all__ = [
     "descendants",

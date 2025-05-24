@@ -1,8 +1,8 @@
 import time
 
-from ai_src.vendor.networkx.networkx.algorithms.assortativity import degree_mixing_dict
-from ai_src.vendor.networkx.networkx.generators import gnm_random_graph, powerlaw_cluster_graph
-from ai_src.vendor.networkx.networkx.generators.joint_degree_seq import (
+from networkx.algorithms.assortativity import degree_mixing_dict
+from networkx.generators import gnm_random_graph, powerlaw_cluster_graph
+from networkx.generators.joint_degree_seq import (
     directed_joint_degree_graph,
     is_valid_directed_joint_degree,
     is_valid_joint_degree,

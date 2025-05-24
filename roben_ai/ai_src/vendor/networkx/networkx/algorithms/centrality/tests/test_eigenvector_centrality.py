@@ -6,7 +6,7 @@ np = pytest.importorskip("numpy")
 pytest.importorskip("scipy")
 
 
-from ai_src.vendor.networkx import networkx as nx
+import networkx as nx
 
 
 class TestEigenvectorCentrality:

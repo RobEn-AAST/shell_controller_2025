@@ -11,8 +11,8 @@ from math import isnan
 from operator import itemgetter
 from queue import PriorityQueue
 
-from ai_src.vendor.networkx import networkx as nx
-from ai_src.vendor.networkx.networkx.utils import UnionFind, not_implemented_for, py_random_state
+import networkx as nx
+from networkx.utils import UnionFind, not_implemented_for, py_random_state
 
 __all__ = [
     "minimum_spanning_edges",
@@ -420,7 +420,7 @@ def minimum_spanning_edges(
 
     Examples
     --------
-    >>> from ai_src.vendor.networkx.networkx.algorithms import tree
+    >>> from networkx.algorithms import tree
 
     Find minimum spanning edges by Kruskal's algorithm
 
@@ -515,7 +515,7 @@ def maximum_spanning_edges(
 
     Examples
     --------
-    >>> from ai_src.vendor.networkx.networkx.algorithms import tree
+    >>> from networkx.algorithms import tree
 
     Find maximum spanning edges by Kruskal's algorithm
 

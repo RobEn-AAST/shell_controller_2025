@@ -4,8 +4,8 @@ from itertools import combinations
 
 import pytest
 
-from ai_src.vendor.networkx.networkx import DiGraph
-from ai_src.vendor.networkx.networkx.algorithms.tournament import (
+from networkx import DiGraph
+from networkx.algorithms.tournament import (
     hamiltonian_path,
     index_satisfying,
     is_reachable,

@@ -1,5 +1,5 @@
-from ai_src.vendor.networkx import networkx as nx
-from ai_src.vendor.networkx.networkx.algorithms.moral import moral_graph
+import networkx as nx
+from networkx.algorithms.moral import moral_graph
 
 
 def test_get_moral_graph():

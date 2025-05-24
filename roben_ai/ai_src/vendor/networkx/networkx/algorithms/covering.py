@@ -3,8 +3,8 @@
 from functools import partial
 from itertools import chain
 
-from ai_src.vendor.networkx import networkx as nx
-from ai_src.vendor.networkx.networkx.utils import arbitrary_element, not_implemented_for
+import networkx as nx
+from networkx.utils import arbitrary_element, not_implemented_for
 
 __all__ = ["min_edge_cover", "is_edge_cover"]
 

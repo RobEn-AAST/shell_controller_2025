@@ -32,8 +32,8 @@ from dataclasses import dataclass, field
 from operator import itemgetter
 from queue import PriorityQueue
 
-from ai_src.vendor.networkx import networkx as nx
-from ai_src.vendor.networkx.networkx.utils import py_random_state
+import networkx as nx
+from networkx.utils import py_random_state
 
 from .recognition import is_arborescence, is_branching
 

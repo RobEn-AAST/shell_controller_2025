@@ -19,7 +19,7 @@ nx_agraph, nx_pydot
 import warnings
 from collections.abc import Collection, Generator, Iterator
 
-from ai_src.vendor.networkx import networkx as nx
+import networkx as nx
 
 __all__ = [
     "to_networkx_graph",

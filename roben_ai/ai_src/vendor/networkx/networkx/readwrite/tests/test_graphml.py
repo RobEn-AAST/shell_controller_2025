@@ -2,9 +2,9 @@ import io
 
 import pytest
 
-from ai_src.vendor.networkx import networkx as nx
-from ai_src.vendor.networkx.networkx.readwrite.graphml import GraphMLWriter
-from ai_src.vendor.networkx.networkx.utils import edges_equal, nodes_equal
+import networkx as nx
+from networkx.readwrite.graphml import GraphMLWriter
+from networkx.utils import edges_equal, nodes_equal
 
 
 class BaseGraphML:

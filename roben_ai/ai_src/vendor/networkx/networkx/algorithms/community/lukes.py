@@ -4,8 +4,8 @@ from copy import deepcopy
 from functools import lru_cache
 from random import choice
 
-from ai_src.vendor.networkx import networkx as nx
-from ai_src.vendor.networkx.networkx.utils import not_implemented_for
+import networkx as nx
+from networkx.utils import not_implemented_for
 
 __all__ = ["lukes_partitioning"]
 

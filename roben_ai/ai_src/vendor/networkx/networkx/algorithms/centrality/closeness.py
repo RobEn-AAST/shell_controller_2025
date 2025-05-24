@@ -4,9 +4,9 @@ Closeness centrality measures.
 
 import functools
 
-from ai_src.vendor.networkx import networkx as nx
-from ai_src.vendor.networkx.networkx.exception import NetworkXError
-from ai_src.vendor.networkx.networkx.utils.decorators import not_implemented_for
+import networkx as nx
+from networkx.exception import NetworkXError
+from networkx.utils.decorators import not_implemented_for
 
 __all__ = ["closeness_centrality", "incremental_closeness_centrality"]
 

@@ -2,13 +2,13 @@ import random
 
 import pytest
 
-from ai_src.vendor.networkx import networkx as nx
-from ai_src.vendor.networkx.networkx import convert_node_labels_to_integers as cnlti
-from ai_src.vendor.networkx.networkx.algorithms.simple_paths import (
+import networkx as nx
+from networkx import convert_node_labels_to_integers as cnlti
+from networkx.algorithms.simple_paths import (
     _bidirectional_dijkstra,
     _bidirectional_shortest_path,
 )
-from ai_src.vendor.networkx.networkx.utils import arbitrary_element, pairwise
+from networkx.utils import arbitrary_element, pairwise
 
 
 class TestIsSimplePath:

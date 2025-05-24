@@ -32,8 +32,8 @@ itself. Indeed, self-loops are allowed. Node index starts from 0.
 
 """
 
-from ai_src.vendor.networkx import networkx as nx
-from ai_src.vendor.networkx.networkx.utils import open_file
+import networkx as nx
+from networkx.utils import open_file
 
 
 @open_file(1, mode="w")

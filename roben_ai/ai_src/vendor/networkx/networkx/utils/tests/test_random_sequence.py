@@ -1,6 +1,6 @@
 import pytest
 
-from ai_src.vendor.networkx.networkx.utils import (
+from networkx.utils import (
     powerlaw_sequence,
     random_weighted_sample,
     weighted_choice,

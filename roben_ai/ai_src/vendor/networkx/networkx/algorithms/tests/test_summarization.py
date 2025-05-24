@@ -4,7 +4,7 @@ Unit tests for dedensification and graph summarization
 
 import pytest
 
-from ai_src.vendor.networkx import networkx as nx
+import networkx as nx
 
 
 class TestDirectedDedensification:

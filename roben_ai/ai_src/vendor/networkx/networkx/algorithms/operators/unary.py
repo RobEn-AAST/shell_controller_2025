@@ -1,6 +1,6 @@
 """Unary operations on graphs"""
 
-from ai_src.vendor.networkx import networkx as nx
+import networkx as nx
 
 __all__ = ["complement", "reverse"]
 

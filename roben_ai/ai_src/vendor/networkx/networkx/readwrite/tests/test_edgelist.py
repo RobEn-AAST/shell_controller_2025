@@ -7,8 +7,8 @@ import textwrap
 
 import pytest
 
-from ai_src.vendor.networkx import networkx as nx
-from ai_src.vendor.networkx.networkx.utils import edges_equal, graphs_equal, nodes_equal
+import networkx as nx
+from networkx.utils import edges_equal, graphs_equal, nodes_equal
 
 edges_no_data = textwrap.dedent(
     """

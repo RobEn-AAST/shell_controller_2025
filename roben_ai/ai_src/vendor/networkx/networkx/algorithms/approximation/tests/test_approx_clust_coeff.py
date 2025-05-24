@@ -1,5 +1,5 @@
-from ai_src.vendor.networkx import networkx as nx
-from ai_src.vendor.networkx.networkx.algorithms.approximation import average_clustering
+import networkx as nx
+from networkx.algorithms.approximation import average_clustering
 
 # This approximation has to be exact in regular graphs
 # with no triangles or with all possible triangles.

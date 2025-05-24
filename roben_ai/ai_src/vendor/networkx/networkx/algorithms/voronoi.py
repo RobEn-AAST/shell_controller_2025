@@ -1,7 +1,7 @@
 """Functions for computing the Voronoi cells of a graph."""
 
-from ai_src.vendor.networkx import networkx as nx
-from ai_src.vendor.networkx.networkx.utils import groups
+import networkx as nx
+from networkx.utils import groups
 
 __all__ = ["voronoi_cells"]
 

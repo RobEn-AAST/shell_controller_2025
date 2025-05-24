@@ -13,7 +13,7 @@ The three formats that you can generate with NetworkX are:
  - adjacency like in the d3.js example https://bost.ocks.org/mike/miserables/
 """
 
-from ai_src.vendor.networkx.networkx.readwrite.json_graph.node_link import *
-from ai_src.vendor.networkx.networkx.readwrite.json_graph.adjacency import *
-from ai_src.vendor.networkx.networkx.readwrite.json_graph.tree import *
-from ai_src.vendor.networkx.networkx.readwrite.json_graph.cytoscape import *
+from networkx.readwrite.json_graph.node_link import *
+from networkx.readwrite.json_graph.adjacency import *
+from networkx.readwrite.json_graph.tree import *
+from networkx.readwrite.json_graph.cytoscape import *

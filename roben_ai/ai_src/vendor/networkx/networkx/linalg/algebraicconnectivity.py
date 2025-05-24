@@ -4,8 +4,8 @@ Algebraic connectivity and Fiedler vectors of undirected graphs.
 
 from functools import partial
 
-from ai_src.vendor.networkx import networkx as nx
-from ai_src.vendor.networkx.networkx.utils import (
+import networkx as nx
+from networkx.utils import (
     not_implemented_for,
     np_random_state,
     reverse_cuthill_mckee_ordering,

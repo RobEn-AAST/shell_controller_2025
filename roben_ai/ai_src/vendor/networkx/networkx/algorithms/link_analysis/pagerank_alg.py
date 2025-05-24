@@ -2,7 +2,7 @@
 
 from warnings import warn
 
-from ai_src.vendor.networkx import networkx as nx
+import networkx as nx
 
 __all__ = ["pagerank", "google_matrix"]
 
@@ -313,7 +313,7 @@ def _pagerank_numpy(
 
     Examples
     --------
-    >>> from ai_src.vendor.networkx.networkx.algorithms.link_analysis.pagerank_alg import _pagerank_numpy
+    >>> from networkx.algorithms.link_analysis.pagerank_alg import _pagerank_numpy
     >>> G = nx.DiGraph(nx.path_graph(4))
     >>> pr = _pagerank_numpy(G, alpha=0.9)
 
@@ -417,7 +417,7 @@ def _pagerank_scipy(
 
     Examples
     --------
-    >>> from ai_src.vendor.networkx.networkx.algorithms.link_analysis.pagerank_alg import _pagerank_scipy
+    >>> from networkx.algorithms.link_analysis.pagerank_alg import _pagerank_scipy
     >>> G = nx.DiGraph(nx.path_graph(4))
     >>> pr = _pagerank_scipy(G, alpha=0.9)
 

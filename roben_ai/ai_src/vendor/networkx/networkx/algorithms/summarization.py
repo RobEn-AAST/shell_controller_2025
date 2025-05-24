@@ -61,7 +61,7 @@ and Applications: A Survey <https://dl.acm.org/doi/abs/10.1145/3186727>`_
 
 from collections import Counter, defaultdict
 
-from ai_src.vendor.networkx import networkx as nx
+import networkx as nx
 
 __all__ = ["dedensify", "snap_aggregation"]
 

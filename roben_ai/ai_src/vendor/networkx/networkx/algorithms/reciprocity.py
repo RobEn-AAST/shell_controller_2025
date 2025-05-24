@@ -1,7 +1,7 @@
 """Algorithms to calculate reciprocity in a directed graph."""
 
-from ai_src.vendor.networkx import networkx as nx
-from ai_src.vendor.networkx.networkx import NetworkXError
+import networkx as nx
+from networkx import NetworkXError
 
 from ..utils import not_implemented_for
 

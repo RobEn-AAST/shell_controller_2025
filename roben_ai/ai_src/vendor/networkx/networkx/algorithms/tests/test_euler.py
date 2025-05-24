@@ -2,7 +2,7 @@ import collections
 
 import pytest
 
-from ai_src.vendor.networkx import networkx as nx
+import networkx as nx
 
 
 @pytest.mark.parametrize("f", (nx.is_eulerian, nx.is_semieulerian))

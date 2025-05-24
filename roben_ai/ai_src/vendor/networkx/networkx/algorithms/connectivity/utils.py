@@ -2,7 +2,7 @@
 Utilities for connectivity package
 """
 
-from ai_src.vendor.networkx import networkx as nx
+import networkx as nx
 
 __all__ = ["build_auxiliary_node_connectivity", "build_auxiliary_edge_connectivity"]
 

@@ -21,8 +21,8 @@ import collections
 import itertools
 from numbers import Number
 
-from ai_src.vendor.networkx import networkx as nx
-from ai_src.vendor.networkx.networkx.drawing.layout import (
+import networkx as nx
+from networkx.drawing.layout import (
     circular_layout,
     forceatlas2_layout,
     kamada_kawai_layout,
@@ -93,7 +93,7 @@ def draw(G, pos=None, ax=None, **kwds):
     Notes
     -----
     This function has the same name as pylab.draw and pyplot.draw
-    so beware when using `from ai_src.vendor.networkx.networkx import *`
+    so beware when using `from networkx import *`
 
     since you might overwrite the pylab.draw function.
 

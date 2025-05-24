@@ -1,7 +1,7 @@
 import pytest
 
-from ai_src.vendor.networkx import networkx as nx
-from ai_src.vendor.networkx.networkx.algorithms import approximation as approx
+import networkx as nx
+from networkx.algorithms import approximation as approx
 
 
 def test_global_node_connectivity():

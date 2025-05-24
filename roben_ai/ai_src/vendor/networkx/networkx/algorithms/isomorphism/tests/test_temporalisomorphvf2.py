@@ -4,8 +4,8 @@ Tests for the temporal aspect of the Temporal VF2 isomorphism algorithm.
 
 from datetime import date, datetime, timedelta
 
-from ai_src.vendor.networkx import networkx as nx
-from ai_src.vendor.networkx.networkx.algorithms import isomorphism as iso
+import networkx as nx
+from networkx.algorithms import isomorphism as iso
 
 
 def provide_g1_edgelist():

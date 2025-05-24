@@ -4,7 +4,7 @@ Unit tests for degree centrality.
 
 import pytest
 
-from ai_src.vendor.networkx import networkx as nx
+import networkx as nx
 
 
 class TestDegreeCentrality:

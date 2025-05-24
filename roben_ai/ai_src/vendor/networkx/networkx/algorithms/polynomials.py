@@ -24,8 +24,8 @@ x**4 - 6*x**2 - 8*x - 3
 
 from collections import deque
 
-from ai_src.vendor.networkx import networkx as nx
-from ai_src.vendor.networkx.networkx.utils import not_implemented_for
+import networkx as nx
+from networkx.utils import not_implemented_for
 
 __all__ = ["tutte_polynomial", "chromatic_polynomial"]
 

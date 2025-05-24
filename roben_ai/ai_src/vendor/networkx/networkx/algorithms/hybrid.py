@@ -6,7 +6,7 @@ graphs.
 
 import copy
 
-from ai_src.vendor.networkx import networkx as nx
+import networkx as nx
 
 __all__ = ["kl_connected_subgraph", "is_kl_connected"]
 

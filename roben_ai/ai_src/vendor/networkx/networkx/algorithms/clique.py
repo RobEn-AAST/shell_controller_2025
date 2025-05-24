@@ -11,8 +11,8 @@ see the Wikipedia article on the clique problem [1]_.
 from collections import defaultdict, deque
 from itertools import chain, combinations, islice
 
-from ai_src.vendor.networkx import networkx as nx
-from ai_src.vendor.networkx.networkx.utils import not_implemented_for
+import networkx as nx
+from networkx.utils import not_implemented_for
 
 __all__ = [
     "find_cliques",
@@ -437,7 +437,7 @@ def make_max_clique_graph(G, create_using=None):
     -----
     This function behaves like the following code::
 
-        from ai_src.vendor.networkx import networkx as nx
+        import networkx as nx
 
         G = nx.make_clique_bipartite(G)
         cliques = [v for v in G.nodes() if G.nodes[v]["bipartite"] == 0]

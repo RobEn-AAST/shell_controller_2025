@@ -5,7 +5,7 @@ module.
 
 from operator import itemgetter
 
-from ai_src.vendor.networkx import networkx as nx
+import networkx as nx
 
 
 def set_of_sets(iterable):

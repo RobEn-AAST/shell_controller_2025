@@ -7,9 +7,9 @@ scale-free graphs.
 import numbers
 from collections import Counter
 
-from ai_src.vendor.networkx import networkx as nx
-from ai_src.vendor.networkx.networkx.generators.classic import empty_graph
-from ai_src.vendor.networkx.networkx.utils import discrete_sequence, py_random_state, weighted_choice
+import networkx as nx
+from networkx.generators.classic import empty_graph
+from networkx.utils import discrete_sequence, py_random_state, weighted_choice
 
 __all__ = [
     "gn_graph",

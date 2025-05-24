@@ -1,7 +1,7 @@
 import pytest
 
-from ai_src.vendor.networkx import networkx as nx
-from ai_src.vendor.networkx.networkx.algorithms.traversal.edgedfs import FORWARD, REVERSE
+import networkx as nx
+from networkx.algorithms.traversal.edgedfs import FORWARD, REVERSE
 
 
 class TestEdgeBFS:

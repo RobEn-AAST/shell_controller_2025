@@ -1,6 +1,6 @@
 from itertools import chain
 
-from ai_src.vendor.networkx import networkx as nx
+import networkx as nx
 
 __all__ = ["tree_data", "tree_graph"]
 
@@ -37,7 +37,7 @@ def tree_data(G, root, ident="id", children="children"):
 
     Examples
     --------
-    >>> from ai_src.vendor.networkx.networkx.readwrite import json_graph
+    >>> from networkx.readwrite import json_graph
     >>> G = nx.DiGraph([(1, 2)])
     >>> data = json_graph.tree_data(G, root=1)
 
@@ -106,7 +106,7 @@ def tree_graph(data, ident="id", children="children"):
 
     Examples
     --------
-    >>> from ai_src.vendor.networkx.networkx.readwrite import json_graph
+    >>> from networkx.readwrite import json_graph
     >>> G = nx.DiGraph([(1, 2)])
     >>> data = json_graph.tree_data(G, root=1)
     >>> H = json_graph.tree_graph(data)

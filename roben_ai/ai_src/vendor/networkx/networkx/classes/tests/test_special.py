@@ -1,4 +1,4 @@
-from ai_src.vendor.networkx import networkx as nx
+import networkx as nx
 
 from .test_digraph import BaseDiGraphTester
 from .test_digraph import TestDiGraph as _TestDiGraph

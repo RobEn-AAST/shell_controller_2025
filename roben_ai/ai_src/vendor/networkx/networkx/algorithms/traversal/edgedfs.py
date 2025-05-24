@@ -7,7 +7,7 @@ Algorithms for a depth-first traversal of edges in a graph.
 
 """
 
-from ai_src.vendor.networkx import networkx as nx
+import networkx as nx
 
 FORWARD = "forward"
 REVERSE = "reverse"

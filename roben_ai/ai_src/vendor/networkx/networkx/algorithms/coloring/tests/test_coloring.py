@@ -4,7 +4,7 @@ import itertools
 
 import pytest
 
-from ai_src.vendor.networkx import networkx as nx
+import networkx as nx
 
 is_coloring = nx.algorithms.coloring.equitable_coloring.is_coloring
 is_equitable = nx.algorithms.coloring.equitable_coloring.is_equitable

@@ -3,8 +3,8 @@ import json
 
 import pytest
 
-from ai_src.vendor.networkx import networkx as nx
-from ai_src.vendor.networkx.networkx.readwrite.json_graph import cytoscape_data, cytoscape_graph
+import networkx as nx
+from networkx.readwrite.json_graph import cytoscape_data, cytoscape_graph
 
 
 def test_graph():

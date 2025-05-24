@@ -1,6 +1,6 @@
 """Functions for computing measures of structural holes."""
 
-from ai_src.vendor.networkx import networkx as nx
+import networkx as nx
 
 __all__ = ["constraint", "local_constraint", "effective_size"]
 

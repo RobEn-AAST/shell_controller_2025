@@ -5,8 +5,8 @@ import pytest
 
 np = pytest.importorskip("numpy")
 
-from ai_src.vendor.networkx import networkx as nx
-from ai_src.vendor.networkx.networkx.algorithms.tree import branchings, recognition
+import networkx as nx
+from networkx.algorithms.tree import branchings, recognition
 
 #
 # Explicitly discussed examples from Edmonds paper.

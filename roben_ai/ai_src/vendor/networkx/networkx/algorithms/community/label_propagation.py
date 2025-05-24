@@ -4,8 +4,8 @@ Label propagation community detection algorithms.
 
 from collections import Counter, defaultdict, deque
 
-from ai_src.vendor.networkx import networkx as nx
-from ai_src.vendor.networkx.networkx.utils import groups, not_implemented_for, py_random_state
+import networkx as nx
+from networkx.utils import groups, not_implemented_for, py_random_state
 
 __all__ = [
     "label_propagation_communities",

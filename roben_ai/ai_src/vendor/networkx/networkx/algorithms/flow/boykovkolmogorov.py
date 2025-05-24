@@ -5,8 +5,8 @@ Boykov-Kolmogorov algorithm for maximum flow problems.
 from collections import deque
 from operator import itemgetter
 
-from ai_src.vendor.networkx import networkx as nx
-from ai_src.vendor.networkx.networkx.algorithms.flow.utils import build_residual_network
+import networkx as nx
+from networkx.algorithms.flow.utils import build_residual_network
 
 __all__ = ["boykov_kolmogorov"]
 
@@ -107,7 +107,7 @@ def boykov_kolmogorov(
 
     Examples
     --------
-    >>> from ai_src.vendor.networkx.networkx.algorithms.flow import boykov_kolmogorov
+    >>> from networkx.algorithms.flow import boykov_kolmogorov
 
     The functions that implement flow algorithms and output a residual
     network, such as this one, are not imported to the base NetworkX

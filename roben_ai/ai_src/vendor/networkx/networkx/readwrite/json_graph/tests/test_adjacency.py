@@ -3,9 +3,9 @@ import json
 
 import pytest
 
-from ai_src.vendor.networkx import networkx as nx
-from ai_src.vendor.networkx.networkx.readwrite.json_graph import adjacency_data, adjacency_graph
-from ai_src.vendor.networkx.networkx.utils import graphs_equal
+import networkx as nx
+from networkx.readwrite.json_graph import adjacency_data, adjacency_graph
+from networkx.utils import graphs_equal
 
 
 class TestAdjacency:

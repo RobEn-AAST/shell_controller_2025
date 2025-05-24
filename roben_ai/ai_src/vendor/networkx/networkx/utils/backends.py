@@ -475,7 +475,7 @@ import warnings
 from functools import partial
 from importlib.metadata import entry_points
 
-from ai_src.vendor.networkx import networkx as nx
+import networkx as nx
 
 from .configs import BackendPriorities, Config, NetworkXConfig
 from .decorators import argmap
@@ -1466,7 +1466,7 @@ class _dispatchable:
 
     def _can_convert(self, backend_name, graph_backend_names):
         # Backend-to-backend conversion not supported yet.
-        # We can only convert to and from ai_src.vendor.networkx.networkx.
+        # We can only convert to and from networkx.
         rv = backend_name == "networkx" or graph_backend_names.issubset(
             {"networkx", backend_name}
         )

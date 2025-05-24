@@ -1,7 +1,7 @@
 import pytest
 
-from ai_src.vendor.networkx import networkx as nx
-from ai_src.vendor.networkx.networkx.utils import nodes_equal
+import networkx as nx
+from networkx.utils import nodes_equal
 
 
 class TestCore:

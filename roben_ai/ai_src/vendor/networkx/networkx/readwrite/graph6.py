@@ -13,9 +13,9 @@ For more information, see the `graph6`_ homepage.
 
 from itertools import islice
 
-from ai_src.vendor.networkx import networkx as nx
-from ai_src.vendor.networkx.networkx.exception import NetworkXError
-from ai_src.vendor.networkx.networkx.utils import not_implemented_for, open_file
+import networkx as nx
+from networkx.exception import NetworkXError
+from networkx.utils import not_implemented_for, open_file
 
 __all__ = ["from_graph6_bytes", "read_graph6", "to_graph6_bytes", "write_graph6"]
 

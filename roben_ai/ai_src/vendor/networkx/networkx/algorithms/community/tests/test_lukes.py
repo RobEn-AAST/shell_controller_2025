@@ -2,7 +2,7 @@ from itertools import product
 
 import pytest
 
-from ai_src.vendor.networkx import networkx as nx
+import networkx as nx
 
 EWL = "e_weight"
 NWL = "n_weight"

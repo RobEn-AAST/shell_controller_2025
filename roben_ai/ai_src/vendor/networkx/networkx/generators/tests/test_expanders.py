@@ -2,7 +2,7 @@
 
 import pytest
 
-from ai_src.vendor.networkx import networkx as nx
+import networkx as nx
 
 
 @pytest.mark.parametrize("n", (2, 3, 5, 6, 10))

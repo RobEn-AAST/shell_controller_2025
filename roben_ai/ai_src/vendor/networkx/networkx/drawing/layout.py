@@ -16,8 +16,8 @@ Warning: Most layout routines have only been tested in 2-dimensions.
 
 """
 
-from ai_src.vendor.networkx import networkx as nx
-from ai_src.vendor.networkx.networkx.utils import np_random_state
+import networkx as nx
+from networkx.utils import np_random_state
 
 __all__ = [
     "bipartite_layout",
@@ -1309,7 +1309,7 @@ def forceatlas2_layout(
 
     Examples
     --------
-    >>> from ai_src.vendor.networkx import networkx as nx
+    >>> import networkx as nx
     >>> G = nx.florentine_families_graph()
     >>> pos = nx.forceatlas2_layout(G)
     >>> nx.draw(G, pos=pos)

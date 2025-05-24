@@ -1,7 +1,7 @@
 import pytest
 
-from ai_src.vendor.networkx import networkx as nx
-from ai_src.vendor.networkx.networkx.utils import BinaryHeap, PairingHeap
+import networkx as nx
+from networkx.utils import BinaryHeap, PairingHeap
 
 
 class X:

@@ -7,8 +7,8 @@ import pickle
 
 import pytest
 
-from ai_src.vendor.networkx import networkx as nx
-from ai_src.vendor.networkx.networkx.algorithms.flow import (
+import networkx as nx
+from networkx.algorithms.flow import (
     boykov_kolmogorov,
     build_flow_dict,
     build_residual_network,
@@ -49,7 +49,7 @@ def gen_pyramid(N):
 
 def read_graph(name):
     fname = (
-        importlib.resources.files("ai_src.vendor.networkx.networkx.algorithms.flow.tests")
+        importlib.resources.files("networkx.algorithms.flow.tests")
         / f"{name}.gpickle.bz2"
     )
 

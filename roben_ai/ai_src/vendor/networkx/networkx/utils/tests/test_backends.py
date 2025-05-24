@@ -2,7 +2,7 @@ import pickle
 
 import pytest
 
-from ai_src.vendor.networkx import networkx as nx
+import networkx as nx
 
 sp = pytest.importorskip("scipy")
 pytest.importorskip("numpy")
@@ -42,7 +42,7 @@ def test_graph_converter_needs_backend():
     # will be converted back to NetworkX via `convert_to_nx`.
     # If not testing, then calling `nx.from_scipy_sparse_array` w/o `backend=` will
     # always call the original version. `backend=` is *required* to call the backend.
-    from ai_src.vendor.networkx.networkx.classes.tests.dispatch_interface import (
+    from networkx.classes.tests.dispatch_interface import (
         LoopbackBackendInterface,
         LoopbackGraph,
     )
@@ -96,7 +96,7 @@ def test_graph_converter_needs_backend():
 def test_networkx_backend():
     """Test using `backend="networkx"` in a dispatchable function."""
     # (Implementing this test is harder than it should be)
-    from ai_src.vendor.networkx.networkx.classes.tests.dispatch_interface import (
+    from networkx.classes.tests.dispatch_interface import (
         LoopbackBackendInterface,
         LoopbackGraph,
     )
@@ -129,7 +129,7 @@ def test_dispatchable_are_functions():
 
 @pytest.mark.skipif("not nx.utils.backends.backends")
 def test_mixing_backend_graphs():
-    from ai_src.vendor.networkx.networkx.classes.tests import dispatch_interface
+    from networkx.classes.tests import dispatch_interface
 
     G = nx.Graph()
     G.add_edge(1, 2)

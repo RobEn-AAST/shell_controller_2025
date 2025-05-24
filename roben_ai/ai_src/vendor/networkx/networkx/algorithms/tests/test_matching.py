@@ -3,9 +3,9 @@ from itertools import permutations
 
 from pytest import raises
 
-from ai_src.vendor.networkx import networkx as nx
-from ai_src.vendor.networkx.networkx.algorithms.matching import matching_dict_to_set
-from ai_src.vendor.networkx.networkx.utils import edges_equal
+import networkx as nx
+from networkx.algorithms.matching import matching_dict_to_set
+from networkx.utils import edges_equal
 
 
 class TestMaxWeightMatching:

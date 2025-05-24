@@ -2,8 +2,8 @@
 Graph isomorphism functions.
 """
 
-from ai_src.vendor.networkx import networkx as nx
-from ai_src.vendor.networkx.networkx.exception import NetworkXError
+import networkx as nx
+from networkx.exception import NetworkXError
 
 __all__ = [
     "could_be_isomorphic",

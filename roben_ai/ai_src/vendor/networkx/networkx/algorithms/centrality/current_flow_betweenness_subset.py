@@ -1,8 +1,8 @@
 """Current-flow betweenness centrality measures for subsets of nodes."""
 
-from ai_src.vendor.networkx import networkx as nx
-from ai_src.vendor.networkx.networkx.algorithms.centrality.flow_matrix import flow_matrix_row
-from ai_src.vendor.networkx.networkx.utils import not_implemented_for, reverse_cuthill_mckee_ordering
+import networkx as nx
+from networkx.algorithms.centrality.flow_matrix import flow_matrix_row
+from networkx.utils import not_implemented_for, reverse_cuthill_mckee_ordering
 
 __all__ = [
     "current_flow_betweenness_centrality_subset",
@@ -93,7 +93,7 @@ def current_flow_betweenness_centrality_subset(
     """
     import numpy as np
 
-    from ai_src.vendor.networkx.networkx.utils import reverse_cuthill_mckee_ordering
+    from networkx.utils import reverse_cuthill_mckee_ordering
 
     if not nx.is_connected(G):
         raise nx.NetworkXError("Graph not connected.")

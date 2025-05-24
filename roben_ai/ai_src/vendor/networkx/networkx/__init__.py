@@ -12,42 +12,42 @@ __version__ = "3.4.2"
 
 
 # These are imported in order as listed
-from ai_src.vendor.networkx.networkx.lazy_imports import _lazy_import
+from networkx.lazy_imports import _lazy_import
 
-from ai_src.vendor.networkx.networkx.exception import *
+from networkx.exception import *
 
-from ai_src.vendor.networkx.networkx import utils
-from ai_src.vendor.networkx.networkx.utils import _clear_cache, _dispatchable
+from networkx import utils
+from networkx.utils import _clear_cache, _dispatchable
 
 # load_and_call entry_points, set configs
 config = utils.backends._set_configs_from_environment()
 utils.config = utils.configs.config = config  # type: ignore[attr-defined]
 
-from ai_src.vendor.networkx.networkx import classes
-from ai_src.vendor.networkx.networkx.classes import filters
-from ai_src.vendor.networkx.networkx.classes import *
+from networkx import classes
+from networkx.classes import filters
+from networkx.classes import *
 
-from ai_src.vendor.networkx.networkx import convert
-from ai_src.vendor.networkx.networkx.convert import *
+from networkx import convert
+from networkx.convert import *
 
-from ai_src.vendor.networkx.networkx import convert_matrix
-from ai_src.vendor.networkx.networkx.convert_matrix import *
+from networkx import convert_matrix
+from networkx.convert_matrix import *
 
-from ai_src.vendor.networkx.networkx import relabel
-from ai_src.vendor.networkx.networkx.relabel import *
+from networkx import relabel
+from networkx.relabel import *
 
-from ai_src.vendor.networkx.networkx import generators
-from ai_src.vendor.networkx.networkx.generators import *
+from networkx import generators
+from networkx.generators import *
 
-from ai_src.vendor.networkx.networkx import readwrite
-from ai_src.vendor.networkx.networkx.readwrite import *
+from networkx import readwrite
+from networkx.readwrite import *
 
 # Need to test with SciPy, when available
-from ai_src.vendor.networkx.networkx import algorithms
-from ai_src.vendor.networkx.networkx.algorithms import *
+from networkx import algorithms
+from networkx.algorithms import *
 
-from ai_src.vendor.networkx.networkx import linalg
-from ai_src.vendor.networkx.networkx.linalg import *
+from networkx import linalg
+from networkx.linalg import *
 
-from ai_src.vendor.networkx.networkx import drawing
-from ai_src.vendor.networkx.networkx.drawing import *
+from networkx import drawing
+from networkx.drawing import *

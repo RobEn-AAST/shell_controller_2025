@@ -4,8 +4,8 @@ Tests for ISMAGS isomorphism algorithm.
 
 import pytest
 
-from ai_src.vendor.networkx import networkx as nx
-from ai_src.vendor.networkx.networkx.algorithms import isomorphism as iso
+import networkx as nx
+from networkx.algorithms import isomorphism as iso
 
 
 def _matches_to_sets(matches):

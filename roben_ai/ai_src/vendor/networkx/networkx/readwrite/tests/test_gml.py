@@ -7,8 +7,8 @@ from textwrap import dedent
 
 import pytest
 
-from ai_src.vendor.networkx import networkx as nx
-from ai_src.vendor.networkx.networkx.readwrite.gml import literal_destringizer, literal_stringizer
+import networkx as nx
+from networkx.readwrite.gml import literal_destringizer, literal_stringizer
 
 
 class TestGraph:

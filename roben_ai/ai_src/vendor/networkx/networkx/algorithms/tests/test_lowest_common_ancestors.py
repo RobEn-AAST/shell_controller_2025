@@ -2,7 +2,7 @@ from itertools import chain, combinations, product
 
 import pytest
 
-from ai_src.vendor.networkx import networkx as nx
+import networkx as nx
 
 tree_all_pairs_lca = nx.tree_all_pairs_lowest_common_ancestor
 all_pairs_lca = nx.all_pairs_lowest_common_ancestor

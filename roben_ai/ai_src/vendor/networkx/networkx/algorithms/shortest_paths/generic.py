@@ -7,7 +7,7 @@ These algorithms work with undirected and directed graphs.
 
 import warnings
 
-from ai_src.vendor.networkx import networkx as nx
+import networkx as nx
 
 __all__ = [
     "shortest_path",

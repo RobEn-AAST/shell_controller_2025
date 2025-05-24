@@ -2,9 +2,9 @@
 
 import pytest
 
-from ai_src.vendor.networkx import networkx as nx
-from ai_src.vendor.networkx.networkx.algorithms.isomorphism.isomorph import is_isomorphic
-from ai_src.vendor.networkx.networkx.generators.harary_graph import hkn_harary_graph, hnm_harary_graph
+import networkx as nx
+from networkx.algorithms.isomorphism.isomorph import is_isomorphic
+from networkx.generators.harary_graph import hkn_harary_graph, hnm_harary_graph
 
 
 class TestHararyGraph:

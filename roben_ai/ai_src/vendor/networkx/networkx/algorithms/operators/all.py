@@ -2,7 +2,7 @@
 
 from itertools import chain, repeat
 
-from ai_src.vendor.networkx import networkx as nx
+import networkx as nx
 
 __all__ = ["union_all", "compose_all", "disjoint_union_all", "intersection_all"]
 

@@ -1,8 +1,8 @@
 import pytest
 
-from ai_src.vendor.networkx import networkx as nx
-from ai_src.vendor.networkx.networkx.generators import line
-from ai_src.vendor.networkx.networkx.utils import edges_equal
+import networkx as nx
+from networkx.generators import line
+from networkx.utils import edges_equal
 
 
 class TestGeneratorLine:

@@ -19,8 +19,8 @@ import warnings
 from dataclasses import dataclass
 from itertools import product
 
-from ai_src.vendor.networkx import networkx as nx
-from ai_src.vendor.networkx.networkx.utils import np_random_state
+import networkx as nx
+from networkx.utils import np_random_state
 
 __all__ = [
     "graph_edit_distance",

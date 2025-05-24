@@ -1,6 +1,6 @@
 """Unit tests for the :mod:`networkx.algorithms.community.utils` module."""
 
-from ai_src.vendor.networkx import networkx as nx
+import networkx as nx
 
 
 def test_is_partition():

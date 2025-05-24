@@ -3,8 +3,8 @@ Utilities for generating random numbers, random sequences, and
 random selections.
 """
 
-from ai_src.vendor.networkx import networkx as nx
-from ai_src.vendor.networkx.networkx.utils import py_random_state
+import networkx as nx
+from networkx.utils import py_random_state
 
 __all__ = [
     "powerlaw_sequence",

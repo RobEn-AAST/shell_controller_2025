@@ -73,7 +73,7 @@ becomes a useful notion.
 
 """
 
-from ai_src.vendor.networkx import networkx as nx
+import networkx as nx
 
 __all__ = ["is_arborescence", "is_branching", "is_forest", "is_tree"]
 

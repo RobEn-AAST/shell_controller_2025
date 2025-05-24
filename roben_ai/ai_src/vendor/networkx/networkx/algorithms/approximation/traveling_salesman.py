@@ -36,9 +36,9 @@ http://en.wikipedia.org/wiki/Travelling_salesman_problem
 
 import math
 
-from ai_src.vendor.networkx import networkx as nx
-from ai_src.vendor.networkx.networkx.algorithms.tree.mst import random_spanning_tree
-from ai_src.vendor.networkx.networkx.utils import not_implemented_for, pairwise, py_random_state
+import networkx as nx
+from networkx.algorithms.tree.mst import random_spanning_tree
+from networkx.utils import not_implemented_for, pairwise, py_random_state
 
 __all__ = [
     "traveling_salesman_problem",
@@ -419,7 +419,7 @@ def asadpour_atsp(G, weight="weight", seed=None, source=None):
 
     Examples
     --------
-    >>> from ai_src.vendor.networkx import networkx as nx
+    >>> import networkx as nx
     >>> import networkx.algorithms.approximation as approx
     >>> G = nx.complete_graph(3, create_using=nx.DiGraph)
     >>> nx.set_edge_attributes(
@@ -972,7 +972,7 @@ def greedy_tsp(G, weight="weight", source=None):
 
     Examples
     --------
-    >>> from ai_src.vendor.networkx.networkx.algorithms import approximation as approx
+    >>> from networkx.algorithms import approximation as approx
     >>> G = nx.DiGraph()
     >>> G.add_weighted_edges_from(
     ...     {
@@ -1146,7 +1146,7 @@ def simulated_annealing_tsp(
 
     Examples
     --------
-    >>> from ai_src.vendor.networkx.networkx.algorithms import approximation as approx
+    >>> from networkx.algorithms import approximation as approx
     >>> G = nx.DiGraph()
     >>> G.add_weighted_edges_from(
     ...     {
@@ -1374,7 +1374,7 @@ def threshold_accepting_tsp(
 
     Examples
     --------
-    >>> from ai_src.vendor.networkx.networkx.algorithms import approximation as approx
+    >>> from networkx.algorithms import approximation as approx
     >>> G = nx.DiGraph()
     >>> G.add_weighted_edges_from(
     ...     {

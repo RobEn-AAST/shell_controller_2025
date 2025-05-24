@@ -2,13 +2,13 @@ import random
 
 import pytest
 
-from ai_src.vendor.networkx import networkx as nx
-from ai_src.vendor.networkx.networkx.classes.tests import dispatch_interface
+import networkx as nx
+from networkx.classes.tests import dispatch_interface
 
 np = pytest.importorskip("numpy")
 pytest.importorskip("scipy")
 
-from ai_src.vendor.networkx.networkx.algorithms.link_analysis.pagerank_alg import (
+from networkx.algorithms.link_analysis.pagerank_alg import (
     _pagerank_numpy,
     _pagerank_python,
     _pagerank_scipy,

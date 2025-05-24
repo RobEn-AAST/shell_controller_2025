@@ -4,7 +4,7 @@ Tests for closeness centrality.
 
 import pytest
 
-from ai_src.vendor.networkx import networkx as nx
+import networkx as nx
 
 
 class TestClosenessCentrality:

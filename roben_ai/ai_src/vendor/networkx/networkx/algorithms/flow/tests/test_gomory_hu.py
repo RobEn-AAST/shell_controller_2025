@@ -2,8 +2,8 @@ from itertools import combinations
 
 import pytest
 
-from ai_src.vendor.networkx import networkx as nx
-from ai_src.vendor.networkx.networkx.algorithms.flow import (
+import networkx as nx
+from networkx.algorithms.flow import (
     boykov_kolmogorov,
     dinitz,
     edmonds_karp,

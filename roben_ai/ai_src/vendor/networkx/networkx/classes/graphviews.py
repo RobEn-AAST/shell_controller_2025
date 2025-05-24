@@ -24,17 +24,17 @@ with induced subgraphs.
 Often it is easiest to use .copy() to avoid chains.
 """
 
-from ai_src.vendor.networkx import networkx as nx
-from ai_src.vendor.networkx.networkx.classes.coreviews import (
+import networkx as nx
+from networkx.classes.coreviews import (
     FilterAdjacency,
     FilterAtlas,
     FilterMultiAdjacency,
     UnionAdjacency,
     UnionMultiAdjacency,
 )
-from ai_src.vendor.networkx.networkx.classes.filters import no_filter
-from ai_src.vendor.networkx.networkx.exception import NetworkXError
-from ai_src.vendor.networkx.networkx.utils import not_implemented_for
+from networkx.classes.filters import no_filter
+from networkx.exception import NetworkXError
+from networkx.utils import not_implemented_for
 
 __all__ = ["generic_graph_view", "subgraph_view", "reverse_view"]
 

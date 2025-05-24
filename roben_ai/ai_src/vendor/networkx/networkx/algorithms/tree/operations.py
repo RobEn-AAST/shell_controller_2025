@@ -3,7 +3,7 @@
 from functools import partial
 from itertools import accumulate, chain
 
-from ai_src.vendor.networkx import networkx as nx
+import networkx as nx
 
 __all__ = ["join_trees"]
 

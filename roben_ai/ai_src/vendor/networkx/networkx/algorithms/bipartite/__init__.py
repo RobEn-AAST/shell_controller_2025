@@ -6,7 +6,7 @@ to use an spatial analogy referring to the two node sets as top and bottom nodes
 The bipartite algorithms are not imported into the networkx namespace
 at the top level so the easiest way to use them is with:
 
->>> from ai_src.vendor.networkx.networkx.algorithms import bipartite
+>>> from networkx.algorithms import bipartite
 
 NetworkX does not have a custom bipartite graph class but the Graph()
 or DiGraph() classes can be used to represent bipartite graphs. However,
@@ -73,15 +73,15 @@ For other bipartite graph generators see
 
 """
 
-from ai_src.vendor.networkx.networkx.algorithms.bipartite.basic import *
-from ai_src.vendor.networkx.networkx.algorithms.bipartite.centrality import *
-from ai_src.vendor.networkx.networkx.algorithms.bipartite.cluster import *
-from ai_src.vendor.networkx.networkx.algorithms.bipartite.covering import *
-from ai_src.vendor.networkx.networkx.algorithms.bipartite.edgelist import *
-from ai_src.vendor.networkx.networkx.algorithms.bipartite.matching import *
-from ai_src.vendor.networkx.networkx.algorithms.bipartite.matrix import *
-from ai_src.vendor.networkx.networkx.algorithms.bipartite.projection import *
-from ai_src.vendor.networkx.networkx.algorithms.bipartite.redundancy import *
-from ai_src.vendor.networkx.networkx.algorithms.bipartite.spectral import *
-from ai_src.vendor.networkx.networkx.algorithms.bipartite.generators import *
-from ai_src.vendor.networkx.networkx.algorithms.bipartite.extendability import *
+from networkx.algorithms.bipartite.basic import *
+from networkx.algorithms.bipartite.centrality import *
+from networkx.algorithms.bipartite.cluster import *
+from networkx.algorithms.bipartite.covering import *
+from networkx.algorithms.bipartite.edgelist import *
+from networkx.algorithms.bipartite.matching import *
+from networkx.algorithms.bipartite.matrix import *
+from networkx.algorithms.bipartite.projection import *
+from networkx.algorithms.bipartite.redundancy import *
+from networkx.algorithms.bipartite.spectral import *
+from networkx.algorithms.bipartite.generators import *
+from networkx.algorithms.bipartite.extendability import *

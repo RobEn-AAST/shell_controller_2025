@@ -2,8 +2,8 @@
 Edmonds-Karp algorithm for maximum flow problems.
 """
 
-from ai_src.vendor.networkx import networkx as nx
-from ai_src.vendor.networkx.networkx.algorithms.flow.utils import build_residual_network
+import networkx as nx
+from networkx.algorithms.flow.utils import build_residual_network
 
 __all__ = ["edmonds_karp"]
 
@@ -212,7 +212,7 @@ def edmonds_karp(
 
     Examples
     --------
-    >>> from ai_src.vendor.networkx.networkx.algorithms.flow import edmonds_karp
+    >>> from networkx.algorithms.flow import edmonds_karp
 
     The functions that implement flow algorithms and output a residual
     network, such as this one, are not imported to the base NetworkX

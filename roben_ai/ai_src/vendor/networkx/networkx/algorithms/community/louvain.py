@@ -4,9 +4,9 @@ Algorithm"""
 import itertools
 from collections import defaultdict, deque
 
-from ai_src.vendor.networkx import networkx as nx
-from ai_src.vendor.networkx.networkx.algorithms.community import modularity
-from ai_src.vendor.networkx.networkx.utils import py_random_state
+import networkx as nx
+from networkx.algorithms.community import modularity
+from networkx.utils import py_random_state
 
 __all__ = ["louvain_communities", "louvain_partitions"]
 
@@ -96,7 +96,7 @@ def louvain_communities(
 
     Examples
     --------
-    >>> from ai_src.vendor.networkx import networkx as nx
+    >>> import networkx as nx
     >>> G = nx.petersen_graph()
     >>> nx.community.louvain_communities(G, seed=123)
     [{0, 4, 5, 7, 9}, {1, 2, 3, 6, 8}]

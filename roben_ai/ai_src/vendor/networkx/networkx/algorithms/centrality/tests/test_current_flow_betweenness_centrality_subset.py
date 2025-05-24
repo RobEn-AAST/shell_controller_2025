@@ -3,9 +3,9 @@ import pytest
 pytest.importorskip("numpy")
 pytest.importorskip("scipy")
 
-from ai_src.vendor.networkx import networkx as nx
-from ai_src.vendor.networkx.networkx import edge_current_flow_betweenness_centrality as edge_current_flow
-from ai_src.vendor.networkx.networkx import (
+import networkx as nx
+from networkx import edge_current_flow_betweenness_centrality as edge_current_flow
+from networkx import (
     edge_current_flow_betweenness_centrality_subset as edge_current_flow_subset,
 )
 

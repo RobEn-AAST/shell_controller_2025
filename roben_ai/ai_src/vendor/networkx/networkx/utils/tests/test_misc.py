@@ -3,8 +3,8 @@ from copy import copy
 
 import pytest
 
-from ai_src.vendor.networkx import networkx as nx
-from ai_src.vendor.networkx.networkx.utils import (
+import networkx as nx
+from networkx.utils import (
     PythonRandomInterface,
     PythonRandomViaNumpyBits,
     arbitrary_element,
@@ -18,7 +18,7 @@ from ai_src.vendor.networkx.networkx.utils import (
     pairwise,
     powerlaw_sequence,
 )
-from ai_src.vendor.networkx.networkx.utils.misc import _dict_to_numpy_array1, _dict_to_numpy_array2
+from networkx.utils.misc import _dict_to_numpy_array1, _dict_to_numpy_array2
 
 nested_depth = (
     1,

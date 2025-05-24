@@ -2,7 +2,7 @@
 Union-find data structure.
 """
 
-from ai_src.vendor.networkx.networkx.utils import groups
+from networkx.utils import groups
 
 
 class UnionFind:

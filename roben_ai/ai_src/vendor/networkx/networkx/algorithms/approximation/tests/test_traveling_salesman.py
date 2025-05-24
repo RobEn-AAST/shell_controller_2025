@@ -4,7 +4,7 @@ import random
 
 import pytest
 
-from ai_src.vendor.networkx import networkx as nx
+import networkx as nx
 import networkx.algorithms.approximation as nx_app
 
 pairwise = nx.utils.pairwise

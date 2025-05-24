@@ -3,8 +3,8 @@ import pytest
 np = pytest.importorskip("numpy")
 pytest.importorskip("scipy")
 
-from ai_src.vendor.networkx import networkx as nx
-from ai_src.vendor.networkx.networkx.generators.degree_seq import havel_hakimi_graph
+import networkx as nx
+from networkx.generators.degree_seq import havel_hakimi_graph
 
 
 class TestBetheHessian:

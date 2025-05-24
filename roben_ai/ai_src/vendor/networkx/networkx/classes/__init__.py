@@ -6,8 +6,8 @@ from .multidigraph import MultiDiGraph
 from .function import *
 from .graphviews import subgraph_view, reverse_view
 
-from ai_src.vendor.networkx.networkx.classes import filters
+from networkx.classes import filters
 
-from ai_src.vendor.networkx.networkx.classes import coreviews
-from ai_src.vendor.networkx.networkx.classes import graphviews
-from ai_src.vendor.networkx.networkx.classes import reportviews
+from networkx.classes import coreviews
+from networkx.classes import graphviews
+from networkx.classes import reportviews

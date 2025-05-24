@@ -41,8 +41,8 @@ References
     Encyclopedia, 3 Dec. 2019. Web. 22 Dec. 2019.
 """
 
-from ai_src.vendor.networkx import networkx as nx
-from ai_src.vendor.networkx.networkx.exception import NetworkXError
+import networkx as nx
+from networkx.exception import NetworkXError
 
 __all__ = ["sudoku_graph"]
 

@@ -4,9 +4,9 @@
 
 import pytest
 
-from ai_src.vendor.networkx import networkx as nx
-from ai_src.vendor.networkx.networkx.classes import Graph, MultiDiGraph
-from ai_src.vendor.networkx.networkx.generators.directed import (
+import networkx as nx
+from networkx.classes import Graph, MultiDiGraph
+from networkx.generators.directed import (
     gn_graph,
     gnc_graph,
     gnr_graph,

@@ -1,7 +1,7 @@
 import pytest
 
-from ai_src.vendor.networkx import networkx as nx
-from ai_src.vendor.networkx.networkx import convert_node_labels_to_integers as cnlti
+import networkx as nx
+from networkx import convert_node_labels_to_integers as cnlti
 
 
 class TestCliques:

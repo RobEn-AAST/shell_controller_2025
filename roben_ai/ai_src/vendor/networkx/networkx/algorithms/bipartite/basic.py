@@ -4,9 +4,9 @@ Bipartite Graph Algorithms
 ==========================
 """
 
-from ai_src.vendor.networkx import networkx as nx
-from ai_src.vendor.networkx.networkx.algorithms.components import connected_components
-from ai_src.vendor.networkx.networkx.exception import AmbiguousSolution
+import networkx as nx
+from networkx.algorithms.components import connected_components
+from networkx.exception import AmbiguousSolution
 
 __all__ = [
     "is_bipartite",
@@ -40,7 +40,7 @@ def color(G):
 
     Examples
     --------
-    >>> from ai_src.vendor.networkx.networkx.algorithms import bipartite
+    >>> from networkx.algorithms import bipartite
     >>> G = nx.path_graph(4)
     >>> c = bipartite.color(G)
     >>> print(c)
@@ -94,7 +94,7 @@ def is_bipartite(G):
 
     Examples
     --------
-    >>> from ai_src.vendor.networkx.networkx.algorithms import bipartite
+    >>> from networkx.algorithms import bipartite
     >>> G = nx.path_graph(4)
     >>> print(bipartite.is_bipartite(G))
     True
@@ -123,7 +123,7 @@ def is_bipartite_node_set(G, nodes):
 
     Examples
     --------
-    >>> from ai_src.vendor.networkx.networkx.algorithms import bipartite
+    >>> from networkx.algorithms import bipartite
     >>> G = nx.path_graph(4)
     >>> X = set([1, 3])
     >>> bipartite.is_bipartite_node_set(G, X)
@@ -192,7 +192,7 @@ def sets(G, top_nodes=None):
 
     Examples
     --------
-    >>> from ai_src.vendor.networkx.networkx.algorithms import bipartite
+    >>> from networkx.algorithms import bipartite
     >>> G = nx.path_graph(4)
     >>> X, Y = bipartite.sets(G)
     >>> list(X)
@@ -240,7 +240,7 @@ def density(B, nodes):
 
     Examples
     --------
-    >>> from ai_src.vendor.networkx.networkx.algorithms import bipartite
+    >>> from networkx.algorithms import bipartite
     >>> G = nx.complete_bipartite_graph(3, 2)
     >>> X = set([0, 1, 2])
     >>> bipartite.density(G, X)
@@ -298,7 +298,7 @@ def degrees(B, nodes, weight=None):
 
     Examples
     --------
-    >>> from ai_src.vendor.networkx.networkx.algorithms import bipartite
+    >>> from networkx.algorithms import bipartite
     >>> G = nx.complete_bipartite_graph(3, 2)
     >>> Y = set([3, 4])
     >>> degX, degY = bipartite.degrees(G, Y)

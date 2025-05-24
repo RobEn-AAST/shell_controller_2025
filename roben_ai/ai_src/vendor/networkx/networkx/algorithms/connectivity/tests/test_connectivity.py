@@ -2,9 +2,9 @@ import itertools
 
 import pytest
 
-from ai_src.vendor.networkx import networkx as nx
-from ai_src.vendor.networkx.networkx.algorithms import flow
-from ai_src.vendor.networkx.networkx.algorithms.connectivity import (
+import networkx as nx
+from networkx.algorithms import flow
+from networkx.algorithms.connectivity import (
     local_edge_connectivity,
     local_node_connectivity,
 )

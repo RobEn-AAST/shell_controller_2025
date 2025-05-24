@@ -1,9 +1,9 @@
 import pytest
 
-from ai_src.vendor.networkx import networkx as nx
-from ai_src.vendor.networkx.networkx import NetworkXNotImplemented
-from ai_src.vendor.networkx.networkx import convert_node_labels_to_integers as cnlti
-from ai_src.vendor.networkx.networkx.classes.tests import dispatch_interface
+import networkx as nx
+from networkx import NetworkXNotImplemented
+from networkx import convert_node_labels_to_integers as cnlti
+from networkx.classes.tests import dispatch_interface
 
 
 class TestConnected:

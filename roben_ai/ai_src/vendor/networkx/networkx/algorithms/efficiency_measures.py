@@ -1,7 +1,7 @@
 """Provides functions for computing the efficiency of nodes and graphs."""
 
-from ai_src.vendor.networkx import networkx as nx
-from ai_src.vendor.networkx.networkx.exception import NetworkXNoPath
+import networkx as nx
+from networkx.exception import NetworkXNoPath
 
 from ..utils import not_implemented_for
 

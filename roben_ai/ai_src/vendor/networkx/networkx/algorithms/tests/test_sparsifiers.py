@@ -2,8 +2,8 @@
 
 import pytest
 
-from ai_src.vendor.networkx import networkx as nx
-from ai_src.vendor.networkx.networkx.utils import py_random_state
+import networkx as nx
+from networkx.utils import py_random_state
 
 _seed = 2
 

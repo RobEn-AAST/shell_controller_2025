@@ -3,12 +3,12 @@ import time
 
 import pytest
 
-from ai_src.vendor.networkx import networkx as nx
-from ai_src.vendor.networkx.networkx.algorithms.isomorphism.tree_isomorphism import (
+import networkx as nx
+from networkx.algorithms.isomorphism.tree_isomorphism import (
     rooted_tree_isomorphism,
     tree_isomorphism,
 )
-from ai_src.vendor.networkx.networkx.classes.function import is_directed
+from networkx.classes.function import is_directed
 
 
 @pytest.mark.parametrize("graph_constructor", (nx.DiGraph, nx.MultiGraph))

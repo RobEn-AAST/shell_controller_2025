@@ -13,10 +13,10 @@ in this module return a Graph class (i.e. a simple, undirected graph).
 import itertools
 import numbers
 
-from ai_src.vendor.networkx import networkx as nx
-from ai_src.vendor.networkx.networkx.classes import Graph
-from ai_src.vendor.networkx.networkx.exception import NetworkXError
-from ai_src.vendor.networkx.networkx.utils import nodes_or_number, pairwise
+import networkx as nx
+from networkx.classes import Graph
+from networkx.exception import NetworkXError
+from networkx.utils import nodes_or_number, pairwise
 
 __all__ = [
     "balanced_tree",

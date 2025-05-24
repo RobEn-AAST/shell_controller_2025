@@ -8,7 +8,7 @@ is incident to at least one node in the subset.
 
 """
 
-from ai_src.vendor.networkx import networkx as nx
+import networkx as nx
 
 __all__ = ["min_weighted_vertex_cover"]
 

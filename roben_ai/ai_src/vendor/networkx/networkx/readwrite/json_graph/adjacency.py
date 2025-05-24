@@ -1,4 +1,4 @@
-from ai_src.vendor.networkx import networkx as nx
+import networkx as nx
 
 __all__ = ["adjacency_data", "adjacency_graph"]
 
@@ -34,7 +34,7 @@ def adjacency_data(G, attrs=_attrs):
 
     Examples
     --------
-    >>> from ai_src.vendor.networkx.networkx.readwrite import json_graph
+    >>> from networkx.readwrite import json_graph
     >>> G = nx.Graph([(1, 2)])
     >>> data = json_graph.adjacency_data(G)
 
@@ -109,7 +109,7 @@ def adjacency_graph(data, directed=False, multigraph=True, attrs=_attrs):
 
     Examples
     --------
-    >>> from ai_src.vendor.networkx.networkx.readwrite import json_graph
+    >>> from networkx.readwrite import json_graph
     >>> G = nx.Graph([(1, 2)])
     >>> data = json_graph.adjacency_data(G)
     >>> H = json_graph.adjacency_graph(data)

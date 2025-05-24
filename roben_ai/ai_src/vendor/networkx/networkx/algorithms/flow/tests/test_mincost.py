@@ -5,7 +5,7 @@ import pickle
 
 import pytest
 
-from ai_src.vendor.networkx import networkx as nx
+import networkx as nx
 
 
 class TestMinCostFlow:
@@ -463,7 +463,7 @@ class TestMinCostFlow:
 
     def test_large(self):
         fname = (
-            importlib.resources.files("ai_src.vendor.networkx.networkx.algorithms.flow.tests")
+            importlib.resources.files("networkx.algorithms.flow.tests")
             / "netgen-2.gpickle.bz2"
         )
         with bz2.BZ2File(fname, "rb") as f:

@@ -2,8 +2,8 @@ import json
 
 import pytest
 
-from ai_src.vendor.networkx import networkx as nx
-from ai_src.vendor.networkx.networkx.readwrite.json_graph import tree_data, tree_graph
+import networkx as nx
+from networkx.readwrite.json_graph import tree_data, tree_graph
 
 
 def test_graph():

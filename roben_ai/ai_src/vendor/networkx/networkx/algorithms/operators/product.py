@@ -4,8 +4,8 @@ Graph products.
 
 from itertools import product
 
-from ai_src.vendor.networkx import networkx as nx
-from ai_src.vendor.networkx.networkx.utils import not_implemented_for
+import networkx as nx
+from networkx.utils import not_implemented_for
 
 __all__ = [
     "tensor_product",

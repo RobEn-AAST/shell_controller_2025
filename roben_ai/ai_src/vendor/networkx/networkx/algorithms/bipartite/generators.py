@@ -6,8 +6,8 @@ import math
 import numbers
 from functools import reduce
 
-from ai_src.vendor.networkx import networkx as nx
-from ai_src.vendor.networkx.networkx.utils import nodes_or_number, py_random_state
+import networkx as nx
+from networkx.utils import nodes_or_number, py_random_state
 
 __all__ = [
     "configuration_model",

@@ -2,10 +2,10 @@
 
 from itertools import chain, combinations, permutations, product
 
-from ai_src.vendor.networkx import networkx as nx
-from ai_src.vendor.networkx.networkx import density
-from ai_src.vendor.networkx.networkx.exception import NetworkXException
-from ai_src.vendor.networkx.networkx.utils import arbitrary_element
+import networkx as nx
+from networkx import density
+from networkx.exception import NetworkXException
+from networkx.utils import arbitrary_element
 
 __all__ = [
     "contracted_edge",

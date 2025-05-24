@@ -2,8 +2,8 @@
 Generators for random intersection graphs.
 """
 
-from ai_src.vendor.networkx import networkx as nx
-from ai_src.vendor.networkx.networkx.utils import py_random_state
+import networkx as nx
+from networkx.utils import py_random_state
 
 __all__ = [
     "uniform_random_intersection_graph",
@@ -42,7 +42,7 @@ def uniform_random_intersection_graph(n, m, p, seed=None):
        An equivalence theorem relating the evolution of the g(n, m, p)
        and g(n, p) models. Random Struct. Algorithms 16, 2 (2000), 156–176.
     """
-    from ai_src.vendor.networkx.networkx.algorithms import bipartite
+    from networkx.algorithms import bipartite
 
     G = bipartite.random_graph(n, m, p, seed)
     return nx.projected_graph(G, range(n))

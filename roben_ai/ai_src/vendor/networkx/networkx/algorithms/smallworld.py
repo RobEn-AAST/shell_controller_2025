@@ -15,8 +15,8 @@ For more information, see the Wikipedia article on small-world network [1]_.
 
 """
 
-from ai_src.vendor.networkx import networkx as nx
-from ai_src.vendor.networkx.networkx.utils import not_implemented_for, py_random_state
+import networkx as nx
+from networkx.utils import not_implemented_for, py_random_state
 
 __all__ = ["random_reference", "lattice_reference", "sigma", "omega"]
 
@@ -69,7 +69,7 @@ def random_reference(G, niter=1, connectivity=True, seed=None):
     if len(G.edges) < 2:
         raise nx.NetworkXError("Graph has fewer that 2 edges")
 
-    from ai_src.vendor.networkx.networkx.utils import cumulative_distribution, discrete_sequence
+    from networkx.utils import cumulative_distribution, discrete_sequence
 
     local_conn = nx.connectivity.local_edge_connectivity
 
@@ -170,7 +170,7 @@ def lattice_reference(G, niter=5, D=None, connectivity=True, seed=None):
     """
     import numpy as np
 
-    from ai_src.vendor.networkx.networkx.utils import cumulative_distribution, discrete_sequence
+    from networkx.utils import cumulative_distribution, discrete_sequence
 
     local_conn = nx.connectivity.local_edge_connectivity
 

@@ -33,8 +33,8 @@ import itertools
 import sys
 from heapq import heapify, heappop, heappush
 
-from ai_src.vendor.networkx import networkx as nx
-from ai_src.vendor.networkx.networkx.utils import not_implemented_for
+import networkx as nx
+from networkx.utils import not_implemented_for
 
 __all__ = ["treewidth_min_degree", "treewidth_min_fill_in"]
 

@@ -4,8 +4,8 @@ Threshold Graphs - Creation, manipulation and identification.
 
 from math import sqrt
 
-from ai_src.vendor.networkx import networkx as nx
-from ai_src.vendor.networkx.networkx.utils import py_random_state
+import networkx as nx
+from networkx.utils import py_random_state
 
 __all__ = ["is_threshold_graph", "find_threshold_graph"]
 
@@ -27,7 +27,7 @@ def is_threshold_graph(G):
 
     Examples
     --------
-    >>> from ai_src.vendor.networkx.networkx.algorithms.threshold import is_threshold_graph
+    >>> from networkx.algorithms.threshold import is_threshold_graph
     >>> G = nx.path_graph(3)
     >>> is_threshold_graph(G)
     True
@@ -131,7 +131,7 @@ def make_compact(creation_sequence):
 
     Examples
     --------
-    >>> from ai_src.vendor.networkx.networkx.algorithms.threshold import make_compact
+    >>> from networkx.algorithms.threshold import make_compact
     >>> make_compact(["d", "i", "i", "d", "d", "i", "i", "i"])
     [1, 2, 2, 3]
     >>> make_compact(["d", "d", "d", "i", "d", "d"])
@@ -392,7 +392,7 @@ def find_threshold_graph(G, create_using=None):
 
     Examples
     --------
-    >>> from ai_src.vendor.networkx.networkx.algorithms.threshold import find_threshold_graph
+    >>> from networkx.algorithms.threshold import find_threshold_graph
     >>> G = nx.barbell_graph(3, 3)
     >>> T = find_threshold_graph(G)
     >>> T.nodes  # may vary

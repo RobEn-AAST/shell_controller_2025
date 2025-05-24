@@ -1,8 +1,8 @@
 """Provides a function for computing the extendability of a graph which is
 undirected, simple, connected and bipartite and contains at least one perfect matching."""
 
-from ai_src.vendor.networkx import networkx as nx
-from ai_src.vendor.networkx.networkx.utils import not_implemented_for
+import networkx as nx
+from networkx.utils import not_implemented_for
 
 __all__ = ["maximal_extendability"]
 

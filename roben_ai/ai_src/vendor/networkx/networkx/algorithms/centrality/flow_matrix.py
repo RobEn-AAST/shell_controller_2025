@@ -1,6 +1,6 @@
 # Helpers for current-flow betweenness and current-flow closeness
 # Lazy computations for inverse Laplacian and flow-matrix rows.
-from ai_src.vendor.networkx import networkx as nx
+import networkx as nx
 
 
 @nx._dispatchable(edge_attrs="weight")

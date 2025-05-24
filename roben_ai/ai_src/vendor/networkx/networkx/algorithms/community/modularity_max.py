@@ -2,10 +2,10 @@
 
 from collections import defaultdict
 
-from ai_src.vendor.networkx import networkx as nx
-from ai_src.vendor.networkx.networkx.algorithms.community.quality import modularity
-from ai_src.vendor.networkx.networkx.utils import not_implemented_for
-from ai_src.vendor.networkx.networkx.utils.mapped_queue import MappedQueue
+import networkx as nx
+from networkx.algorithms.community.quality import modularity
+from networkx.utils import not_implemented_for
+from networkx.utils.mapped_queue import MappedQueue
 
 __all__ = [
     "greedy_modularity_communities",

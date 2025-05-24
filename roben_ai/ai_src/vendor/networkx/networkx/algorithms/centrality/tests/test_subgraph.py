@@ -3,8 +3,8 @@ import pytest
 pytest.importorskip("numpy")
 pytest.importorskip("scipy")
 
-from ai_src.vendor.networkx import networkx as nx
-from ai_src.vendor.networkx.networkx.algorithms.centrality.subgraph_alg import (
+import networkx as nx
+from networkx.algorithms.centrality.subgraph_alg import (
     communicability_betweenness_centrality,
     estrada_index,
     subgraph_centrality,

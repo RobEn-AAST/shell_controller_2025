@@ -1,7 +1,7 @@
 """Unit tests for the :mod:`networkx.algorithms.approximation.clique` module."""
 
-from ai_src.vendor.networkx import networkx as nx
-from ai_src.vendor.networkx.networkx.algorithms.approximation import (
+import networkx as nx
+from networkx.algorithms.approximation import (
     clique_removal,
     large_clique_size,
     max_clique,

@@ -17,7 +17,7 @@ References
 
 import itertools as it
 
-from ai_src.vendor.networkx import networkx as nx
+import networkx as nx
 
 __all__ = ["wiener_index", "schultz_index", "gutman_index"]
 

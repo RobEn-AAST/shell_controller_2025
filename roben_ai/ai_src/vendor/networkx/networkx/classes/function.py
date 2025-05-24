@@ -3,8 +3,8 @@
 from collections import Counter
 from itertools import chain
 
-from ai_src.vendor.networkx import networkx as nx
-from ai_src.vendor.networkx.networkx.utils import not_implemented_for, pairwise
+import networkx as nx
+from networkx.utils import not_implemented_for, pairwise
 
 __all__ = [
     "nodes",

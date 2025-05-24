@@ -1,7 +1,7 @@
 import pytest
 
-from ai_src.vendor.networkx import networkx as nx
-from ai_src.vendor.networkx.networkx.algorithms.approximation import (
+import networkx as nx
+from networkx.algorithms.approximation import (
     min_edge_dominating_set,
     min_weighted_dominating_set,
 )

@@ -32,8 +32,8 @@ import warnings
 from collections import Counter, defaultdict
 from math import comb, factorial
 
-from ai_src.vendor.networkx import networkx as nx
-from ai_src.vendor.networkx.networkx.utils import py_random_state
+import networkx as nx
+from networkx.utils import py_random_state
 
 __all__ = [
     "prefix_tree",

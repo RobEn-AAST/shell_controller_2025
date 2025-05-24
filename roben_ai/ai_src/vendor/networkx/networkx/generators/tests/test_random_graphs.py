@@ -2,7 +2,7 @@
 
 import pytest
 
-from ai_src.vendor.networkx import networkx as nx
+import networkx as nx
 
 _gnp_generators = [
     nx.gnp_random_graph,

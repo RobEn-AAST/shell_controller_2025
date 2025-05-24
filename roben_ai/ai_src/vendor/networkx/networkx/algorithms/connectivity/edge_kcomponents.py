@@ -12,8 +12,8 @@ least k.
 import itertools as it
 from functools import partial
 
-from ai_src.vendor.networkx import networkx as nx
-from ai_src.vendor.networkx.networkx.utils import arbitrary_element, not_implemented_for
+import networkx as nx
+from networkx.utils import arbitrary_element, not_implemented_for
 
 __all__ = [
     "k_edge_components",
@@ -68,7 +68,7 @@ def k_edge_components(G, k):
     Examples
     --------
     >>> import itertools as it
-    >>> from ai_src.vendor.networkx.networkx.utils import pairwise
+    >>> from networkx.utils import pairwise
     >>> paths = [
     ...     (1, 2, 4, 3, 1, 4),
     ...     (5, 6, 7, 8, 5, 7, 8, 6),
@@ -149,7 +149,7 @@ def k_edge_subgraphs(G, k):
     Examples
     --------
     >>> import itertools as it
-    >>> from ai_src.vendor.networkx.networkx.utils import pairwise
+    >>> from networkx.utils import pairwise
     >>> paths = [
     ...     (1, 2, 4, 3, 1, 4),
     ...     (5, 6, 7, 8, 5, 7, 8, 6),
@@ -230,7 +230,7 @@ def bridge_components(G):
     --------
     >>> # The barbell graph with parameter zero has a single bridge
     >>> G = nx.barbell_graph(5, 0)
-    >>> from ai_src.vendor.networkx.networkx.algorithms.connectivity.edge_kcomponents import bridge_components
+    >>> from networkx.algorithms.connectivity.edge_kcomponents import bridge_components
     >>> sorted(map(sorted, bridge_components(G)))
     [[0, 1, 2, 3, 4], [5, 6, 7, 8, 9]]
     """
@@ -267,8 +267,8 @@ class EdgeComponentAuxGraph:
     Examples
     --------
     >>> import itertools as it
-    >>> from ai_src.vendor.networkx.networkx.utils import pairwise
-    >>> from ai_src.vendor.networkx.networkx.algorithms.connectivity import EdgeComponentAuxGraph
+    >>> from networkx.utils import pairwise
+    >>> from networkx.algorithms.connectivity import EdgeComponentAuxGraph
     >>> # Build an interesting graph with multiple levels of k-edge-ccs
     >>> paths = [
     ...     (1, 2, 3, 4, 1, 3, 4, 2),  # a 3-edge-cc (a 4 clique)
@@ -296,8 +296,8 @@ class EdgeComponentAuxGraph:
     search space.
 
     >>> import itertools as it
-    >>> from ai_src.vendor.networkx.networkx.utils import pairwise
-    >>> from ai_src.vendor.networkx.networkx.algorithms.connectivity import EdgeComponentAuxGraph
+    >>> from networkx.utils import pairwise
+    >>> from networkx.algorithms.connectivity import EdgeComponentAuxGraph
     >>> paths = [
     ...     (1, 2, 4, 3, 1, 4),
     ... ]
@@ -544,7 +544,7 @@ def general_k_edge_subgraphs(G, k):
 
     Examples
     --------
-    >>> from ai_src.vendor.networkx.networkx.utils import pairwise
+    >>> from networkx.utils import pairwise
     >>> paths = [
     ...     (11, 12, 13, 14, 11, 13, 14, 12),  # a 4-clique
     ...     (21, 22, 23, 24, 21, 23, 24, 22),  # another 4-clique

@@ -4,7 +4,7 @@ Eulerian circuits and graphs.
 
 from itertools import combinations
 
-from ai_src.vendor.networkx import networkx as nx
+import networkx as nx
 
 from ..utils import arbitrary_element, not_implemented_for
 

@@ -8,8 +8,8 @@ from collections import Counter, defaultdict
 from itertools import combinations, product
 from math import inf
 
-from ai_src.vendor.networkx import networkx as nx
-from ai_src.vendor.networkx.networkx.utils import not_implemented_for, pairwise
+import networkx as nx
+from networkx.utils import not_implemented_for, pairwise
 
 __all__ = [
     "cycle_basis",

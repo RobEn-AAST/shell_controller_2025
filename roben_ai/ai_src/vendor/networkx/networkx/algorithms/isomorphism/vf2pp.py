@@ -34,7 +34,7 @@ Suppose G1 and G2 are Isomorphic Graphs. Verification is as follows:
 
 Without node labels:
 
->>> from ai_src.vendor.networkx import networkx as nx
+>>> import networkx as nx
 >>> G1 = nx.path_graph(4)
 >>> G2 = nx.path_graph(4)
 >>> nx.vf2pp_is_isomorphic(G1, G2, node_label=None)
@@ -70,7 +70,7 @@ References
 
 import collections
 
-from ai_src.vendor.networkx import networkx as nx
+import networkx as nx
 
 __all__ = ["vf2pp_isomorphism", "vf2pp_is_isomorphic", "vf2pp_all_isomorphisms"]
 

@@ -1,7 +1,7 @@
 import pytest
 
-from ai_src.vendor.networkx import networkx as nx
-from ai_src.vendor.networkx.networkx import is_strongly_regular
+import networkx as nx
+from networkx import is_strongly_regular
 
 
 @pytest.mark.parametrize(

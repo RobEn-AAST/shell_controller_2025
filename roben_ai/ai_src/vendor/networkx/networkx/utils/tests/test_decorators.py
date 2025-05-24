@@ -5,15 +5,15 @@ import tempfile
 
 import pytest
 
-from ai_src.vendor.networkx import networkx as nx
-from ai_src.vendor.networkx.networkx.utils.decorators import (
+import networkx as nx
+from networkx.utils.decorators import (
     argmap,
     not_implemented_for,
     np_random_state,
     open_file,
     py_random_state,
 )
-from ai_src.vendor.networkx.networkx.utils.misc import PythonRandomInterface, PythonRandomViaNumpyBits
+from networkx.utils.misc import PythonRandomInterface, PythonRandomViaNumpyBits
 
 
 def test_not_implemented_decorator():

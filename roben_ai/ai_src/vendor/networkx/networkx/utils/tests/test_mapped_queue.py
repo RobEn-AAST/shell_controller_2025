@@ -1,6 +1,6 @@
 import pytest
 
-from ai_src.vendor.networkx.networkx.utils.mapped_queue import MappedQueue, _HeapElement
+from networkx.utils.mapped_queue import MappedQueue, _HeapElement
 
 
 def test_HeapElement_gtlt():

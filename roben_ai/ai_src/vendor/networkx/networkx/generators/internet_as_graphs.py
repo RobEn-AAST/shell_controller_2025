@@ -1,7 +1,7 @@
 """Generates graphs resembling the Internet Autonomous System network"""
 
-from ai_src.vendor.networkx import networkx as nx
-from ai_src.vendor.networkx.networkx.utils import py_random_state
+import networkx as nx
+from networkx.utils import py_random_state
 
 __all__ = ["random_internet_as_graph"]
 

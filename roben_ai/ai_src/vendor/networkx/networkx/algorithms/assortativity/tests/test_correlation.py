@@ -4,8 +4,8 @@ np = pytest.importorskip("numpy")
 pytest.importorskip("scipy")
 
 
-from ai_src.vendor.networkx import networkx as nx
-from ai_src.vendor.networkx.networkx.algorithms.assortativity.correlation import attribute_ac
+import networkx as nx
+from networkx.algorithms.assortativity.correlation import attribute_ac
 
 from .base_test import BaseTestAttributeMixing, BaseTestDegreeMixing
 

@@ -2,7 +2,7 @@ import pytest
 
 np = pytest.importorskip("numpy")
 
-from ai_src.vendor.networkx import networkx as nx
+import networkx as nx
 
 
 def test_attr_matrix():

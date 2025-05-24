@@ -1,5 +1,5 @@
-from ai_src.vendor.networkx import networkx as nx
-from ai_src.vendor.networkx.networkx.utils.decorators import not_implemented_for, py_random_state
+import networkx as nx
+from networkx.utils.decorators import not_implemented_for, py_random_state
 
 __all__ = ["randomized_partitioning", "one_exchange"]
 

@@ -3,9 +3,9 @@ import pytest
 np = pytest.importorskip("numpy")
 import random
 
-from ai_src.vendor.networkx import networkx as nx
-from ai_src.vendor.networkx.networkx.algorithms import approximation as approx
-from ai_src.vendor.networkx.networkx.algorithms import threshold
+import networkx as nx
+from networkx.algorithms import approximation as approx
+from networkx.algorithms import threshold
 
 progress = 0
 

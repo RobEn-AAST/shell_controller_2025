@@ -7,8 +7,8 @@ from collections import defaultdict
 from itertools import combinations
 from operator import itemgetter
 
-from ai_src.vendor.networkx import networkx as nx
-from ai_src.vendor.networkx.networkx.algorithms.flow import (
+import networkx as nx
+from networkx.algorithms.flow import (
     build_residual_network,
     edmonds_karp,
     shortest_augmenting_path,

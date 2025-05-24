@@ -3,18 +3,18 @@
 from copy import deepcopy
 from functools import cached_property
 
-from ai_src.vendor.networkx import networkx as nx
-from ai_src.vendor.networkx.networkx import convert
-from ai_src.vendor.networkx.networkx.classes.coreviews import AdjacencyView
-from ai_src.vendor.networkx.networkx.classes.graph import Graph
-from ai_src.vendor.networkx.networkx.classes.reportviews import (
+import networkx as nx
+from networkx import convert
+from networkx.classes.coreviews import AdjacencyView
+from networkx.classes.graph import Graph
+from networkx.classes.reportviews import (
     DiDegreeView,
     InDegreeView,
     InEdgeView,
     OutDegreeView,
     OutEdgeView,
 )
-from ai_src.vendor.networkx.networkx.exception import NetworkXError
+from networkx.exception import NetworkXError
 
 __all__ = ["DiGraph"]
 

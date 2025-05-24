@@ -4,9 +4,9 @@ Dinitz' algorithm for maximum flow problems.
 
 from collections import deque
 
-from ai_src.vendor.networkx import networkx as nx
-from ai_src.vendor.networkx.networkx.algorithms.flow.utils import build_residual_network
-from ai_src.vendor.networkx.networkx.utils import pairwise
+import networkx as nx
+from networkx.algorithms.flow.utils import build_residual_network
+from networkx.utils import pairwise
 
 __all__ = ["dinitz"]
 
@@ -104,7 +104,7 @@ def dinitz(G, s, t, capacity="capacity", residual=None, value_only=False, cutoff
 
     Examples
     --------
-    >>> from ai_src.vendor.networkx.networkx.algorithms.flow import dinitz
+    >>> from networkx.algorithms.flow import dinitz
 
     The functions that implement flow algorithms and output a residual
     network, such as this one, are not imported to the base NetworkX

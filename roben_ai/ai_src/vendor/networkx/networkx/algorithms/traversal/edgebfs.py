@@ -9,7 +9,7 @@ Algorithms for a breadth-first traversal of edges in a graph.
 
 from collections import deque
 
-from ai_src.vendor.networkx import networkx as nx
+import networkx as nx
 
 FORWARD = "forward"
 REVERSE = "reverse"

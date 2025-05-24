@@ -2,7 +2,7 @@
 
 from collections import defaultdict
 
-from ai_src.vendor.networkx import networkx as nx
+import networkx as nx
 
 __all__ = [
     "dfs_edges",

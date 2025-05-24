@@ -1,8 +1,8 @@
 import pytest
 
-from ai_src.vendor.networkx import networkx as nx
-from ai_src.vendor.networkx.networkx.algorithms import flow
-from ai_src.vendor.networkx.networkx.utils import pairwise
+import networkx as nx
+from networkx.algorithms import flow
+from networkx.utils import pairwise
 
 flow_funcs = [
     flow.boykov_kolmogorov,

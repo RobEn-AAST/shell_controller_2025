@@ -1,7 +1,7 @@
 import pytest
 
-from ai_src.vendor.networkx import networkx as nx
-from ai_src.vendor.networkx.networkx.algorithms.isomorphism.isomorph import graph_could_be_isomorphic
+import networkx as nx
+from networkx.algorithms.isomorphism.isomorph import graph_could_be_isomorphic
 
 is_isomorphic = graph_could_be_isomorphic
 

@@ -4,7 +4,7 @@ from textwrap import dedent
 
 import pytest
 
-from ai_src.vendor.networkx import networkx as nx
+import networkx as nx
 
 
 def test_generate_network_text_forest_directed():
@@ -1724,7 +1724,7 @@ def test_network_text_round_trip(vertical_chains, ascii_only):
     the same as the original graph. Passing this test is strong validation of
     both the format generator and parser.
     """
-    from ai_src.vendor.networkx.networkx.readwrite.text import _parse_network_text
+    from networkx.readwrite.text import _parse_network_text
 
     for graph in generate_test_graphs():
         graph = nx.relabel_nodes(graph, {n: str(n) for n in graph.nodes})

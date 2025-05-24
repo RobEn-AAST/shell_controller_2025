@@ -3,8 +3,8 @@ import pytest
 pytest.importorskip("numpy")
 pytest.importorskip("scipy")
 
-from ai_src.vendor.networkx import networkx as nx
-from ai_src.vendor.networkx.networkx.algorithms import node_classification
+import networkx as nx
+from networkx.algorithms import node_classification
 
 
 class TestHarmonicFunction:

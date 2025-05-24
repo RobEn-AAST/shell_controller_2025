@@ -2,8 +2,8 @@
 
 import math
 
-from ai_src.vendor.networkx import networkx as nx
-from ai_src.vendor.networkx.networkx.utils import py_random_state
+import networkx as nx
+from networkx.utils import py_random_state
 
 __all__ = ["double_edge_swap", "connected_double_edge_swap", "directed_edge_swap"]
 

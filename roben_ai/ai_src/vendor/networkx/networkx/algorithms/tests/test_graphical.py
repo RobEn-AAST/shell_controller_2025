@@ -1,6 +1,6 @@
 import pytest
 
-from ai_src.vendor.networkx import networkx as nx
+import networkx as nx
 
 
 def test_valid_degree_sequence1():
@@ -42,7 +42,7 @@ class TestAtlas:
     @classmethod
     def setup_class(cls):
         global atlas
-        from ai_src.vendor.networkx.networkx.generators import atlas
+        from networkx.generators import atlas
 
         cls.GAG = atlas.graph_atlas_g()
 

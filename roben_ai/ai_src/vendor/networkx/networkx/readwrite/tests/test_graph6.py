@@ -2,9 +2,9 @@ from io import BytesIO
 
 import pytest
 
-from ai_src.vendor.networkx import networkx as nx
+import networkx as nx
 import networkx.readwrite.graph6 as g6
-from ai_src.vendor.networkx.networkx.utils import edges_equal, nodes_equal
+from networkx.utils import edges_equal, nodes_equal
 
 
 class TestGraph6Utils:

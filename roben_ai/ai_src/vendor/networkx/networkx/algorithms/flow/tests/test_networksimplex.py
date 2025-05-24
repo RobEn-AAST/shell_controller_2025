@@ -5,7 +5,7 @@ import pickle
 
 import pytest
 
-from ai_src.vendor.networkx import networkx as nx
+import networkx as nx
 
 
 @pytest.fixture
@@ -143,7 +143,7 @@ def test_google_or_tools_example2():
 
 def test_large():
     fname = (
-        importlib.resources.files("ai_src.vendor.networkx.networkx.algorithms.flow.tests")
+        importlib.resources.files("networkx.algorithms.flow.tests")
         / "netgen-2.gpickle.bz2"
     )
 

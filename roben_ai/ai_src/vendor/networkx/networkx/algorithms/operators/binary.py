@@ -2,7 +2,7 @@
 Operations on graphs including union, intersection, difference.
 """
 
-from ai_src.vendor.networkx import networkx as nx
+import networkx as nx
 
 __all__ = [
     "union",

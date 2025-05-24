@@ -13,9 +13,9 @@ See http://www.algorithmic-solutions.info/leda_guide/graphs/leda_native_graph_fi
 
 __all__ = ["read_leda", "parse_leda"]
 
-from ai_src.vendor.networkx import networkx as nx
-from ai_src.vendor.networkx.networkx.exception import NetworkXError
-from ai_src.vendor.networkx.networkx.utils import open_file
+import networkx as nx
+from networkx.exception import NetworkXError
+from networkx.utils import open_file
 
 
 @open_file(0, mode="rb")

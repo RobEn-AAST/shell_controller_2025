@@ -1,6 +1,6 @@
 from itertools import combinations
 
-from ai_src.vendor.networkx import networkx as nx
+import networkx as nx
 
 __all__ = ["dispersion"]
 

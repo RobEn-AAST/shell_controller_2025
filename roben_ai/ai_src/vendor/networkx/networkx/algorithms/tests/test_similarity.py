@@ -1,12 +1,12 @@
 import pytest
 
-from ai_src.vendor.networkx import networkx as nx
-from ai_src.vendor.networkx.networkx.algorithms.similarity import (
+import networkx as nx
+from networkx.algorithms.similarity import (
     graph_edit_distance,
     optimal_edit_paths,
     optimize_graph_edit_distance,
 )
-from ai_src.vendor.networkx.networkx.generators.classic import (
+from networkx.generators.classic import (
     circular_ladder_graph,
     cycle_graph,
     path_graph,

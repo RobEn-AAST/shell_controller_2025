@@ -5,7 +5,7 @@ Cuthill-McKee ordering of graph nodes to produce sparse matrices
 from collections import deque
 from operator import itemgetter
 
-from ai_src.vendor.networkx import networkx as nx
+import networkx as nx
 
 from ..utils import arbitrary_element
 
@@ -35,7 +35,7 @@ def cuthill_mckee_ordering(G, heuristic=None):
 
     Examples
     --------
-    >>> from ai_src.vendor.networkx.networkx.utils import cuthill_mckee_ordering
+    >>> from networkx.utils import cuthill_mckee_ordering
     >>> G = nx.path_graph(4)
     >>> rcm = list(cuthill_mckee_ordering(G))
     >>> A = nx.adjacency_matrix(G, nodelist=rcm)
@@ -93,7 +93,7 @@ def reverse_cuthill_mckee_ordering(G, heuristic=None):
 
     Examples
     --------
-    >>> from ai_src.vendor.networkx.networkx.utils import reverse_cuthill_mckee_ordering
+    >>> from networkx.utils import reverse_cuthill_mckee_ordering
     >>> G = nx.path_graph(4)
     >>> rcm = list(reverse_cuthill_mckee_ordering(G))
     >>> A = nx.adjacency_matrix(G, nodelist=rcm)

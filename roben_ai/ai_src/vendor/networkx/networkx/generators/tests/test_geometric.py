@@ -4,7 +4,7 @@ from itertools import combinations
 
 import pytest
 
-from ai_src.vendor.networkx import networkx as nx
+import networkx as nx
 
 
 def l1dist(x, y):

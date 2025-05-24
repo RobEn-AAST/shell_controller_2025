@@ -5,8 +5,8 @@ import math
 from itertools import chain, combinations, zip_longest
 from operator import itemgetter
 
-from ai_src.vendor.networkx import networkx as nx
-from ai_src.vendor.networkx.networkx.utils import py_random_state, random_weighted_sample
+import networkx as nx
+from networkx.utils import py_random_state, random_weighted_sample
 
 __all__ = [
     "configuration_model",

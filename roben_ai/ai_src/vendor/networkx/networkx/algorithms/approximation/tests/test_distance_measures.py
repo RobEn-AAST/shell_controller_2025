@@ -2,8 +2,8 @@
 
 import pytest
 
-from ai_src.vendor.networkx import networkx as nx
-from ai_src.vendor.networkx.networkx.algorithms.approximation import diameter
+import networkx as nx
+from networkx.algorithms.approximation import diameter
 
 
 class TestDiameter:

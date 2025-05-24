@@ -4,7 +4,7 @@ Equitable coloring of graphs with bounded degree.
 
 from collections import defaultdict
 
-from ai_src.vendor.networkx import networkx as nx
+import networkx as nx
 
 __all__ = ["equitable_color"]
 

@@ -5,10 +5,10 @@ communities).
 
 from itertools import combinations
 
-from ai_src.vendor.networkx import networkx as nx
-from ai_src.vendor.networkx.networkx import NetworkXError
-from ai_src.vendor.networkx.networkx.algorithms.community.community_utils import is_partition
-from ai_src.vendor.networkx.networkx.utils.decorators import argmap
+import networkx as nx
+from networkx import NetworkXError
+from networkx.algorithms.community.community_utils import is_partition
+from networkx.utils.decorators import argmap
 
 __all__ = ["modularity", "partition_quality"]
 

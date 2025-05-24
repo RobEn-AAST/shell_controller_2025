@@ -34,7 +34,7 @@ Examples
 
 Suppose G1 and G2 are isomorphic graphs. Verification is as follows:
 
->>> from ai_src.vendor.networkx.networkx.algorithms import isomorphism
+>>> from networkx.algorithms import isomorphism
 >>> G1 = nx.path_graph(4)
 >>> G2 = nx.path_graph(4)
 >>> GM = isomorphism.GraphMatcher(G1, G2)
@@ -167,7 +167,7 @@ class GraphMatcher:
         --------
         To create a GraphMatcher which checks for syntactic feasibility:
 
-        >>> from ai_src.vendor.networkx.networkx.algorithms import isomorphism
+        >>> from networkx.algorithms import isomorphism
         >>> G1 = nx.path_graph(4)
         >>> G2 = nx.path_graph(4)
         >>> GM = isomorphism.GraphMatcher(G1, G2)
@@ -613,7 +613,7 @@ class DiGraphMatcher(GraphMatcher):
         --------
         To create a GraphMatcher which checks for syntactic feasibility:
 
-        >>> from ai_src.vendor.networkx.networkx.algorithms import isomorphism
+        >>> from networkx.algorithms import isomorphism
         >>> G1 = nx.DiGraph(nx.path_graph(4, create_using=nx.DiGraph()))
         >>> G2 = nx.DiGraph(nx.path_graph(4, create_using=nx.DiGraph()))
         >>> DiGM = isomorphism.DiGraphMatcher(G1, G2)

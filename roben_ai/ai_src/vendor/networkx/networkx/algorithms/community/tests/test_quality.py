@@ -5,10 +5,10 @@ module.
 
 import pytest
 
-from ai_src.vendor.networkx import networkx as nx
-from ai_src.vendor.networkx.networkx import barbell_graph
-from ai_src.vendor.networkx.networkx.algorithms.community import modularity, partition_quality
-from ai_src.vendor.networkx.networkx.algorithms.community.quality import inter_community_edges
+import networkx as nx
+from networkx import barbell_graph
+from networkx.algorithms.community import modularity, partition_quality
+from networkx.algorithms.community.quality import inter_community_edges
 
 
 class TestPerformance:

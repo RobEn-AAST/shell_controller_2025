@@ -2,7 +2,7 @@
 Spectral bipartivity measure.
 """
 
-from ai_src.vendor.networkx import networkx as nx
+import networkx as nx
 
 __all__ = ["spectral_bipartivity"]
 
@@ -30,7 +30,7 @@ def spectral_bipartivity(G, nodes=None, weight="weight"):
 
     Examples
     --------
-    >>> from ai_src.vendor.networkx.networkx.algorithms import bipartite
+    >>> from networkx.algorithms import bipartite
     >>> G = nx.path_graph(4)
     >>> bipartite.spectral_bipartivity(G)
     1.0

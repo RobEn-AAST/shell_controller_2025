@@ -130,7 +130,7 @@ TikZ options details:   https://tikz.dev/tikz-actions
 import numbers
 import os
 
-from ai_src.vendor.networkx import networkx as nx
+import networkx as nx
 
 __all__ = [
     "to_latex_raw",

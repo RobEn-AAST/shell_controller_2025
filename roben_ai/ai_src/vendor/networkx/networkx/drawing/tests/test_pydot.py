@@ -4,8 +4,8 @@ from io import StringIO
 
 import pytest
 
-from ai_src.vendor.networkx import networkx as nx
-from ai_src.vendor.networkx.networkx.utils import graphs_equal
+import networkx as nx
+from networkx.utils import graphs_equal
 
 pydot = pytest.importorskip("pydot")
 

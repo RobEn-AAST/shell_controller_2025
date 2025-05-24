@@ -2,8 +2,8 @@
 
 from itertools import chain
 
-from ai_src.vendor.networkx import networkx as nx
-from ai_src.vendor.networkx.networkx.utils import arbitrary_element
+import networkx as nx
+from networkx.utils import arbitrary_element
 
 __all__ = ["dominating_set", "is_dominating_set"]
 

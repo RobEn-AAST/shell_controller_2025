@@ -1,4 +1,4 @@
-from ai_src.vendor.networkx import networkx as nx
+import networkx as nx
 
 
 def test_wiener_index_of_disconnected_graph():

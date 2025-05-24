@@ -1,6 +1,6 @@
 from collections import defaultdict
 
-from ai_src.vendor.networkx import networkx as nx
+import networkx as nx
 
 __all__ = ["k_clique_communities"]
 

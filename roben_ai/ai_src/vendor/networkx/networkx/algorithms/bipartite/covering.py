@@ -1,9 +1,9 @@
 """Functions related to graph covers."""
 
-from ai_src.vendor.networkx import networkx as nx
-from ai_src.vendor.networkx.networkx.algorithms.bipartite.matching import hopcroft_karp_matching
-from ai_src.vendor.networkx.networkx.algorithms.covering import min_edge_cover as _min_edge_cover
-from ai_src.vendor.networkx.networkx.utils import not_implemented_for
+import networkx as nx
+from networkx.algorithms.bipartite.matching import hopcroft_karp_matching
+from networkx.algorithms.covering import min_edge_cover as _min_edge_cover
+from networkx.utils import not_implemented_for
 
 __all__ = ["min_edge_cover"]
 

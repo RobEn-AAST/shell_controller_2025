@@ -4,7 +4,7 @@ Minimum cost flow algorithms on directed connected graphs.
 
 __all__ = ["min_cost_flow_cost", "min_cost_flow", "cost_of_flow", "max_flow_min_cost"]
 
-from ai_src.vendor.networkx import networkx as nx
+import networkx as nx
 
 
 @nx._dispatchable(
@@ -338,7 +338,7 @@ def max_flow_min_cost(G, s, t, capacity="capacity", weight="weight"):
     >>> mincost = nx.cost_of_flow(G, mincostFlow)
     >>> mincost
     373
-    >>> from ai_src.vendor.networkx.networkx.algorithms.flow import maximum_flow
+    >>> from networkx.algorithms.flow import maximum_flow
     >>> maxFlow = maximum_flow(G, 1, 7)[1]
     >>> nx.cost_of_flow(G, maxFlow) >= mincost
     True

@@ -6,8 +6,8 @@ import sys
 import warnings
 from collections import defaultdict
 
-from ai_src.vendor.networkx import networkx as nx
-from ai_src.vendor.networkx.networkx.utils import open_file
+import networkx as nx
+from networkx.utils import open_file
 
 __all__ = ["generate_network_text", "write_network_text"]
 

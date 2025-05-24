@@ -1,11 +1,11 @@
 import itertools
 
-from ai_src.vendor.networkx import networkx as nx
-from ai_src.vendor.networkx.networkx.algorithms.approximation import (
+import networkx as nx
+from networkx.algorithms.approximation import (
     treewidth_min_degree,
     treewidth_min_fill_in,
 )
-from ai_src.vendor.networkx.networkx.algorithms.approximation.treewidth import (
+from networkx.algorithms.approximation.treewidth import (
     MinDegreeHeuristic,
     min_fill_in_heuristic,
 )

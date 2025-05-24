@@ -2,7 +2,7 @@
 
 import itertools
 
-from ai_src.vendor.networkx import networkx as nx
+import networkx as nx
 
 
 def test_visibility_graph__empty_series__empty_graph():

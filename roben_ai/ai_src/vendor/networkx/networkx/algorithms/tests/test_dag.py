@@ -3,8 +3,8 @@ from itertools import combinations, permutations
 
 import pytest
 
-from ai_src.vendor.networkx import networkx as nx
-from ai_src.vendor.networkx.networkx.utils import edges_equal, pairwise
+import networkx as nx
+from networkx.utils import edges_equal, pairwise
 
 
 # Recipe from the itertools documentation.

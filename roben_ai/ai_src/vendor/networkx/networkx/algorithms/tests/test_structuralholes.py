@@ -4,8 +4,8 @@ import math
 
 import pytest
 
-from ai_src.vendor.networkx import networkx as nx
-from ai_src.vendor.networkx.networkx.classes.tests import dispatch_interface
+import networkx as nx
+from networkx.classes.tests import dispatch_interface
 
 
 class TestStructuralHoles:

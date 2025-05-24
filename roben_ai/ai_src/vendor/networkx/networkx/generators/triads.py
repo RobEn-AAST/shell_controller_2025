@@ -7,8 +7,8 @@ digraphs on three nodes.
 
 """
 
-from ai_src.vendor.networkx import networkx as nx
-from ai_src.vendor.networkx.networkx.classes import DiGraph
+import networkx as nx
+from networkx.classes import DiGraph
 
 __all__ = ["triad_graph"]
 

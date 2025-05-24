@@ -3,9 +3,9 @@ import pytest
 np = pytest.importorskip("numpy")
 sp = pytest.importorskip("scipy")
 
-from ai_src.vendor.networkx import networkx as nx
-from ai_src.vendor.networkx.networkx.generators.classic import barbell_graph, cycle_graph, path_graph
-from ai_src.vendor.networkx.networkx.utils import graphs_equal
+import networkx as nx
+from networkx.generators.classic import barbell_graph, cycle_graph, path_graph
+from networkx.utils import graphs_equal
 
 
 class TestConvertScipy:

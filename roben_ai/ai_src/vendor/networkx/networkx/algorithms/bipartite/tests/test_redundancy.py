@@ -2,8 +2,8 @@
 
 import pytest
 
-from ai_src.vendor.networkx.networkx import NetworkXError, cycle_graph
-from ai_src.vendor.networkx.networkx.algorithms.bipartite import complete_bipartite_graph, node_redundancy
+from networkx import NetworkXError, cycle_graph
+from networkx.algorithms.bipartite import complete_bipartite_graph, node_redundancy
 
 
 def test_no_redundant_nodes():

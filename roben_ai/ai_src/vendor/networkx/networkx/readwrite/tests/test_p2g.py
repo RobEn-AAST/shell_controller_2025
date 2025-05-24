@@ -1,8 +1,8 @@
 import io
 
-from ai_src.vendor.networkx import networkx as nx
-from ai_src.vendor.networkx.networkx.readwrite.p2g import read_p2g, write_p2g
-from ai_src.vendor.networkx.networkx.utils import edges_equal
+import networkx as nx
+from networkx.readwrite.p2g import read_p2g, write_p2g
+from networkx.utils import edges_equal
 
 
 class TestP2G:

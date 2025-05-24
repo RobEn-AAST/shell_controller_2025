@@ -1,6 +1,6 @@
 import io
 
-from ai_src.vendor.networkx import networkx as nx
+import networkx as nx
 
 
 class TestLEDA:

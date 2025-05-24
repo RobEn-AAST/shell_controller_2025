@@ -4,8 +4,8 @@ Tests for degree centrality.
 
 import pytest
 
-from ai_src.vendor.networkx import networkx as nx
-from ai_src.vendor.networkx.networkx.algorithms.centrality import harmonic_centrality
+import networkx as nx
+from networkx.algorithms.centrality import harmonic_centrality
 
 
 class TestClosenessCentrality:

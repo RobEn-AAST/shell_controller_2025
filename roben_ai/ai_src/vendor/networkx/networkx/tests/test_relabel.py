@@ -1,8 +1,8 @@
 import pytest
 
-from ai_src.vendor.networkx import networkx as nx
-from ai_src.vendor.networkx.networkx.generators.classic import empty_graph
-from ai_src.vendor.networkx.networkx.utils import edges_equal, nodes_equal
+import networkx as nx
+from networkx.generators.classic import empty_graph
+from networkx.utils import edges_equal, nodes_equal
 
 
 class TestRelabel:

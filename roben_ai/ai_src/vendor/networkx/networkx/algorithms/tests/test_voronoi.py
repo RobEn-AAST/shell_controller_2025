@@ -1,5 +1,5 @@
-from ai_src.vendor.networkx import networkx as nx
-from ai_src.vendor.networkx.networkx.utils import pairwise
+import networkx as nx
+from networkx.utils import pairwise
 
 
 class TestVoronoiCells:

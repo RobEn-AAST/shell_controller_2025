@@ -17,8 +17,8 @@ import itertools as it
 import math
 from collections import defaultdict, namedtuple
 
-from ai_src.vendor.networkx import networkx as nx
-from ai_src.vendor.networkx.networkx.utils import not_implemented_for, py_random_state
+import networkx as nx
+from networkx.utils import not_implemented_for, py_random_state
 
 __all__ = ["k_edge_augmentation", "is_k_edge_connected", "is_locally_k_edge_connected"]
 
@@ -108,7 +108,7 @@ def is_locally_k_edge_connected(G, s, t, k):
 
     Examples
     --------
-    >>> from ai_src.vendor.networkx.networkx.algorithms.connectivity import is_locally_k_edge_connected
+    >>> from networkx.algorithms.connectivity import is_locally_k_edge_connected
     >>> G = nx.barbell_graph(10, 0)
     >>> is_locally_k_edge_connected(G, 5, 15, k=1)
     True

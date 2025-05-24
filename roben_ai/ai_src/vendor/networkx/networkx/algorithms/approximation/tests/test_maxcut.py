@@ -2,8 +2,8 @@ import random
 
 import pytest
 
-from ai_src.vendor.networkx import networkx as nx
-from ai_src.vendor.networkx.networkx.algorithms.approximation import maxcut
+import networkx as nx
+from networkx.algorithms.approximation import maxcut
 
 
 @pytest.mark.parametrize(

@@ -19,7 +19,7 @@ from collections import defaultdict, deque
 from collections.abc import Iterable, Iterator, Sized
 from itertools import chain, tee
 
-from ai_src.vendor.networkx import networkx as nx
+import networkx as nx
 
 __all__ = [
     "flatten",
@@ -233,7 +233,7 @@ def groups(many_to_one):
 
     Examples
     --------
-    >>> from ai_src.vendor.networkx.networkx.utils import groups
+    >>> from networkx.utils import groups
     >>> many_to_one = {"a": 1, "b": 1, "c": 2, "d": 3, "e": 3}
     >>> groups(many_to_one)  # doctest: +SKIP
     {1: {'a', 'b'}, 2: {'c'}, 3: {'e', 'd'}}

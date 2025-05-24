@@ -5,9 +5,9 @@ Threshold Graphs
 
 import pytest
 
-from ai_src.vendor.networkx import networkx as nx
+import networkx as nx
 import networkx.algorithms.threshold as nxt
-from ai_src.vendor.networkx.networkx.algorithms.isomorphism.isomorph import graph_could_be_isomorphic
+from networkx.algorithms.isomorphism.isomorph import graph_could_be_isomorphic
 
 cnlti = nx.convert_node_labels_to_integers
 

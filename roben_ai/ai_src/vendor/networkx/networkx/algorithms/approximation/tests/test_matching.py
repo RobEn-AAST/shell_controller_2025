@@ -1,4 +1,4 @@
-from ai_src.vendor.networkx import networkx as nx
+import networkx as nx
 import networkx.algorithms.approximation as a
 
 

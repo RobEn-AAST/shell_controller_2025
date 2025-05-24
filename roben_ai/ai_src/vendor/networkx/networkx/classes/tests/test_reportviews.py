@@ -3,9 +3,9 @@ from copy import deepcopy
 
 import pytest
 
-from ai_src.vendor.networkx import networkx as nx
-from ai_src.vendor.networkx.networkx.classes import reportviews as rv
-from ai_src.vendor.networkx.networkx.classes.reportviews import NodeDataView
+import networkx as nx
+from networkx.classes import reportviews as rv
+from networkx.classes.reportviews import NodeDataView
 
 
 # Nodes

@@ -2,8 +2,8 @@ import math
 
 import pytest
 
-from ai_src.vendor.networkx import networkx as nx
-from ai_src.vendor.networkx.networkx.algorithms.planar_drawing import triangulate_embedding
+import networkx as nx
+from networkx.algorithms.planar_drawing import triangulate_embedding
 
 
 def test_graph1():

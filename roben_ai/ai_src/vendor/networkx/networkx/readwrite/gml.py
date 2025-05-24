@@ -37,9 +37,9 @@ from enum import Enum
 from io import StringIO
 from typing import Any, NamedTuple
 
-from ai_src.vendor.networkx import networkx as nx
-from ai_src.vendor.networkx.networkx.exception import NetworkXError
-from ai_src.vendor.networkx.networkx.utils import open_file
+import networkx as nx
+from networkx.exception import NetworkXError
+from networkx.utils import open_file
 
 __all__ = ["read_gml", "parse_gml", "generate_gml", "write_gml"]
 

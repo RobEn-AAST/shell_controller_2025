@@ -21,7 +21,7 @@ See Also
 import os
 import tempfile
 
-from ai_src.vendor.networkx import networkx as nx
+import networkx as nx
 
 __all__ = [
     "from_agraph",

@@ -3,7 +3,7 @@
 import itertools
 from operator import itemgetter
 
-from ai_src.vendor.networkx import networkx as nx
+import networkx as nx
 
 __all__ = [
     "local_node_connectivity",
@@ -50,7 +50,7 @@ def local_node_connectivity(G, source, target, cutoff=None):
     --------
     >>> # Platonic octahedral graph has node connectivity 4
     >>> # for each non adjacent node pair
-    >>> from ai_src.vendor.networkx.networkx.algorithms import approximation as approx
+    >>> from networkx.algorithms import approximation as approx
     >>> G = nx.octahedral_graph()
     >>> approx.local_node_connectivity(G, 0, 5)
     4
@@ -145,7 +145,7 @@ def node_connectivity(G, s=None, t=None):
     Examples
     --------
     >>> # Platonic octahedral graph is 4-node-connected
-    >>> from ai_src.vendor.networkx.networkx.algorithms import approximation as approx
+    >>> from networkx.algorithms import approximation as approx
     >>> G = nx.octahedral_graph()
     >>> approx.node_connectivity(G)
     4

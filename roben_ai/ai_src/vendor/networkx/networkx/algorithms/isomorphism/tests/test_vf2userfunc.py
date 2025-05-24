@@ -5,7 +5,7 @@ Tests for VF2 isomorphism algorithm for weighted graphs.
 import math
 from operator import eq
 
-from ai_src.vendor.networkx import networkx as nx
+import networkx as nx
 import networkx.algorithms.isomorphism as iso
 
 

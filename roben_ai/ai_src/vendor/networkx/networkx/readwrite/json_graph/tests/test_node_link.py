@@ -2,8 +2,8 @@ import json
 
 import pytest
 
-from ai_src.vendor.networkx import networkx as nx
-from ai_src.vendor.networkx.networkx.readwrite.json_graph import node_link_data, node_link_graph
+import networkx as nx
+from networkx.readwrite.json_graph import node_link_data, node_link_graph
 
 
 def test_node_link_edges_default_future_warning():

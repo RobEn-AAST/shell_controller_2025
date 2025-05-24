@@ -4,7 +4,7 @@ Shortest augmenting path algorithm for maximum flow problems.
 
 from collections import deque
 
-from ai_src.vendor.networkx import networkx as nx
+import networkx as nx
 
 from .edmondskarp import edmonds_karp_core
 from .utils import CurrentEdge, build_residual_network
@@ -271,7 +271,7 @@ def shortest_augmenting_path(
 
     Examples
     --------
-    >>> from ai_src.vendor.networkx.networkx.algorithms.flow import shortest_augmenting_path
+    >>> from networkx.algorithms.flow import shortest_augmenting_path
 
     The functions that implement flow algorithms and output a residual
     network, such as this one, are not imported to the base NetworkX

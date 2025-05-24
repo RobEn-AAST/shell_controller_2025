@@ -7,8 +7,8 @@ import itertools
 import math
 from collections import defaultdict
 
-from ai_src.vendor.networkx import networkx as nx
-from ai_src.vendor.networkx.networkx.utils import py_random_state
+import networkx as nx
+from networkx.utils import py_random_state
 
 from ..utils.misc import check_create_using
 from .classic import complete_graph, empty_graph, path_graph, star_graph

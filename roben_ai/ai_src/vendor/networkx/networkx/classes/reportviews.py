@@ -86,7 +86,7 @@ EdgeDataView
 from abc import ABC
 from collections.abc import Mapping, Set
 
-from ai_src.vendor.networkx import networkx as nx
+import networkx as nx
 
 __all__ = [
     "NodeView",

@@ -12,9 +12,9 @@ following constraints:
 - Each call only involves two adjacent nodes: a sender and a receiver.
 """
 
-from ai_src.vendor.networkx import networkx as nx
-from ai_src.vendor.networkx.networkx import NetworkXError
-from ai_src.vendor.networkx.networkx.utils import not_implemented_for
+import networkx as nx
+from networkx import NetworkXError
+from networkx.utils import not_implemented_for
 
 __all__ = [
     "tree_broadcast_center",
