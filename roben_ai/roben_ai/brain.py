@@ -27,30 +27,34 @@ sys.path.insert(0, str(protobuf_dir))
 casadi_dir = (base_dir / '..' / 'ai_src' / 'vendor' / 'casadi').resolve()
 sys.path.insert(0, str(casadi_dir))
 
-
-print("SHAPELY PATH:", shapely_dir)
-print("ORTOOLS PATH:", ortools_dir)
-print("GOOGLE PATH:", google_dir)
-print("PROTOBUF PATH:", protobuf_dir)
-print("PROTOBUF PATH:", casadi_dir)
-
-#### END PATH SETTING ####
+# Add pygame
+pygame_dir = (base_dir / '..' / 'ai_src' / 'vendor' / 'pygame').resolve()
+sys.path.insert(0, str(pygame_dir))
 
 
-import random
+# Add self_driving
+self_driving_dir = (base_dir / '..' / 'ai_src' / 'self_driving').resolve()
+sys.path.insert(0, str(self_driving_dir))
+
+# Add ai_src (can be neglected, helps only debugger mode)
+ai_src_dir = (base_dir / '..').resolve()
+sys.path.insert(0, str(ai_src_dir))
+
 import rclpy
 from rclpy.node import Node
 import carla
-import numpy as np
-from ai_src.carla_others.agents.tools.misc import get_speed
-from ai_src.carla_others.agents.navigation.global_route_planner import GlobalRoutePlannerLegacy
-from ai_src.carla_others.agents.tools.sensors import RadarSensor
-from ai_src.carla_others.agents.navigation.autonomous_agent import AutonomousAgent
-from ai_src.navigator.wp_utils import xyz_to_right_lane
+from ai_src.navigator.wp_utils import xyz_to_locs
+from ai_src.carla_others.agents.navigation.global_route_planner import GlobalRoutePlanner
 from ai_src.navigator.tsp_solver import optimize_route_order
 from ai_src.navigator.test import spawn_traffic
 import time
-import math
+import pygame
+
+import carla
+
+from manual_control import KeyboardControl
+from hud import HUD
+from ego_vehicle import World
 
 
 # pytorch stablebaseline gymansium
@@ -72,8 +76,8 @@ class Brain(Node):
         self.map = self.world.get_map()
         self.ego_vehicle = None
 
-        # if carla_host == 'localhost':
-        #     spawn_traffic(self.client, 70, 30)
+        if carla_host == 'localhost':
+            spawn_traffic(self.client, 70, 30)
 
         total_connect_attempts = 40
         for i in range(total_connect_attempts):
@@ -83,11 +87,7 @@ class Brain(Node):
                 self.get_logger().info(f"attempt {i}/{total_connect_attempts} failed, retrying in 1 scond")
                 time.sleep(1)
 
-        self.front_radar = RadarSensor(self.ego_vehicle, x=0.5, y=0.0, z=1.0, yaw=0.0)
-        self.left_front_radar = RadarSensor(self.ego_vehicle, x=1.0, y=-0.5, z=1.0, yaw=-25.0)
-        self.left_back_radar = RadarSensor(self.ego_vehicle, x=-1.0, y=-0.5, z=1.0, yaw=-155.0)
 
-            
         target_points = [
             [334.949799,-161.106171,0.001736],
             [339.100037,-258.568939,0.001679],
@@ -105,11 +105,8 @@ class Brain(Node):
             [184.758713,-199.424271,0.001680],
         ]
         sampling_resolution = 1.0
-
-        target_locations = xyz_to_right_lane(target_points, self.map)
-
-        grp = GlobalRoutePlannerLegacy(self.map, sampling_resolution)
-
+        target_locations = xyz_to_locs(target_points, self.map)
+        grp = GlobalRoutePlanner(self.map, sampling_resolution)
         optimized_targets = optimize_route_order(
             self.ego_vehicle.get_location(),
             target_locations,
@@ -121,8 +118,45 @@ class Brain(Node):
             self.get_logger().info(f"point {i}: x= {point.x}, y={point.y}, z={point.z}")  
         self.get_logger().info("\n\n\n\nOPTIMIZED TARGETS ORDER END\n\n\n\n")  
 
+
         # ======= MOVE VEHICLE ========  
-        self.agent = AutonomousAgent(self)  # cautious, normal, aggressive  
+        pygame.init()
+        pygame.font.init()
+        display = pygame.display.set_mode(
+            (1280, 720),
+            pygame.HWSURFACE | pygame.DOUBLEBUF)
+        hud = HUD(1280, 720)
+
+        driver_agent = World(carla_world=self.world, hud=hud, agent_str='Autonomous')
+        driver_agent.agent._target_speed = 40  
+        # driver_agent.agent.update_parameters()
+
+        controller = KeyboardControl(driver_agent, start_in_autopilot=True)
+
+        # Manually start the vehicle to avoid control delay
+        driver_agent.player.apply_control(carla.VehicleControl(manual_gear_shift=True, gear=1))
+        driver_agent.player.apply_control(carla.VehicleControl(manual_gear_shift=False))
+
+        clock = pygame.time.Clock()
+
+        while True:
+            # Keyboard control
+            clock.tick_busy_loop(60)
+            if controller.parse_events(self.client, driver_agent, clock):
+                return
+
+            driver_agent.world.wait_for_tick(5.0)
+            driver_agent.tick(clock)
+            driver_agent.render(display)
+            pygame.display.flip()
+        
+            control = driver_agent.agent.run_step(debug=True)
+
+            # Agent autopilot
+            if driver_agent.autopilot_mode:
+                # control signal to vehicle        
+                control.manual_gear_shift = False
+                driver_agent.player.apply_control(control)
         
         # Initialize waypoint index  
         current_waypoint_index = 0  
@@ -177,45 +211,6 @@ class Brain(Node):
                 self.last_debug_time = current_time
 
     
-    def _overtake(self):
-        # Check if vehicle is stuck behind another vehicle  
-        vehicle_list = self.world.get_actors().filter("*vehicle*")  
-        ego_location = self.ego_vehicle.get_location()  
-        ego_waypoint = self.map.get_waypoint(ego_location)  
-        
-        # Detect if there's a slow/stopped vehicle ahead  
-        overtake_thresh_dist = 15
-        affected_by_vehicle, blocking_vehicle, distance = self.agent._vehicle_obstacle_detected(vehicle_list, overtake_thresh_dist)  
-        
-        if affected_by_vehicle and not self.overtaking:  
-            # Check if the blocking vehicle is moving slowly  
-            blocking_speed = blocking_vehicle.get_velocity().length()  
-            self.get_logger().info(f"a vehicle with speed {blocking_speed} is currently affecting us...")
-            if blocking_speed < 1.0:  # Less than 1 m/s  
-                self.stuck_timer += 0.05  # Assuming 20 FPS  
-                if self.stuck_timer > self.stuck_threshold:  
-                    self.get_logger().info("Attempting overtake...")
-                    # Initiate overtaking  
-                    self.overtaking = True  
-                    self.original_lane_id = ego_waypoint.lane_id  
-                    # Try left lane first, then right  
-                    self.agent.lane_change('left')  
-                    self.stuck_timer = 0  
-            else:  
-                self.stuck_timer = 0  
-        elif self.overtaking:  
-            # Check if we can return to original lane  
-            current_waypoint = self.ego_vehicle.get_world().get_map().get_waypoint(ego_location)  
-            if current_waypoint.lane_id != self.original_lane_id: 
-                # Check if we've passed the obstacle  
-                if not affected_by_vehicle:  
-                    self.get_logger().info('overtake done...')
-                    # Return to original lane  
-                    if self.original_lane_id < current_waypoint.lane_id:  
-                        self.agent.lane_change('right')  
-                    else:  
-                        self.agent.lane_change('left')  
-                    self.overtaking = False  
 
 
 def main(args=None):

@@ -2,7 +2,7 @@ import carla
 import numpy as np
 from car_dreamer.toolkit.planner.agents.navigation.global_route_planner import GlobalRoutePlanner
 from car_dreamer.toolkit.planner.agents.navigation.basic_agent import BasicAgent
-from navigator.wp_utils import xyz_to_right_lane
+from navigator.wp_utils import xyz_to_wp
 from navigator.visualize import CarlaVisualizer
 from navigator.tsp_solver import optimize_route_order
 from navigator.route_generator import generate_full_route
@@ -40,7 +40,7 @@ target_points = [
 ]
 sampling_resolution = 1.0
 
-target_locations = xyz_to_right_lane(target_points, carla_map)
+target_locations = xyz_to_wp(target_points, carla_map)
 
 grp = GlobalRoutePlanner(carla_map, sampling_resolution)
 
