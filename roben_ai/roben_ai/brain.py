@@ -20,14 +20,20 @@ google_dir = (base_dir / '..' / 'ai_src' / 'vendor' / 'google').resolve()
 sys.path.insert(0, str(google_dir))
 
 # Add protobuf to sys.path
-protobuf = (base_dir / '..' / 'ai_src' / 'vendor' / 'protobuf').resolve()
-sys.path.insert(0, str(protobuf))
+protobuf_dir = (base_dir / '..' / 'ai_src' / 'vendor' / 'protobuf').resolve()
+sys.path.insert(0, str(protobuf_dir))
+
+
+# Add casadi
+casadi_dir = (base_dir / '..' / 'ai_src' / 'vendor' / 'casadi').resolve()
+sys.path.insert(0, str(casadi_dir))
 
 
 print("SHAPELY PATH:", shapely_dir)
 print("ORTOOLS PATH:", ortools_dir)
 print("GOOGLE PATH:", google_dir)
-print("GOOGLE PATH:", google_dir)
+print("PROTOBUF PATH:", protobuf_dir)
+print("PROTOBUF PATH:", casadi_dir)
 
 #### END PATH SETTING ####
 
@@ -38,12 +44,14 @@ from rclpy.node import Node
 import carla
 import numpy as np
 from ai_src.carla_others.agents.tools.misc import get_speed
-from ai_src.carla_others.agents.navigation.global_route_planner import GlobalRoutePlanner
+from ai_src.carla_others.agents.navigation.global_route_planner import GlobalRoutePlannerLegacy
+from ai_src.carla_others.agents.tools.sensors import RadarSensor
 from ai_src.carla_others.agents.navigation.autonomous_agent import AutonomousAgent
 from ai_src.navigator.wp_utils import xyz_to_right_lane
 from ai_src.navigator.tsp_solver import optimize_route_order
 from ai_src.navigator.test import spawn_traffic
 import time
+import math
 
 
 # pytorch stablebaseline gymansium
@@ -62,12 +70,12 @@ class Brain(Node):
         self.client = carla.Client(carla_host, 2000) # type: ignore
         self.client.set_timeout(20)
         self.world = self.client.get_world()
+        self.map = self.world.get_map()
+        self.ego_vehicle = None
 
         # if carla_host == 'localhost':
         #     spawn_traffic(self.client, 70, 30)
 
-        self.carla_map = self.world.get_map()
-        self.ego_vehicle = None
         total_connect_attempts = 40
         for i in range(total_connect_attempts):
             try:
@@ -75,6 +83,11 @@ class Brain(Node):
             except Exception:
                 self.get_logger().info(f"attempt {i}/{total_connect_attempts} failed, retrying in 1 scond")
                 time.sleep(1)
+
+        self.front_radar = RadarSensor(self.ego_vehicle, x=0.5, y=0.0, z=1.0, yaw=0.0)
+        self.left_front_radar = RadarSensor(self.ego_vehicle, x=1.0, y=-0.5, z=1.0, yaw=-25.0)
+        self.left_back_radar = RadarSensor(self.ego_vehicle, x=-1.0, y=-0.5, z=1.0, yaw=-155.0)
+
             
         target_points = [
             [334.949799,-161.106171,0.001736],
@@ -94,9 +107,9 @@ class Brain(Node):
         ]
         sampling_resolution = 1.0
 
-        target_locations = xyz_to_right_lane(target_points, self.carla_map)
+        target_locations = xyz_to_right_lane(target_points, self.map)
 
-        grp = GlobalRoutePlanner(self.carla_map, sampling_resolution)
+        grp = GlobalRoutePlannerLegacy(self.map, sampling_resolution)
 
         optimized_targets = optimize_route_order(
             self.ego_vehicle.get_location(),
@@ -110,7 +123,7 @@ class Brain(Node):
         self.get_logger().info("\n\n\n\nOPTIMIZED TARGETS ORDER END\n\n\n\n")  
 
         # ======= MOVE VEHICLE ========  
-        self.agent = AutonomousAgent(self.ego_vehicle)  # cautious, normal, aggressive  
+        self.agent = AutonomousAgent(self)  # cautious, normal, aggressive  
         
         # Initialize waypoint index  
         current_waypoint_index = 0  
@@ -153,7 +166,7 @@ class Brain(Node):
                 self.agent.set_destination(destination)
                 
                 # LOGGING INFO FOR DEBUGGING
-                self.get_logger().info(f"Moving to waypoint {current_waypoint_index}/{total_waypoints-1}")  
+                self.get_logger().info(f"Moving to waypoint {destination}, done_count: {current_waypoint_index}/{total_waypoints-1}")
 
             # DEBUG LOG DATA
             current_time = time.time()
@@ -162,8 +175,6 @@ class Brain(Node):
                 current_location = self.ego_vehicle.get_location()
 
                 self.get_logger().info(f"speed: {speed_kmh}, loc: {current_location.x:.2f}, {current_location.y:.2f}, {current_location.z:.2f} => {destination.x:.2f},{destination.y:.2f},{destination.z:.2f}")
-                
-
                 self.last_debug_time = current_time
 
     
@@ -171,7 +182,7 @@ class Brain(Node):
         # Check if vehicle is stuck behind another vehicle  
         vehicle_list = self.world.get_actors().filter("*vehicle*")  
         ego_location = self.ego_vehicle.get_location()  
-        ego_waypoint = self.carla_map.get_waypoint(ego_location)  
+        ego_waypoint = self.map.get_waypoint(ego_location)  
         
         # Detect if there's a slow/stopped vehicle ahead  
         overtake_thresh_dist = 15
@@ -207,7 +218,7 @@ class Brain(Node):
                         self.agent.lane_change('left')  
                     self.overtaking = False  
 
-                    
+
 def main(args=None):
     # start ros node
     rclpy.init(args=args)

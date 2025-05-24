@@ -28,3 +28,12 @@ CD into CarDreamer then execute this:
         pip install -r requirements.txt
 
 pip3 install ortools
+
+
+
+# how to compile from source
+download casadi-3.7.0-cp310-none-manylinux2014_x86_64    (python310 for 3.10, manylinuxx86_64 for 64_bit manylinux which is what they use for ubuntu and such)
+now make a dedicated forlder and unzip the wheel there
+`zeyadcode_jammy@zeyadcodeUbuntuJammy:~/Downloads/Lane-Navigation-for-Self-Driving-Car/agents/navigation$ unzip ~/Downloads/casadi-3.7.0-cp310-none-manylinux2014_x86_64.whl -d ~/ros_ws/src/shell_controller_2025/roben_ai/ai_src/vendor/casadi/`
+
+now add it as a sys path for the code as shown in the first few lines in brain.py

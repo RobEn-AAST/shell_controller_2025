@@ -36,7 +36,7 @@ class AutonomousAgent(Agent):
         """
         :param ego: ego to apply to local planner logic onto
         """
-        super(AutonomousAgent, self).__init__(ego.player)
+        super(AutonomousAgent, self).__init__(ego.ego_vehicle)
         self._ignore_traffic_lights = True  # Add this line
         self._world_obj = ego
 
@@ -44,7 +44,7 @@ class AutonomousAgent(Agent):
         self._target_speed = None
 
         # Local plannar
-        self._local_planner = LocalPlanner(ego.player)
+        self._local_planner = LocalPlanner(ego.ego_vehicle)
         self.update_parameters()
         
         # Global plannar
@@ -92,7 +92,7 @@ class AutonomousAgent(Agent):
         based on the route returned by the global router
         """
         start_waypoint = self._map.get_waypoint(self._vehicle.get_location())
-        end_waypoint = self._map.get_waypoint(carla.Location(location[0], location[1], location[2]))
+        end_waypoint = self._map.get_waypoint(carla.Location(location.x, location.y, location.z))
 
         route_trace = self._trace_route(start_waypoint, end_waypoint)   
         assert route_trace
@@ -323,8 +323,8 @@ class AutonomousAgent(Agent):
             # Record original destination
             destination = self._local_planner.get_global_destination()
             # Get lane change start location
-            ref_location = self._world_obj.player.get_location()
-            ref_yaw = self._world_obj.player.get_transform().rotation.yaw
+            ref_location = self._world_obj.ego_vehicle.get_location()
+            ref_yaw = self._world_obj.ego_vehicle.get_transform().rotation.yaw
 
             if self._local_planner.waypoint_buffer:
                 waypoint = self._local_planner.waypoint_buffer[-1][0]
@@ -351,8 +351,8 @@ class AutonomousAgent(Agent):
             # Record original destination
             destination = self._local_planner.get_global_destination()
             # Get lane change start location
-            ref_location = self._world_obj.player.get_location()
-            ref_yaw = self._world_obj.player.get_transform().rotation.yaw
+            ref_location = self._world_obj.ego_vehicle.get_location()
+            ref_yaw = self._world_obj.ego_vehicle.get_transform().rotation.yaw
 
             if self._local_planner.waypoint_buffer:
                 waypoint = self._local_planner.waypoint_buffer[-1][0]
