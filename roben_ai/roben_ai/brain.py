@@ -81,7 +81,7 @@ class Brain(Node):
         self.map = self.world.get_map()
         self.ego_vehicle = None
 
-        if carla_host == 'localhost':
+        if carla_host == "localhost":
             spawn_car_at(self.client, autopilot=False)
 
         total_connect_attempts = 40
@@ -159,6 +159,15 @@ class Brain(Node):
             driver_agent.tick(clock)
             driver_agent.render(display)
             pygame.display.flip()
+
+            # In your main update loop
+            driver_agent.front_radar.update()
+            driver_agent.left_front_radar.update()
+            driver_agent.left_back_radar.update()
+
+            if driver_agent.front_radar.detected:  
+                print(f"Front obstacle at relative position: {driver_agent.front_radar.rel_pos}")  
+                print(f"Relative velocity: {driver_agent.front_radar.rel_vel}")
 
             control = driver_agent.agent.run_step(debug=True)
 

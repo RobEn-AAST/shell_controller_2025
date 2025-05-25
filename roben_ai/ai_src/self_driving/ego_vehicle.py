@@ -87,9 +87,9 @@ class World(object):
         # Set up the sensors.
         # self.main_rgb_camera = CameraSet(self.player, self.hud)
 
-        self.front_radar = FakeRadarSensor(self.player, self.hud, x=0.5, y=0.0, z=1.0, yaw=0.0, fov=5, component=4)
-        self.left_front_radar = FakeRadarSensor(self.player, self.hud, x=1.0, y=-0.5, z=1.0, yaw=-25.0, component=4)
-        self.left_back_radar = FakeRadarSensor(self.player, self.hud, x=-1.0, y=-0.5, z=1.0, yaw=-155.0, component=4)
+        self.front_radar = FakeRadarSensor(self.player, self.hud, 'front_radar')  
+        self.left_front_radar = FakeRadarSensor(self.player, self.hud, 'left_front_radar')  
+        self.left_back_radar = FakeRadarSensor(self.player, self.hud, 'left_back_radar')
 
         self._ego_list = [
             self.front_radar,

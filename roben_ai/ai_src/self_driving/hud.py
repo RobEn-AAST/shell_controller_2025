@@ -87,27 +87,12 @@ class HUD(object):
         self._info_text += [
             '',
             'Front radar:']
-        if world.front_radar.obstacle is not None:
-            self._info_text.append('%2.1f m  %s' % (world.front_radar.distance,
-                                                    world.front_radar.obstacle.type_id))
-        else:
-            self._info_text.append(' ')
         self._info_text += [
             '',
             'Left-front radar:']
-        if world.left_front_radar.obstacle is not None:
-            self._info_text.append('%2.1f m  %s' % (world.left_front_radar.distance,
-                                                    world.left_front_radar.obstacle.type_id))
-        else:
-            self._info_text.append(' ')
         self._info_text += [
             '',
             'Left-back radar:']
-        if world.left_back_radar.obstacle is not None:
-            self._info_text.append('%2.1f m  %s' % (world.left_back_radar.distance,
-                                                    world.left_back_radar.obstacle.type_id))
-        else:
-            self._info_text.append(' ')
         self._info_text += [
             '',
             'Number of vehicles: % 8d' % len(vehicles)]
