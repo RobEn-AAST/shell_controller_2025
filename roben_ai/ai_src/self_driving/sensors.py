@@ -61,21 +61,21 @@ class FakeRadarSensor(object):
         """Get detection parameters based on radar type."""  
         if radar_type == 'front_radar':  
             return {  
-                'max_distance': 200, # 15.0,  
+                'max_distance': 100, # 15.0,  
                 'up_angle_th': 90,  
                 'low_angle_th': 0,  
                 'lane_offset': 0  
             }  
         elif radar_type == 'left_front_radar':  
             return {  
-                'max_distance': 200, # 10.0,  
+                'max_distance': 100, # 10.0,  
                 'up_angle_th': 120,  
                 'low_angle_th': 30,  
                 'lane_offset': -1  # Left lane  
             }  
         elif radar_type == 'left_back_radar':  
             return {  
-                'max_distance': 200, # 8.0,  
+                'max_distance': 100, # 8.0,  
                 'up_angle_th': 150,  
                 'low_angle_th': 120,  
                 'lane_offset': -1  # Left lane  

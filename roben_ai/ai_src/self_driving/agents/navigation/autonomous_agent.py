@@ -79,7 +79,7 @@ class AutonomousAgent(Agent):
 
     def update_parameters(self):
         self._THW =1.2
-        self._target_speed = 35 # it crashed at 47  and 40
+        self._target_speed = 30 # it crashed at 47  and 40
 
         CONTROLLER_TYPE = 'PID' # options: MPC, PID, STANLEY
         args_lateral_dict = {'K_P': 1.0, 'K_I': 0.4, 'K_D': 0.01, 'control_type': CONTROLLER_TYPE}
@@ -289,10 +289,11 @@ class AutonomousAgent(Agent):
                 lateral_displacement = abs(current_pos.y - self._lane_change_start_pos.y)  
                 
                 # Complete lane change after moving one lane width  
-                if lateral_displacement > 2.5:    
+                if lateral_displacement > 1.5:    
                     print("completed lane change")  
                     self._state = AgentState.NAVIGATING    
                     self._lane_change_start_pos = None  
+                    self._perform_lane_change = False
                     self._hazard_detected = False  
                     self._last_overtake_time = pygame.time.get_ticks()  # Set cooldown  
 
@@ -300,8 +301,8 @@ class AutonomousAgent(Agent):
         # 6, Emergency Brake
         emergency_distance = safe_distance *3/5
         emergency_front_speed = 1.0
-        # if self._front_r and self._front_r[1][0] < emergency_distance:
-        #     self._state = AgentState.EMERGENCY_BRAKE
+        if self._front_r and self._front_r[1][0] < emergency_distance:
+            self._state = AgentState.EMERGENCY_BRAKE
 
 
         # Local Planner Behavior according to states
@@ -337,35 +338,54 @@ class AutonomousAgent(Agent):
         elif self._state == AgentState.BLOCKED_RED_LIGHT:
             control = self._local_planner.empty_control(debug=debug)
 
-        # When performing a lane change
-        if self._perform_lane_change:
-            # Record original destination
-            destination = self._local_planner.get_global_destination()
-            # Get lane change start location
-            ref_location = self._world_obj.player.get_location()
-            ref_yaw = self._world_obj.player.get_transform().rotation.yaw
-
-            if self._local_planner.waypoint_buffer:
-                waypoint = self._local_planner.waypoint_buffer[-1][0]
-                ref_location = waypoint.transform.location
-            
-            wait_dist = 0.0  # need some time to plan
-            ref = [ref_location.x + wait_dist, ref_location.y, ref_yaw]
-
-            # Replace current plan with a lane change plan
-            overtake = BezierOverTake(self._world_obj)
-            overtake_plan = overtake.get_waypoints(ref)
-            self._local_planner.set_local_plan(overtake_plan)
-
-            # replan globally with new vehicle position after lane changing
-            new_start = self._map.get_waypoint(overtake_plan[-1][0].transform.location)
-            route_trace = self._trace_route(new_start, destination)
-            assert route_trace
-            self._local_planner.add_global_plan(route_trace)
-
-            self._perform_lane_change = False
-            print("overtake")
+        # # When performing a lane change  
+        # if self._perform_lane_change:
+        #     # Record original destination  
+        #     destination = self._local_planner.get_global_destination()  
+        #     # Get lane change start location  
+        #     ref_location = self._world_obj.player.get_location()  
+        #     ref_yaw = self._world_obj.player.get_transform().rotation.yaw  
         
+        #     if self._local_planner.waypoint_buffer:  
+        #         waypoint = self._local_planner.waypoint_buffer[-1][0]  
+        #         ref_location = waypoint.transform.location  
+            
+        #     wait_dist = 0.0  # need some time to plan  
+        #     ref = [ref_location.x + wait_dist, ref_location.y, ref_yaw]  
+        
+        #     # Replace current plan with a lane change plan  
+        #     overtake = BezierOverTake(self._world_obj)  
+        #     overtake_plan = overtake.get_waypoints(ref)  
+            
+        #     # MODIFICATION: Create a complete overtaking sequence  
+        #     # 1. Move to left lane (current trajectory)  
+        #     # 2. Continue forward to clear obstacle  
+        #     # 3. Return to right lane  
+            
+        #     # Add forward movement after lane change  
+        #     forward_distance = 30  # meters to travel forward after lane change  
+        #     final_overtake_pos = overtake_plan[-1][0].transform.location  
+            
+        #     # Create return-to-lane trajectory  
+        #     return_ref = [final_overtake_pos.x + forward_distance, final_overtake_pos.y + 3.2, ref_yaw]  # Move back right  
+        #     return_trajectory = BezierOverTake(self._world_obj)  
+        #     return_plan = return_trajectory.get_waypoints(return_ref)  
+            
+        #     # Combine both trajectories  
+        #     complete_overtake_plan = overtake_plan + return_plan  
+            
+        #     self._local_planner.set_local_plan(complete_overtake_plan)  
+        
+        #     # replan globally with new vehicle position after complete overtaking  
+        #     new_start = self._map.get_waypoint(complete_overtake_plan[-1][0].transform.location)  
+        #     route_trace = self._trace_route(new_start, destination)  
+        #     assert route_trace  
+        #     self._local_planner.add_global_plan(route_trace)  
+        
+        #     self._perform_lane_change = False  
+        #     print("complete overtake sequence planned")
+
+
         if self.right_turn or self.left_turn:
             # Record original destination
             destination = self._local_planner.get_global_destination()
