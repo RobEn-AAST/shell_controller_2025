@@ -39,8 +39,13 @@ class AutonomousAgent(Agent):
         super(AutonomousAgent, self).__init__(ego.player)
         self._world_obj = ego
 
+        self._last_overtake_time = None  
+        self._overtake_cooldown = 5000 
+
+        self.hazard_thresh = 40
         self._THW = 2
         self._target_speed = None
+        self._lane_change_start_pos = None
 
         # Local plannar
         self._local_planner = LocalPlanner(ego.player)
@@ -73,8 +78,8 @@ class AutonomousAgent(Agent):
         self.left_positions = None
 
     def update_parameters(self):
-        self._THW = 2
-        self._target_speed = 40 # it crashed at 47
+        self._THW =1.2
+        self._target_speed = 35 # it crashed at 47  and 40
 
         CONTROLLER_TYPE = 'PID' # options: MPC, PID, STANLEY
         args_lateral_dict = {'K_P': 1.0, 'K_I': 0.4, 'K_D': 0.01, 'control_type': CONTROLLER_TYPE}
@@ -172,7 +177,7 @@ class AutonomousAgent(Agent):
         if self._world_obj.front_radar.detected:
             if abs(self._world_obj.front_radar.rel_pos[1]) < 1:
                 self._front_r = [pygame.time.get_ticks(), self._world_obj.front_radar.rel_pos, 
-                                                        self._world_obj.front_radar.rel_vel]
+                                                        self._world_obj.front_radar.rel_vel, self._world_obj.front_radar.actor_vel]
             self._world_obj.front_radar.detected = False        
 
         if self._world_obj.left_front_radar.detected:
@@ -195,7 +200,7 @@ class AutonomousAgent(Agent):
         
         # Detect vehicles in front
         self._hazard_detected = False
-        if self._front_r and (self._front_r[1][0] < 20.0):
+        if self._front_r and (self._front_r[1][0] < self.hazard_thresh and self._front_r[3].x < 10):
             self._hazard_detected = True
         
         # update hazard existing time
@@ -253,38 +258,50 @@ class AutonomousAgent(Agent):
                 self._state = AgentState.BLOCKED_BY_VEHICLE
 
         # 2, Blocked by Vehicle
-        elif self._state == AgentState.BLOCKED_BY_VEHICLE:
+        elif self._state == AgentState.BLOCKED_BY_VEHICLE and self._state != AgentState.LANE_CHANGING:
             if not self._hazard_detected:
                 self._state = AgentState.NAVIGATING
             # The vehicle is driving at a certain speed
             # There is enough space
             else:
-                if hazard_time > 5000 and \
-                    190 > self._vehicle.get_location().x > 10 and \
-                    10 > self._vehicle.get_location().y > 7:
-                    self._state = AgentState.PREPARE_LANE_CHANGING
+                current_time = pygame.time.get_ticks()  
+                if (self._last_overtake_time is None or current_time - self._last_overtake_time > self._overtake_cooldown):
+                    if hazard_time > 1000: # and \
+                        # 190 > self._vehicle.get_location().x > 10 and \
+                        # 10 > self._vehicle.get_location().y > 7:
+                        print(f'preparing lane change... hazard time: {hazard_time}')
+                        self._state = AgentState.PREPARE_LANE_CHANGING
 
         # 4, Prepare Lane Change
         elif self._state == AgentState.PREPARE_LANE_CHANGING:
             if  not (self._front_r and self._front_r[1][0] < safe_distance) and \
                 not (self._left_front_r and self._left_front_r[1][0] < safe_distance) and \
                 not (self._left_back_r and self._left_back_r[1][0] > -10):
+                    print('passed conditions, we are now preparing for lane change')
                     self._state = AgentState.LANE_CHANGING
                     self._perform_lane_change = True
+                    self._lane_change_start_pos = self._vehicle.get_location()  # Store starting position
 
         # 5, Lane Change
         elif self._state == AgentState.LANE_CHANGING:
-            if abs(self._vehicle.get_velocity().y) < 0.5 and \
-               self._vehicle.get_location().y < 7.0:
-                self._state = AgentState.NAVIGATING
+            current_pos = self._vehicle.get_location()  
+            if self._lane_change_start_pos:  
+                lateral_displacement = abs(current_pos.y - self._lane_change_start_pos.y)  
+                
+                # Complete lane change after moving one lane width  
+                if lateral_displacement > 2.5:    
+                    print("completed lane change")  
+                    self._state = AgentState.NAVIGATING    
+                    self._lane_change_start_pos = None  
+                    self._hazard_detected = False  
+                    self._last_overtake_time = pygame.time.get_ticks()  # Set cooldown  
 
         
         # 6, Emergency Brake
         emergency_distance = safe_distance *3/5
         emergency_front_speed = 1.0
-        if self._front_r and (self._front_r[1][0] < emergency_distance or 
-                                self._front_r[2][0] < emergency_front_speed):
-            self._state = AgentState.EMERGENCY_BRAKE
+        # if self._front_r and self._front_r[1][0] < emergency_distance:
+        #     self._state = AgentState.EMERGENCY_BRAKE
 
 
         # Local Planner Behavior according to states
@@ -314,6 +331,8 @@ class AutonomousAgent(Agent):
                 if self._front_r[1][0] >= emergency_distance and \
                     self._front_r[2][0] > emergency_front_speed:
                     self._state = AgentState.NAVIGATING
+            else:
+                self._state = AgentState.NAVIGATING
 
         elif self._state == AgentState.BLOCKED_RED_LIGHT:
             control = self._local_planner.empty_control(debug=debug)

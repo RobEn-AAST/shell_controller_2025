@@ -82,7 +82,7 @@ class Brain(Node):
         self.ego_vehicle = None
 
         if carla_host == "localhost":
-            spawn_traffic(self.client, 30, 0)
+            spawn_traffic(self.client, 25, 0)
             # spawn_car_at(self.client, autopilot=False)
             time.sleep(1)
 

@@ -48,6 +48,7 @@ class FakeRadarSensor(object):
         self._detection_params = self._get_detection_params(radar_type)  
           
         # Exposed properties  
+        self.actor_vel = None
         self.detected = False  
         self.rel_pos = None  
         self.rel_vel = None  
@@ -60,21 +61,21 @@ class FakeRadarSensor(object):
         """Get detection parameters based on radar type."""  
         if radar_type == 'front_radar':  
             return {  
-                'max_distance': 30, # 15.0,  
+                'max_distance': 200, # 15.0,  
                 'up_angle_th': 90,  
                 'low_angle_th': 0,  
                 'lane_offset': 0  
             }  
         elif radar_type == 'left_front_radar':  
             return {  
-                'max_distance': 30, # 10.0,  
+                'max_distance': 200, # 10.0,  
                 'up_angle_th': 120,  
                 'low_angle_th': 30,  
                 'lane_offset': -1  # Left lane  
             }  
         elif radar_type == 'left_back_radar':  
             return {  
-                'max_distance': 30, # 8.0,  
+                'max_distance': 200, # 8.0,  
                 'up_angle_th': 150,  
                 'low_angle_th': 120,  
                 'lane_offset': -1  # Left lane  
@@ -182,13 +183,12 @@ class FakeRadarSensor(object):
         self.rel_pos = [abs(rel_x), abs(rel_y), abs(rel_z)]  
           
         # Calculate relative velocity  
-        actor_vel = blocking_vehicle.get_velocity()  
+        self.actor_vel = blocking_vehicle.get_velocity()  
         ego_vel = self._parent.get_velocity()  
-        rel_vel_x = actor_vel.x - ego_vel.x  
-        rel_vel_y = actor_vel.y - ego_vel.y  
-        rel_vel_z = actor_vel.z - ego_vel.z  
+        rel_vel_x = self.actor_vel.x - ego_vel.x  
+        rel_vel_y = self.actor_vel.y - ego_vel.y  
+        rel_vel_z = self.actor_vel.z - ego_vel.z  
         self.rel_vel = [rel_vel_x, rel_vel_y, rel_vel_z]  
-        print(self.rel_vel)
       
     def destroy(self):  
         """Cleanup - no sensors to destroy."""  
