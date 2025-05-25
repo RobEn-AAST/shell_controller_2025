@@ -144,7 +144,7 @@ class Brain(Node):
         total_waypoints = len(optimized_targets)
         # Set initial destination
         destination = optimized_targets[current_waypoint_index]
-        driver_agent.agent.set_destination([destination.x, destination.y, destination.z])
+        driver_agent.agent.set_destination([destination[0], destination[1], destination[2]])
 
         self.debug_data_timeout = 30  # seconds
         self.last_debug_time = time.time()
@@ -181,7 +181,7 @@ class Brain(Node):
 
                 # Set the next destination
                 destination = optimized_targets[current_waypoint_index]
-                driver_agent.agent.set_destination([destination.x, destination.y, destination.z])
+                driver_agent.agent.set_destination([destination[0], destination[1], destination[2]])
 
                 # LOGGING INFO FOR DEBUGGING
                 self.get_logger().info(f"Moving to waypoint {destination}, done_count: {current_waypoint_index}/{total_waypoints-1}")
@@ -193,7 +193,7 @@ class Brain(Node):
                 current_location = self.ego_vehicle.get_location()
 
                 self.get_logger().info(
-                    f"speed: {speed_kmh}, loc: {current_location.x:.2f}, {current_location.y:.2f}, {current_location.z:.2f} => {destination.x:.2f},{destination.y:.2f},{destination.z:.2f}"
+                    f"speed: {speed_kmh}, loc: {current_location.x:.2f}, {current_location.y:.2f}, {current_location.z:.2f} => {destination[0]:.2f},{destination[1]:.2f},{destination[2]:.2f}"
                 )
                 self.last_debug_time = current_time
 

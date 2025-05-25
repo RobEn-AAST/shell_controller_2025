@@ -28,7 +28,6 @@ class World(object):
         self.map = self.world.get_map()
         self.hud = hud
         self.player = None
-        self.collision_sensor = None
         self.lane_invasion_sensor = None
         self.gnss_sensor = None
         self.camera_manager = None
@@ -66,7 +65,6 @@ class World(object):
                 spawn_points) if spawn_points else carla.Transform()
             self.player = self.world.try_spawn_actor(blueprint, spawn_point)
         # Set up the sensors.
-        self.collision_sensor = CollisionSensor(self.player, self.hud)
         self.lane_invasion_sensor = LaneInvasionSensor(self.player, self.hud)
         self.gnss_sensor = GnssSensor(self.player)
         self.camera_manager = CameraManager(self.player, self.hud)
@@ -97,7 +95,6 @@ class World(object):
     def destroy(self):
         actors = [
             self.camera_manager.sensor,
-            self.collision_sensor.sensor,
             self.lane_invasion_sensor.sensor,
             self.gnss_sensor.sensor,
             self.player]

@@ -57,10 +57,6 @@ class HUD(object):
         heading += 'S' if abs(t.rotation.yaw) > 90.5 else ''
         heading += 'E' if 179.5 > t.rotation.yaw > 0.5 else ''
         heading += 'W' if -0.5 > t.rotation.yaw > -179.5 else ''
-        colhist = world.collision_sensor.get_collision_history()
-        collision = [colhist[x + self.frame - 200] for x in range(0, 200)]
-        max_col = max(1.0, max(collision))
-        collision = [x / max_col for x in collision]
         vehicles = world.world.get_actors().filter('vehicle.*')
         self._info_text = [
             'Server:  % 16.0f FPS' % self.server_fps,
@@ -115,9 +111,6 @@ class HUD(object):
         else:
             self._info_text.append(' ')
         self._info_text += [
-            '',
-            'Collision:',
-            collision,
             '',
             'Number of vehicles: % 8d' % len(vehicles)]
         if len(vehicles) > 1:

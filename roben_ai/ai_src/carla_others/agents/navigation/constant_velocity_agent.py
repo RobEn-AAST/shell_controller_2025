@@ -38,7 +38,6 @@ class ConstantVelocityAgent(BasicAgent):
         self._target_speed = target_speed / 3.6  # [m/s]
         self._current_speed = vehicle.get_velocity().length()  # [m/s]
         self._constant_velocity_stop_time = None
-        self._collision_sensor = None
 
         self._restart_time = float('inf')  # Time after collision before the constant velocity behavior starts again
 
