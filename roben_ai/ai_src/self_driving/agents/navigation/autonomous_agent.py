@@ -14,6 +14,7 @@ Last updated: 09/24/2022
 """
 
 import pygame
+import time
 import carla
 import math
 import numpy as np
@@ -23,7 +24,6 @@ from agents.navigation.local_planner import LocalPlanner, RoadOption
 from agents.navigation.global_route_planner import GlobalRoutePlanner
 from agents.navigation.global_route_planner_dao import GlobalRoutePlannerDAO
 from agents.navigation.lane_change import BezierTurn, BezierOverTake
-from agents.tools.misc import transform_to_frame
 
 
 class AutonomousAgent(Agent):

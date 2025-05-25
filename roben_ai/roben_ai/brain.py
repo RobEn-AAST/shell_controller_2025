@@ -4,7 +4,6 @@
 from pathlib import Path
 import sys
 import os
-os.environ["SDL_VIDEODRIVER"] = "dummy" # disable pygame gui (untested)
 
 base_dir = Path(__file__).resolve().parent
 
@@ -53,7 +52,7 @@ from ai_src.navigator.wp_utils import xyz_to_locs
 from ai_src.carla_others.agents.tools.misc import get_speed
 from ai_src.carla_others.agents.navigation.global_route_planner import GlobalRoutePlanner
 from ai_src.navigator.tsp_solver import optimize_route_order
-from ai_src.navigator.test import spawn_traffic
+from ai_src.navigator.test import spawn_traffic, spawn_car_at
 import time
 import pygame
 
@@ -84,7 +83,7 @@ class Brain(Node):
         self.ego_vehicle = None
 
         if carla_host == 'localhost':
-            spawn_traffic(self.client, 30, 30)
+            spawn_car_at(self.client, autopilot=False)
 
         total_connect_attempts = 40
         for i in range(total_connect_attempts):
@@ -94,35 +93,36 @@ class Brain(Node):
                 self.get_logger().info(f"attempt {i}/{total_connect_attempts} failed, retrying in 1 scond")
                 time.sleep(1)
 
-        target_points = [
-            [334.949799, -161.106171, 0.001736],
-            [339.100037, -258.568939, 0.001679],
-            [396.295319, -183.195740, 0.001678],
-            [267.657074, -1.983160, 0.001678],
-            [153.868896, -26.115866, 0.001678],
-            [290.515564, -56.175072, 0.001677],
-            [92.325722, -86.063644, 0.001677],
-            [88.384346, -287.468567, 0.001728],
-            [177.594101, -326.386902, 0.001677],
-            [-1.646942, -197.501282, 0.001555],
-            [59.701321, -1.970804, 0.001467],
-            [122.100121, -55.142044, 0.001596],
-            [161.030975, -129.313187, 0.001679],
-            [184.758713, -199.424271, 0.001680],
+        optimized_targets = [
+            [184.73764038085938, -2.0412847995758057, 0.0],
+            [161.01739501953125, -2.043816328048706, 0.0],
+            [122.09466552734375, -2.0479705333709717, 0.0],
+            [59.701297760009766, -2.035862445831299, 0.0],
+            [7.788344860076904, -1.9310301542282104, 0.0],
+            [177.55947875976562, -2.042050838470459, 0.0],
+            [88.47736358642578, -2.045240879058838, 0.0],
+            [92.35310363769531, -2.046504020690918, 0.0],
+            [290.5014953613281, -2.02996826171875, 0.0],
+            [153.8663330078125, -2.0445797443389893, 0.0],
+            [267.6562194824219, -2.0324349403381348, 0.0],
+            [386.5950927734375, -1.9345017671585083, 0.0],
+            [338.9637451171875, -2.0042386054992676, 0.0],
+            [334.8652648925781, -2.006415843963623, 0.0],
         ]
-        sampling_resolution = 1.0
-        target_locations = xyz_to_locs(target_points, self.map)
-        grp = GlobalRoutePlanner(self.map, sampling_resolution)
-        optimized_targets = optimize_route_order(
-            self.ego_vehicle.get_location(),
-            target_locations,
-            grp,
-        )
 
-        self.get_logger().info("\n\n\n\nOPTIMIZED TARGETS ORDER START\n\n\n\n")
-        for i, point in enumerate(optimized_targets):
-            self.get_logger().info(f"point {i}: x= {point.x}, y={point.y}, z={point.z}")
-        self.get_logger().info("\n\n\n\nOPTIMIZED TARGETS ORDER END\n\n\n\n")
+        # sampling_resolution = 1.0
+        # target_locations = xyz_to_locs(target_points, self.map)
+        # grp = GlobalRoutePlanner(self.map, sampling_resolution)
+        # optimized_targets = optimize_route_order(
+        #     self.ego_vehicle.get_location(),
+        #     target_locations,
+        #     grp,
+        # )
+
+        # self.get_logger().info("\n\n\n\nOPTIMIZED TARGETS ORDER START\n\n\n\n")
+        # for i, point in enumerate(optimized_targets):
+        #     self.get_logger().info(f"point {i}: x= {point.x}, y={point.y}, z={point.z}")
+        # self.get_logger().info("\n\n\n\nOPTIMIZED TARGETS ORDER END\n\n\n\n")
 
         # ======= MOVE VEHICLE ========
         pygame.init()

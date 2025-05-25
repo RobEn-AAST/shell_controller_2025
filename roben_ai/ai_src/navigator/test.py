@@ -100,3 +100,53 @@ def spawn_traffic(client, num_vehicles=20, num_pedestrians=30):
         print(f"Traffic spawn failed: {str(e)}")
         world.apply_settings(settings)
         raise  # Better CPU performance
+
+
+def spawn_car_at(client, x=217.56, y=-1.80, z=0.00, autopilot=False):
+    """
+    Spawns vehicles and pedestrians with proper CARLA API usage
+    client: carla.Client object connected to the server
+    """
+    world = client.get_world()
+    traffic_manager = client.get_trafficmanager(8001)
+    settings = world.get_settings()
+    
+    try:
+        # Configure traffic manager
+        traffic_manager.set_global_distance_to_leading_vehicle(2.5)
+        traffic_manager.set_random_device_seed(42)
+        traffic_manager.set_synchronous_mode(True)
+        
+        # ========== VEHICLES ==========
+        blueprints = world.get_blueprint_library().filter('vehicle.*')
+        
+        # Filter out problematic blueprints
+        blueprints = [bp for bp in blueprints if int(bp.get_attribute('number_of_wheels')) == 4]
+        
+        bp = random.choice(blueprints)
+        transform = carla.Transform(carla.Location(x, y, z), carla.Rotation())
+        
+        # Set color if vehicle
+        if bp.has_attribute('color'):
+            color = random.choice(bp.get_attribute('color').recommended_values)
+            bp.set_attribute('color', color)
+        
+        vehicle = world.try_spawn_actor(bp, transform)
+        
+        if autopilot:
+            traffic_manager.global_percentage_speed_difference(30.0)  # 30% slower than speed limit
+            for vehicle in vehicles:
+                vehicle.set_autopilot(True, traffic_manager.get_port())
+        
+        
+        # Set synchronous mode if needed
+        settings.synchronous_mode = True
+        settings.fixed_delta_seconds = 0.05
+        world.apply_settings(settings)
+        
+        return vehicle
+        
+    except Exception as e:
+        print(f"Traffic spawn failed: {str(e)}")
+        world.apply_settings(settings)
+        raise  # Better CPU performance
