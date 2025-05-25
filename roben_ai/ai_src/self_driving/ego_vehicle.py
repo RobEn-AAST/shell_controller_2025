@@ -9,11 +9,7 @@ import carla
 import pygame
 
 from manual_control import KeyboardControl
-from sensors import FakeRadarSensor, CollisionSensor, GnssSensor, CameraSet
-from hud import get_actor_display_name, HUD
-
-from manual_control import KeyboardControl
-from sensors import FakeRadarSensor, CollisionSensor, GnssSensor, CameraSet
+from sensors import FakeRadarSensor
 from hud import get_actor_display_name, HUD
 
 from agents.navigation.roaming_agent import RoamingAgent
