@@ -72,7 +72,7 @@ def main(world):
     argparser.add_argument(
         '--tm-port',
         metavar='P',
-        default=8001,
+        default=8000,
         type=int,
         help='port to communicate with TM (default: 8000)')
     argparser.add_argument(

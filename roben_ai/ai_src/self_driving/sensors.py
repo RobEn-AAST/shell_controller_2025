@@ -34,6 +34,37 @@ class FakeRadarSensor(object):
     def __init__(self, parent_actor, hud, debug=True, 
                  x=2.5, y=0.0, z=1.0, yaw=0.0, fov=8, component=5):
         self._parent = parent_actor
+
+        # Debug: Print all existing sensors in the world  
+        world = self._parent.get_world()  
+        all_actors = world.get_actors()  
+        existing_sensors = all_actors.filter('sensor.*')  
+        
+        print(f"\n=== DEBUG: Existing sensors in world ===")  
+        print(f"Total sensors found: {len(existing_sensors)}")  
+        
+        for sensor in existing_sensors:  
+            sensor_transform = sensor.get_transform()  
+            sensor_location = sensor_transform.location  
+            sensor_rotation = sensor_transform.rotation  
+            
+            print(f"Sensor ID: {sensor.id}")  
+            print(f"  Type: {sensor.type_id}")  
+            print(f"  Location: x={sensor_location.x:.2f}, y={sensor_location.y:.2f}, z={sensor_location.z:.2f}")  
+            print(f"  Rotation: yaw={sensor_rotation.yaw:.2f}")  
+            print(f"  Parent: {sensor.parent.id if sensor.parent else 'None'}")  
+            
+            # Check if this sensor is close to where we want to spawn  
+            target_location = carla.Location(x=x, y=y, z=z)  
+            distance = sensor_location.distance(target_location)  
+            if distance < 2.0:  # Within 2 meters  
+                print(f"  *** CLOSE TO TARGET POSITION! Distance: {distance:.2f}m ***")  
+            print()  
+        
+        print(f"=== Target spawn positions for FakeRadarSensor ===")  
+
+
+        
         self.location = carla.Location(x=x, y=y, z=z)
         self.rotation = carla.Rotation(yaw=yaw)
         self.transform = carla.Transform(location=self.location, rotation=self.rotation)

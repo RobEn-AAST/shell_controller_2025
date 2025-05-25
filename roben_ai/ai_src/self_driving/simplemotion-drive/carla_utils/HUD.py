@@ -105,7 +105,6 @@ class HUD(object):
         self._notifications.set_text('Error: %s' % text, (255, 0, 0))
 
     def render(self, display):
-        return
         if self._show_info:
             info_surface = pygame.Surface((220, self.dim[1]))
             info_surface.set_alpha(100)

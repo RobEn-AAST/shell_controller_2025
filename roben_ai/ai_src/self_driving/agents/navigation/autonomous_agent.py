@@ -74,7 +74,7 @@ class AutonomousAgent(Agent):
 
     def update_parameters(self):
         self._THW = 2
-        self._target_speed = 47
+        self._target_speed = 40 # it crashed at 47
 
         CONTROLLER_TYPE = 'PID' # options: MPC, PID, STANLEY
         args_lateral_dict = {'K_P': 1.0, 'K_I': 0.4, 'K_D': 0.01, 'control_type': CONTROLLER_TYPE}

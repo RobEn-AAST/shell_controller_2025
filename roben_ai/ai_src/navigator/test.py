@@ -108,7 +108,7 @@ def spawn_car_at(client, x=217.56, y=-1.80, z=0.00, autopilot=False):
     client: carla.Client object connected to the server
     """
     world = client.get_world()
-    traffic_manager = client.get_trafficmanager(8001)
+    traffic_manager = client.get_trafficmanager(8000)
     settings = world.get_settings()
     
     try:

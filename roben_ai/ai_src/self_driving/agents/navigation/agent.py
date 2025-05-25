@@ -73,6 +73,7 @@ class Agent(object):
                  - traffic_light is the object itself or None if there is no
                    red traffic light affecting us
         """
+        return (False, None)
         if self._map.name == 'Town01' or self._map.name == 'Town02':
             return self._is_light_red_europe_style(lights_list)
         else:
