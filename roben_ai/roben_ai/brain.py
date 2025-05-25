@@ -63,7 +63,6 @@ from hud import HUD
 from ego_vehicle import World
 
 
-# pytorch stablebaseline gymansium
 class Brain(Node):
     def __init__(self):
         """

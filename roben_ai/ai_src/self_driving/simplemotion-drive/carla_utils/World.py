@@ -28,9 +28,6 @@ class World(object):
         self.map = self.world.get_map()
         self.hud = hud
         self.player = None
-        self.lane_invasion_sensor = None
-        self.gnss_sensor = None
-        self.camera_manager = None
         self._weather_presets = find_weather_presets()
         self._weather_index = 0
         self._actor_filter = actor_filter
@@ -41,8 +38,6 @@ class World(object):
 
     def restart(self):
         # Keep same camera config if the camera manager exists.
-        cam_index = self.camera_manager.index if self.camera_manager is not None else 0
-        cam_pos_index = self.camera_manager.transform_index if self.camera_manager is not None else 0
         # Get a random blueprint.
         blueprint = random.choice(
             self.world.get_blueprint_library().filter(self._actor_filter))
@@ -65,11 +60,6 @@ class World(object):
                 spawn_points) if spawn_points else carla.Transform()
             self.player = self.world.try_spawn_actor(blueprint, spawn_point)
         # Set up the sensors.
-        self.lane_invasion_sensor = LaneInvasionSensor(self.player, self.hud)
-        self.gnss_sensor = GnssSensor(self.player)
-        self.camera_manager = CameraManager(self.player, self.hud)
-        self.camera_manager.transform_index = cam_pos_index
-        self.camera_manager.set_sensor(cam_index, notify=False)
         actor_type = get_actor_display_name(self.player)
         self.hud.notification(actor_type)
 
@@ -84,19 +74,13 @@ class World(object):
         self.hud.tick(self, clock)
 
     def render(self, display):
-        self.camera_manager.render(display)
         self.hud.render(display)
 
     def destroy_sensors(self):
-        self.camera_manager.sensor.destroy()
-        self.camera_manager.sensor = None
-        self.camera_manager.index = None
+        pass
 
     def destroy(self):
         actors = [
-            self.camera_manager.sensor,
-            self.lane_invasion_sensor.sensor,
-            self.gnss_sensor.sensor,
             self.player]
         for actor in actors:
             if actor is not None:

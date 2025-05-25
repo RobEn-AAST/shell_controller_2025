@@ -46,7 +46,6 @@ class World(object):
         
         # Autonomous vehicle and sensors variables
         self.player = None                  # ego vehicle
-        self.gnss_sensor = None
         self._ego_list = []
         # Other actors
         self._actor_list = []
@@ -92,15 +91,11 @@ class World(object):
         # Set up the sensors.
         # self.main_rgb_camera = CameraSet(self.player, self.hud)
 
-        self.gnss_sensor = GnssSensor(self.player)
-
         self.front_radar = FakeRadarSensor(self.player, self.hud, x=0.5, y=0.0, z=1.0, yaw=0.0, fov=5)
         self.left_front_radar = FakeRadarSensor(self.player, self.hud, x=1.0, y=-0.5, z=1.0, yaw=-25.0)
         self.left_back_radar = FakeRadarSensor(self.player, self.hud, x=-1.0, y=-0.5, z=1.0, yaw=-155.0)
 
         self._ego_list = [
-            # self.main_rgb_camera,
-            self.gnss_sensor.sensor,
             self.front_radar,
             self.left_front_radar,
             self.left_back_radar,

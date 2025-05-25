@@ -70,8 +70,6 @@ class HUD(object):
             u'Heading:% 16.0f\N{DEGREE SIGN} % 2s' % (t.rotation.yaw, heading),
             'Location:% 20s' % ('(% 3.1f, % 3.1f, % 3.1f)' % (t.location.x, t.location.y, t.location.z)),
             '']
-            # 'GNSS:% 24s' % ('(% 2.6f, % 3.6f)' % (world.gnss_sensor.lat, world.gnss_sensor.lon)),
-            # 'Height:  % 18.0f m' % t.location.z,
             
         if isinstance(c, carla.VehicleControl):
             self._info_text += [
