@@ -3,8 +3,8 @@
 """
 =========================================================================================================
 This file contains class AutonomousAgent containing methods for implementation
-of BezierTurn and BezierOverTake trajectory planning. Finite State Machine is described for 
-behavior planning.  
+of BezierTurn and BezierOverTake trajectory planning. Finite State Machine is described for
+behavior planning.
 
 Platform: Windows
 
@@ -39,8 +39,8 @@ class AutonomousAgent(Agent):
         super(AutonomousAgent, self).__init__(ego.player)
         self._world_obj = ego
 
-        self._last_overtake_time = None  
-        self._overtake_cooldown = 5000 
+        self._last_overtake_time = None
+        self._overtake_cooldown = 5000
 
         self.hazard_thresh = 40
         self._THW = 2
@@ -50,7 +50,7 @@ class AutonomousAgent(Agent):
         # Local plannar
         self._local_planner = LocalPlanner(ego.player)
         self.update_parameters()
-        
+
         # Global plannar
         self._proximity_threshold = 10.0  # meter   # Distance between waypoints
         self._state = AgentState.NAVIGATING
@@ -58,7 +58,7 @@ class AutonomousAgent(Agent):
         self._path_seperation_hop = 2
         self._path_seperation_threshold = 0.5
         self._grp = None  # global route planar
-        
+
         # Behavior planning
         self._hazard_detected = False
         self._blocked_time = None
@@ -66,7 +66,7 @@ class AutonomousAgent(Agent):
         self._front_r = []
         self._left_front_r = []
         self._left_back_r = []
-        
+
         # Turns positions
         self.right_positions = None
         self.left_positions = None
@@ -78,18 +78,14 @@ class AutonomousAgent(Agent):
         self.left_positions = None
 
     def update_parameters(self):
-        self._THW =1.2
-        self._target_speed = 30 # it crashed at 47  and 40
+        self._THW = 1.2
+        self._target_speed = 35  # it crashed at 47  and 40
 
-        CONTROLLER_TYPE = 'PID' # options: MPC, PID, STANLEY
-        args_lateral_dict = {'K_P': 1.0, 'K_I': 0.4, 'K_D': 0.01, 'control_type': CONTROLLER_TYPE}
-        args_longitudinal_dict = {'K_P': 0.3, 'K_I': 0.2, 'K_D': 0.002}
-        self._local_planner.init_controller(opt_dict={'target_speed': self._target_speed,
-                                                      'lateral_control_dict': args_lateral_dict,
-                                                      'longitudinal_control_dict': args_longitudinal_dict})
+        CONTROLLER_TYPE = "PID"  # options: MPC, PID, STANLEY
+        args_lateral_dict = {"K_P": 1.0, "K_I": 0.4, "K_D": 0.01, "control_type": CONTROLLER_TYPE}
+        args_longitudinal_dict = {"K_P": 0.3, "K_I": 0.2, "K_D": 0.002}
+        self._local_planner.init_controller(opt_dict={"target_speed": self._target_speed, "lateral_control_dict": args_lateral_dict, "longitudinal_control_dict": args_longitudinal_dict})
 
-
-    
     def set_destination(self, location):
         """
         This method creates a list of waypoints from agent's position to destination location
@@ -99,12 +95,11 @@ class AutonomousAgent(Agent):
         # end_waypoint = self._map.get_waypoint(carla.Location(location[0], location[1], location[2]))
         end_waypoint = self._map.get_waypoint(carla.Location(location[0], location[1], location[2]))
 
-        route_trace = self._trace_route(start_waypoint, end_waypoint)   
+        route_trace = self._trace_route(start_waypoint, end_waypoint)
         assert route_trace
 
         self._local_planner.set_global_plan(route_trace)
-        
-    
+
     def _trace_route(self, start_waypoint, end_waypoint):
         """
         This method sets up a global router and returns the optimal route
@@ -130,37 +125,35 @@ class AutonomousAgent(Agent):
         Returns list of all Left and right turns waypoints
         """
         count_flag = False
-        temp_list=[]
-        list_of_turn_waypoints=[]
-        for i,j in route:
-            if j==state:
-                count_flag=True
+        temp_list = []
+        list_of_turn_waypoints = []
+        for i, j in route:
+            if j == state:
+                count_flag = True
                 temp_list.append(i)
                 continue
 
             if count_flag:
                 start_waypoint = temp_list[0]
                 end_waypoint = temp_list[-1]
-                list_of_turn_waypoints.append((start_waypoint,end_waypoint))
-                temp_list=[]
-                count_flag=False
+                list_of_turn_waypoints.append((start_waypoint, end_waypoint))
+                temp_list = []
+                count_flag = False
 
         if state == RoadOption.RIGHT:
             self.right_positions = list_of_turn_waypoints
-        
+
         else:
             self.left_positions = list_of_turn_waypoints
 
-
     def _get_speed(self):
         """
-        :private: get feedback velocity of ego 
+        :private: get feedback velocity of ego
         """
         v = self._vehicle.get_velocity()
         ego_speed = math.sqrt(v.x**2 + v.y**2)
         return ego_speed
 
-    
     def run_step(self, debug=False):
         """
         Execute one step of navigation.
@@ -169,26 +162,23 @@ class AutonomousAgent(Agent):
         ## Update Environment ##
         # Check all the radars
         try:
-            if self._state==AgentState.EMERGENCY_BRAKE:
+            if self._state == AgentState.EMERGENCY_BRAKE:
                 pass
             pass
         except:
             pass
         if self._world_obj.front_radar.detected:
             if abs(self._world_obj.front_radar.rel_pos[1]) < 1:
-                self._front_r = [pygame.time.get_ticks(), self._world_obj.front_radar.rel_pos, 
-                                                        self._world_obj.front_radar.rel_vel, self._world_obj.front_radar.actor_vel]
-            self._world_obj.front_radar.detected = False        
+                self._front_r = [pygame.time.get_ticks(), self._world_obj.front_radar.rel_pos, self._world_obj.front_radar.rel_vel, self._world_obj.front_radar.actor_vel]
+            self._world_obj.front_radar.detected = False
 
         if self._world_obj.left_front_radar.detected:
             if self._world_obj.left_front_radar.rel_pos[1] < -1:
-                self._left_front_r =[pygame.time.get_ticks(), self._world_obj.left_front_radar.rel_pos, 
-                                                            self._world_obj.left_front_radar.rel_vel]
+                self._left_front_r = [pygame.time.get_ticks(), self._world_obj.left_front_radar.rel_pos, self._world_obj.left_front_radar.rel_vel]
             self._world_obj.left_front_radar.detected = False
         if self._world_obj.left_back_radar.detected:
             if self._world_obj.left_back_radar.rel_pos[1] < -1:
-                self._left_back_r = [pygame.time.get_ticks(), self._world_obj.left_back_radar.rel_pos, 
-                                                            self._world_obj.left_back_radar.rel_vel]
+                self._left_back_r = [pygame.time.get_ticks(), self._world_obj.left_back_radar.rel_pos, self._world_obj.left_back_radar.rel_vel]
             self._world_obj.left_back_radar.detected = False
         # Remove radar data if not detected again in 0.5 second
         if self._front_r and (pygame.time.get_ticks() - self._front_r[0] > 5000):
@@ -197,12 +187,12 @@ class AutonomousAgent(Agent):
             self._left_front_r = []
         if self._left_back_r and (pygame.time.get_ticks() - self._left_back_r[0] > 5000):
             self._left_back_r = []
-        
+
         # Detect vehicles in front
         self._hazard_detected = False
         if self._front_r and (self._front_r[1][0] < self.hazard_thresh and self._front_r[3].x < 10):
             self._hazard_detected = True
-        
+
         # update hazard existing time
         if self._hazard_detected:
             if self._blocked_time is None:
@@ -215,41 +205,36 @@ class AutonomousAgent(Agent):
 
         # Get a safe_distance
         safe_distance = self._THW * self._get_speed()
-        
+
         try:
-            i=self.right_positions[0][0]
-            j=self.right_positions[0][1]
+            i = self.right_positions[0][0]
+            j = self.right_positions[0][1]
             loc_start = i.transform.location
-            loc_start_yaw = i.transform.rotation.yaw 
+            loc_start_yaw = i.transform.rotation.yaw
             loc = loc_start
             loc_end_yaw = j.transform.rotation.yaw
             loc_end = j.transform.location
-            if (abs(loc.x-self._vehicle.get_location().x)+\
-                abs(loc.y-self._vehicle.get_location().y)+\
-                abs(loc.z-self._vehicle.get_location().z))<=10:
-                self.right_turn=True
+            if (abs(loc.x - self._vehicle.get_location().x) + abs(loc.y - self._vehicle.get_location().y) + abs(loc.z - self._vehicle.get_location().z)) <= 10:
+                self.right_turn = True
                 self.temp_flag = False
 
         except:
             pass
 
         try:
-            i=self.left_positions[0][0]
-            j=self.left_positions[0][1]
+            i = self.left_positions[0][0]
+            j = self.left_positions[0][1]
             loc2_start = i.transform.location
-            loc2_start_yaw = i.transform.rotation.yaw  
+            loc2_start_yaw = i.transform.rotation.yaw
             loc2 = loc2_start
             loc2_end = j.transform.location
-            loc2_end_yaw = j.transform.rotation.yaw 
-            if (abs(loc2.x-self._vehicle.get_location().x)+\
-                abs(loc2.y-self._vehicle.get_location().y)+\
-                abs(loc2.z-self._vehicle.get_location().z))<=10:
-                self.left_turn=True
+            loc2_end_yaw = j.transform.rotation.yaw
+            if (abs(loc2.x - self._vehicle.get_location().x) + abs(loc2.y - self._vehicle.get_location().y) + abs(loc2.z - self._vehicle.get_location().z)) <= 10:
+                self.left_turn = True
                 self.temp_flag = False
 
         except:
             pass
-
 
         # Finite State Machine
         # 1, Navigating
@@ -264,54 +249,53 @@ class AutonomousAgent(Agent):
             # The vehicle is driving at a certain speed
             # There is enough space
             else:
-                current_time = pygame.time.get_ticks()  
-                if (self._last_overtake_time is None or current_time - self._last_overtake_time > self._overtake_cooldown):
-                    if hazard_time > 1000: # and \
+                current_time = pygame.time.get_ticks()
+                if self._last_overtake_time is None or current_time - self._last_overtake_time > self._overtake_cooldown and False:
+                    if hazard_time > 1000:  # and \
                         # 190 > self._vehicle.get_location().x > 10 and \
                         # 10 > self._vehicle.get_location().y > 7:
-                        print(f'preparing lane change... hazard time: {hazard_time}')
+                        print(f"preparing lane change... hazard time: {hazard_time}")
                         self._state = AgentState.PREPARE_LANE_CHANGING
 
         # 4, Prepare Lane Change
         elif self._state == AgentState.PREPARE_LANE_CHANGING:
-            if  not (self._front_r and self._front_r[1][0] < safe_distance) and \
-                not (self._left_front_r and self._left_front_r[1][0] < safe_distance) and \
-                not (self._left_back_r and self._left_back_r[1][0] > -10):
-                    print('passed conditions, we are now preparing for lane change')
-                    self._state = AgentState.LANE_CHANGING
-                    self._perform_lane_change = True
-                    self._lane_change_start_pos = self._vehicle.get_location()  # Store starting position
+            if (
+                not (self._front_r and self._front_r[1][0] < safe_distance)
+                and not (self._left_front_r and self._left_front_r[1][0] < safe_distance)
+                and not (self._left_back_r and self._left_back_r[1][0] > -10)
+            ):
+                print("passed conditions, we are now preparing for lane change")
+                self._state = AgentState.LANE_CHANGING
+                self._perform_lane_change = True
+                self._lane_change_start_pos = self._vehicle.get_location()  # Store starting position
 
         # 5, Lane Change
         elif self._state == AgentState.LANE_CHANGING:
-            current_pos = self._vehicle.get_location()  
-            if self._lane_change_start_pos:  
-                lateral_displacement = abs(current_pos.y - self._lane_change_start_pos.y)  
-                
-                # Complete lane change after moving one lane width  
-                if lateral_displacement > 1.5:    
-                    print("completed lane change")  
-                    self._state = AgentState.NAVIGATING    
-                    self._lane_change_start_pos = None  
-                    self._perform_lane_change = False
-                    self._hazard_detected = False  
-                    self._last_overtake_time = pygame.time.get_ticks()  # Set cooldown  
+            current_pos = self._vehicle.get_location()
+            if self._lane_change_start_pos:
+                lateral_displacement = abs(current_pos.y - self._lane_change_start_pos.y)
 
-        
+                # Complete lane change after moving one lane width
+                if lateral_displacement > 1.5:
+                    print("completed lane change")
+                    self._state = AgentState.NAVIGATING
+                    self._lane_change_start_pos = None
+                    self._perform_lane_change = False
+                    self._hazard_detected = False
+                    self._last_overtake_time = pygame.time.get_ticks()  # Set cooldown
+
         # 6, Emergency Brake
-        emergency_distance = safe_distance *3/5
+        emergency_distance = safe_distance * 3 / 5
         emergency_front_speed = 1.0
         if self._front_r and self._front_r[1][0] < emergency_distance:
             self._state = AgentState.EMERGENCY_BRAKE
-
 
         # Local Planner Behavior according to states
         if self._state == AgentState.NAVIGATING or self._state == AgentState.LANE_CHANGING:
             control = self._local_planner.run_step(debug=debug)
 
         elif self._state == AgentState.PREPARE_LANE_CHANGING:
-            if self._left_front_r and self._left_front_r[1][0] < safe_distance or \
-               self._front_r and self._front_r[1][0] < safe_distance:
+            if self._left_front_r and self._left_front_r[1][0] < safe_distance or self._front_r and self._front_r[1][0] < safe_distance:
                 control = self._local_planner.empty_control(debug=debug)
             else:
                 control = self._local_planner.run_step(debug=debug)
@@ -321,16 +305,15 @@ class AutonomousAgent(Agent):
             front_dis = self._front_r[1][0]
             front_vel = self._front_r[2][0]
             ego_speed = self._get_speed()
-            desired_speed = front_vel - (ego_speed-front_vel)/front_dis
+            desired_speed = front_vel - (ego_speed - front_vel) / front_dis
             if ego_speed > 1:
-                desired_speed += 2*(front_dis/ego_speed - self._THW)
-            control = self._local_planner.run_step(debug=debug, target_speed=desired_speed*3.6)
+                desired_speed += 2 * (front_dis / ego_speed - self._THW)
+            control = self._local_planner.run_step(debug=debug, target_speed=desired_speed * 3.6)
 
         elif self._state == AgentState.EMERGENCY_BRAKE:
             control = self._local_planner.brake()
             if self._front_r:
-                if self._front_r[1][0] >= emergency_distance and \
-                    self._front_r[2][0] > emergency_front_speed:
+                if self._front_r[1][0] >= emergency_distance and self._front_r[2][0] > emergency_front_speed:
                     self._state = AgentState.NAVIGATING
             else:
                 self._state = AgentState.NAVIGATING
@@ -338,53 +321,52 @@ class AutonomousAgent(Agent):
         elif self._state == AgentState.BLOCKED_RED_LIGHT:
             control = self._local_planner.empty_control(debug=debug)
 
-        # # When performing a lane change  
+        # # When performing a lane change
         # if self._perform_lane_change:
-        #     # Record original destination  
-        #     destination = self._local_planner.get_global_destination()  
-        #     # Get lane change start location  
-        #     ref_location = self._world_obj.player.get_location()  
-        #     ref_yaw = self._world_obj.player.get_transform().rotation.yaw  
-        
-        #     if self._local_planner.waypoint_buffer:  
-        #         waypoint = self._local_planner.waypoint_buffer[-1][0]  
-        #         ref_location = waypoint.transform.location  
-            
-        #     wait_dist = 0.0  # need some time to plan  
-        #     ref = [ref_location.x + wait_dist, ref_location.y, ref_yaw]  
-        
-        #     # Replace current plan with a lane change plan  
-        #     overtake = BezierOverTake(self._world_obj)  
-        #     overtake_plan = overtake.get_waypoints(ref)  
-            
-        #     # MODIFICATION: Create a complete overtaking sequence  
-        #     # 1. Move to left lane (current trajectory)  
-        #     # 2. Continue forward to clear obstacle  
-        #     # 3. Return to right lane  
-            
-        #     # Add forward movement after lane change  
-        #     forward_distance = 30  # meters to travel forward after lane change  
-        #     final_overtake_pos = overtake_plan[-1][0].transform.location  
-            
-        #     # Create return-to-lane trajectory  
-        #     return_ref = [final_overtake_pos.x + forward_distance, final_overtake_pos.y + 3.2, ref_yaw]  # Move back right  
-        #     return_trajectory = BezierOverTake(self._world_obj)  
-        #     return_plan = return_trajectory.get_waypoints(return_ref)  
-            
-        #     # Combine both trajectories  
-        #     complete_overtake_plan = overtake_plan + return_plan  
-            
-        #     self._local_planner.set_local_plan(complete_overtake_plan)  
-        
-        #     # replan globally with new vehicle position after complete overtaking  
-        #     new_start = self._map.get_waypoint(complete_overtake_plan[-1][0].transform.location)  
-        #     route_trace = self._trace_route(new_start, destination)  
-        #     assert route_trace  
-        #     self._local_planner.add_global_plan(route_trace)  
-        
-        #     self._perform_lane_change = False  
-        #     print("complete overtake sequence planned")
+        #     # Record original destination
+        #     destination = self._local_planner.get_global_destination()
+        #     # Get lane change start location
+        #     ref_location = self._world_obj.player.get_location()
+        #     ref_yaw = self._world_obj.player.get_transform().rotation.yaw
 
+        #     if self._local_planner.waypoint_buffer:
+        #         waypoint = self._local_planner.waypoint_buffer[-1][0]
+        #         ref_location = waypoint.transform.location
+
+        #     wait_dist = 0.0  # need some time to plan
+        #     ref = [ref_location.x + wait_dist, ref_location.y, ref_yaw]
+
+        #     # Replace current plan with a lane change plan
+        #     overtake = BezierOverTake(self._world_obj)
+        #     overtake_plan = overtake.get_waypoints(ref)
+
+        #     # MODIFICATION: Create a complete overtaking sequence
+        #     # 1. Move to left lane (current trajectory)
+        #     # 2. Continue forward to clear obstacle
+        #     # 3. Return to right lane
+
+        #     # Add forward movement after lane change
+        #     forward_distance = 30  # meters to travel forward after lane change
+        #     final_overtake_pos = overtake_plan[-1][0].transform.location
+
+        #     # Create return-to-lane trajectory
+        #     return_ref = [final_overtake_pos.x + forward_distance, final_overtake_pos.y + 3.2, ref_yaw]  # Move back right
+        #     return_trajectory = BezierOverTake(self._world_obj)
+        #     return_plan = return_trajectory.get_waypoints(return_ref)
+
+        #     # Combine both trajectories
+        #     complete_overtake_plan = overtake_plan + return_plan
+
+        #     self._local_planner.set_local_plan(complete_overtake_plan)
+
+        #     # replan globally with new vehicle position after complete overtaking
+        #     new_start = self._map.get_waypoint(complete_overtake_plan[-1][0].transform.location)
+        #     route_trace = self._trace_route(new_start, destination)
+        #     assert route_trace
+        #     self._local_planner.add_global_plan(route_trace)
+
+        #     self._perform_lane_change = False
+        #     print("complete overtake sequence planned")
 
         if self.right_turn or self.left_turn:
             # Record original destination
@@ -396,24 +378,23 @@ class AutonomousAgent(Agent):
             if self._local_planner.waypoint_buffer:
                 waypoint = self._local_planner.waypoint_buffer[-1][0]
                 ref_location = waypoint.transform.location
-            
+
             if self.right_turn:
 
-                ref1 = [loc_start.x , loc_start.y, loc_start_yaw]
+                ref1 = [loc_start.x, loc_start.y, loc_start_yaw]
                 ref2 = [loc_end.x, loc_end.y, loc_end_yaw]
                 turner = BezierTurn(self._world_obj, True)
-                turn_plan = turner.get_waypoints(ref1,ref2)
+                turn_plan = turner.get_waypoints(ref1, ref2)
                 self.right_turn = False
-                print('Right Turn')
+                print("Right Turn")
 
             elif self.left_turn:
                 ref1 = [loc2_start.x, loc2_start.y, loc2_start_yaw]
-                ref2 = [loc2_end.x, loc2_end.y, loc2_end_yaw] 
-                turner = BezierTurn(self._world_obj,False)
-                turn_plan = turner.get_waypoints(ref1,ref2)
-                self.left_turn = False      
-                print('Left turn')         
-        
+                ref2 = [loc2_end.x, loc2_end.y, loc2_end_yaw]
+                turner = BezierTurn(self._world_obj, False)
+                turn_plan = turner.get_waypoints(ref1, ref2)
+                self.left_turn = False
+                print("Left turn")
 
             self._local_planner.set_local_plan(turn_plan)
             # replan globally with new vehicle position after lane changing
@@ -421,7 +402,6 @@ class AutonomousAgent(Agent):
             route_trace = self._trace_route(new_start, destination)
             assert route_trace
             self._local_planner.add_global_plan(route_trace)
-
 
         return control
 
