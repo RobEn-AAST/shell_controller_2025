@@ -6,31 +6,11 @@ import sys
 import os
 
 base_dir = Path(__file__).resolve().parent
+vendor_dir = (base_dir / '..' / 'ai_src' / 'vendor').resolve()
 
-# Add shapely to sys.path
-shapely_dir = (base_dir / '..' / 'ai_src' / 'vendor' / 'shapely').resolve()
-sys.path.insert(0, str(shapely_dir))
-
-# Add ortools to sys.path
-ortools_dir = (base_dir / '..' / 'ai_src' / 'vendor' / 'ortools').resolve()
-sys.path.insert(0, str(ortools_dir))
-
-# Add google to sys.path
-google_dir = (base_dir / '..' / 'ai_src' / 'vendor' / 'google').resolve()
-sys.path.insert(0, str(google_dir))
-
-# Add protobuf to sys.path
-protobuf = (base_dir / '..' / 'ai_src' / 'vendor' / 'protobuf').resolve()
-sys.path.insert(0, str(protobuf))
-
-
-print("SHAPELY PATH:", shapely_dir)
-print("ORTOOLS PATH:", ortools_dir)
-print("GOOGLE PATH:", google_dir)
-print("GOOGLE PATH:", google_dir)
-
-#### END PATH SETTING ####
-
+for pkg_dir in vendor_dir.iterdir():
+    if pkg_dir.is_dir():
+        sys.path.insert(0, str(pkg_dir))
 
 import random
 import rclpy
@@ -62,9 +42,6 @@ class Brain(Node):
         self.client = carla.Client(carla_host, 2000) # type: ignore
         self.client.set_timeout(20)
         self.world = self.client.get_world()
-
-        if carla_host == 'localhost':
-            spawn_traffic(self.client, 50, 30)
 
         self.carla_map = self.world.get_map()
         self.ego_vehicle = None
