@@ -84,7 +84,6 @@ def update_all_vehicles_polygons(world_manager: "WorldManager"):
 
         # Check if the vehicle's polygon is already registered
         if vehicle_id not in registered_polygons:
-            print(f"Vehicle ID {vehicle_id} not registered. Calculating and adding polygon...")
 
             # Manually compute the polygon for the vehicle
             # This logic is derived from WorldManager._get_actor_polygons
@@ -104,7 +103,6 @@ def update_all_vehicles_polygons(world_manager: "WorldManager"):
             # Register the polygon and transform
             registered_polygons[vehicle_id] = poly.tolist()
             registered_transforms[vehicle_id] = actor_transform
-            print(f"Registered polygon for vehicle ID {vehicle_id}.")
         else:
             # Optionally, you can update the transform even if the polygon is registered
             # as vehicle positions change over time.

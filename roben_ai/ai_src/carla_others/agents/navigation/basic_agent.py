@@ -63,6 +63,8 @@ class BasicAgent(object):
         self._speed_ratio = 1
         self._max_brake = 0.6
         self._offset = 0
+        self._final_destination = None 
+        
 
         # Change parameters according to the dictionary
         opt_dict['target_speed'] = target_speed
@@ -155,6 +157,7 @@ class BasicAgent(object):
             start_location = self._vehicle.get_location()
             clean_queue = False
 
+        self._final_destination = end_location    
         start_waypoint = self._map.get_waypoint(start_location)
         end_waypoint = self._map.get_waypoint(end_location)
 

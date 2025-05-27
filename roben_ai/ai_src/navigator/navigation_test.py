@@ -56,6 +56,7 @@ ego_pos = None
 pause = False
 enable_agent = False
 agent = None
+force_lane_switch = False
 
 # Add these below the other global variables
 input_active = False
@@ -98,7 +99,7 @@ def spawn_ego():
 
 
 def apply_agent(agent: BehaviorAgent, ego_vehicle: carla.Vehicle):
-    control = agent.run_step()
+    control = agent.run_step(force_lane_switch=force_lane_switch)
     ego_vehicle.apply_control(control)
 
 
@@ -114,7 +115,7 @@ while running:
         if agent is None:
             set_status("Agent is None, operation failed...")
         else:
-            apply_agent()
+            apply_agent(agent, ego_vehicle)
 
     # Draw front-camera feed or fallback background
     if ego_vehicle:
@@ -154,6 +155,11 @@ while running:
     follow_status = "Following: Yes" if follow_ego else "Following: No"
     follow_surf = font.render(follow_status, True, (0, 255, 0) if follow_ego else (255, 0, 0))
     screen.blit(follow_surf, (10, 70))
+
+    # Force Lane Switch Status
+    force_lane_status = "Force Lane Switch: Yes" if force_lane_switch else "Force Lane Switch: No"
+    force_lane_surf = font.render(force_lane_status, True, (0, 255, 0) if force_lane_switch else (255, 0, 0))
+    screen.blit(force_lane_surf, (10, 100))
 
     # Destination input fields
     input_y = HEIGHT - 150
@@ -269,7 +275,7 @@ while running:
             elif event.key == pygame.K_l and pause:
                 world.tick()
             elif event.key == pygame.K_i:
-                set_status("registered polygons..")
+                force_lane_switch = not force_lane_switch
             # reset scenario
             elif event.key == pygame.K_r:
                 delete_all_vehicles_safe(world_manager)
@@ -277,7 +283,7 @@ while running:
                 if ego_vehicle is None:
                     set_status("ego vehicle is none")
                 else:
-                    spawn_background_infront(world, ego_vehicle)
+                    # spawn_background_infront(world, ego_vehicle)
                     set_status("spawned ego vehicle")
                 follow_ego = True
 

@@ -155,8 +155,11 @@ class BirdeyeRenderer:
             cv2.line(self._surface, dest_start, dest_end, Color.SKY_BLUE_0, 6)
         color = env_state.get("waypoints_color", Color.BLUE)
         ego_waypoints = env_state["ego_waypoints"]
-        ego_polygon = self._world_manager.actor_polygons[self._ego.id]
-        self._render_path(self._surface, ego_polygon, ego_waypoints, color)
+        try:
+            ego_polygon = self._world_manager.actor_polygons[self._ego.id]
+            self._render_path(self._surface, ego_polygon, ego_waypoints, color)
+        except Exception:
+            print(f'failed to render wp {self._ego.id}')
 
     def _render_background_vehicles(self, **env_state):  
         """Render the background vehicles on the surface."""  
