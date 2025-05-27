@@ -112,7 +112,7 @@ def get_front_camera_image(world, vehicle, image_width=800, image_height=600, fo
     return array
 
 
-def spawn_background_infront(world, ego_vehicle, dist=30):  
+def spawn_background_infront(world, ego_vehicle, dist=70):  
     rand_str = "".join(random.choices(string.ascii_letters + string.digits, k=10))  
       
     # Get the ego vehicle's transform  

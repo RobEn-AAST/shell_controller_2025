@@ -53,13 +53,13 @@ class BehaviorAgent(BasicAgent):
         self._sampling_resolution = 4.5
 
         self._is_overtaking = False
-        self._n_overtake_wps_to_shift = 40
-        self._n_overtake_smooth_wps = 7
+        self._n_overtake_wps_to_shift = 15
+        self._n_overtake_smooth_wps = 3
         self._n_overtake_done_margin = 0
         self._overtake_wps_count = self._n_overtake_wps_to_shift + self._n_overtake_smooth_wps + self._n_overtake_done_margin  # 5 is safety factor
         self._initial_queue_size = 0
-        self._normal_max_speed = 30.0
-        self._overtake_max_speed = 10.0
+        self._normal_max_speed = 32.0
+        self._overtake_max_speed = 15.0
 
         self.vehicle_ahead_state = False
         self.vehicle_ahead = None
