@@ -5,27 +5,48 @@ import carla
 import sys
 import pygame
 import numpy as np
-import random
-import string
 from test_lib.world_utils import *
 from test_lib.agent_utils import *
 import time
+import os
+import yaml
+from test_lib.car_dreamer.car_dreamer.toolkit.config import Config
 
 pygame.init()
 
 client = carla.Client("localhost", 2000)  # type: ignore
 client.set_timeout(20)
 world = client.get_world()
+config_path = "shell_controller_2025/roben_ai/ai_src/navigator/test_lib/car_dreamer/car_dreamer/configs/common.yaml"
+with open(config_path) as f:
+    common_config_dict = yaml.safe_load(f)
+env_config = Config(common_config_dict)
+world_manager = WorldManager(client, world, env_config.env)
+
+# rendered definition
+obs_range = 50
+screen_size = 512
+pixels_per_meter = screen_size / (obs_range * 2)
+pixels_ahead_vehicle = obs_range * pixels_per_meter / 2
+obs_range = 50
+renderer = BirdeyeRenderer(
+    world_manager=world_manager,
+    pixels_per_meter=pixels_per_meter,
+    screen_size=screen_size,
+    pixels_ahead_vehicle=int(pixels_ahead_vehicle),
+    sight_fov=150,  # Field of view in degrees
+    sight_range=obs_range,
+)
 carla_map = world.get_map()
 competition_pos = {
     "x": 280.363708,
-    "y": 1.306351,
-    "z": 0.015964,
+    "y": 129.306351,
+    "z": 0.002264,
     "roll": 0,
     "pitch": 0,
     "yaw": 180,
 }
-destination = [184.758713,-199.424271,0.001680]
+destination = carla.Location(184.758713, -199.424271, 0.001680)
 
 ego_vehicle = find_ego_vehicle(world)
 loading_town = False
@@ -40,7 +61,7 @@ agent = None
 input_active = False
 input_text = {"x": "", "y": "", "z": ""}
 selected_input = None
-destination_input = [str(x) for x in destination]  # Convert initial destination to strings
+destination_input = [str(x) for x in [destination.x, destination.y, destination.z]]
 
 WIDTH, HEIGHT = 800, 600
 screen = pygame.display.set_mode((WIDTH, HEIGHT))
@@ -53,6 +74,7 @@ clock = pygame.time.Clock()
 def set_status(text: str):
     global status_text
     status_text = text
+
 
 def spawn_ego():
     ego_vehicle = None
@@ -71,81 +93,19 @@ def spawn_ego():
     set_camera_position(world, ego_pos.x, ego_pos.y, ego_pos.z + 40)
 
     agent = set_agent(ego_vehicle)
+    agent.set_destination(destination)
     return ego_vehicle, agent
-
 
 
 running = True
 while running:
-    for event in pygame.event.get():
-        if event.type == pygame.QUIT:
-            running = False
-
-        elif event.type == pygame.KEYDOWN:
-            if event.key == pygame.K_q:
-                running = False
-
-            # toggle agent driving
-            elif event.key == pygame.K_a:
-                enable_agent = not enable_agent
-            
-            # set destination
-            elif event.key == pygame.K_b:
-                if agent is None:
-                    set_status("Agent is None, operation ailed")
-                else:
-                    agent.set_destination(destination) 
-                    set_status("Succesfully set destination")
-
-            # spawn ego vehicle
-            elif event.key == pygame.K_e:
-                set_status("Spawning ego vehicle...")
-                ego_vehicle, agent = spawn_ego()
-                set_status("Done spawning ego vehicle")
-
-            # loaad town
-            elif event.key == pygame.K_t and not loading_town:
-                set_status("Loading town...")
-                loading_town = True
-                load_town(client, should_sync=True)
-                ego_vehicle = None
-                loading_town = False
-                set_status("Done loading town")
-
-            # delete vehicles
-            elif event.key == pygame.K_d:
-                delete_all_vehicles_safe(world)
-                ego_vehicle = None
-
-            # follow ego
-            elif event.key == pygame.K_f:
-                if ego_vehicle is None:
-                    ego_vehicle = find_ego_vehicle(world)
-                follow_ego = not follow_ego
-
-            # Spawn vehicle infront of us
-            elif event.key == pygame.K_s:
-                spawn_background_infront(world, ego_vehicle)
-
-            # pause carla
-            elif event.key == pygame.K_p:
-                pause = not pause
-            elif event.key == pygame.K_l and pause:
-                world.tick()
-            # reset scenario
-            elif event.key == pygame.K_r:
-                delete_all_vehicles_safe(world)
-                time.sleep(0.3)
-                ego_vehicle, agent = spawn_ego()
-                spawn_background_infront(world, ego_vehicle)
-                follow_ego = True
-
     # carla cam follow vehicle
+    update_all_vehicles_polygons(world_manager)
     if follow_ego and ego_vehicle is not None:
         ego_pos = get_vehicle_position(ego_vehicle)
         set_camera_position(world, ego_pos.x, ego_pos.y, ego_pos.z + 40)
-    
-    if enable_agent:
+
+    if enable_agent and ego_vehicle is not None:
         if agent is None:
             set_status("Agent is None, operation failed...")
         else:
@@ -154,7 +114,8 @@ while running:
 
     # Draw front-camera feed or fallback background
     if ego_vehicle:
-        img = get_front_camera_image(world, ego_vehicle)  # numpy 2D array
+        # img = get_front_camera_image(world, ego_vehicle)  # numpy 2D array
+        img = visualize_agent_path(renderer, ego_vehicle, None, screen_size)
         surf = pygame.surfarray.make_surface(img.swapaxes(0, 1))
         surf = pygame.transform.scale(surf, (WIDTH, HEIGHT))
         screen.blit(surf, (0, 0))
@@ -174,7 +135,7 @@ while running:
         screen.blit(status_surf, status_rect)
 
     # Vehicle count
-    vehicle_count = len(world.get_actors().filter('vehicle.*'))
+    vehicle_count = len(world.get_actors().filter("vehicle.*"))
     count_text = f"Vehicles: {vehicle_count}"
     count_surf = font.render(count_text, True, (255, 255, 255))
     screen.blit(count_surf, (10, 10))
@@ -191,33 +152,32 @@ while running:
 
     # Destination input fields
     input_y = HEIGHT - 150
-    for i, (axis, value) in enumerate(zip(['X', 'Y', 'Z'], destination_input)):
+    for i, (axis, value) in enumerate(zip(["X", "Y", "Z"], destination_input)):
         # Input field background
-        pygame.draw.rect(screen, (50, 50, 50), (WIDTH - 200, input_y + i*30, 150, 25))
-        
+        pygame.draw.rect(screen, (50, 50, 50), (WIDTH - 200, input_y + i * 30, 150, 25))
+
         # Label
         label = font.render(f"Dest {axis}:", True, (255, 255, 255))
-        screen.blit(label, (WIDTH - 280, input_y + i*30 + 5))
-        
+        screen.blit(label, (WIDTH - 280, input_y + i * 30 + 5))
+
         # Input text
         text = destination_input[i]
         text_surf = font.render(text, True, (255, 255, 255))
-        screen.blit(text_surf, (WIDTH - 190, input_y + i*30 + 5))
+        screen.blit(text_surf, (WIDTH - 190, input_y + i * 30 + 5))
 
     # Current destination and distance
     if ego_vehicle and agent:
         current_pos = get_vehicle_position(ego_vehicle)
-        dest = carla.Location(float(destination[0]), float(destination[1]), float(destination[2]))
-        distance = current_pos.distance(dest)
-        
-        dest_text = f"Current destination: ({destination[0]:.1f}, {destination[1]:.1f}, {destination[2]:.1f})"
+        distance = current_pos.distance(destination)
+
+        dest_text = f"Current destination: ({destination.x:.1f}, {destination.y:.1f}, {destination.z:.1f})"
         dist_text = f"Distance to goal: {distance:.1f}m"
-        
+
         overlay = pygame.Surface((400, 60))
         overlay.fill((0, 0, 0))
         overlay.set_alpha(128)
         screen.blit(overlay, (WIDTH - 410, 10))
-        
+
         dest_surf = font.render(dest_text, True, (255, 255, 255))
         dist_surf = font.render(dist_text, True, (255, 255, 255))
         screen.blit(dest_surf, (WIDTH - 450, 15))
@@ -235,12 +195,18 @@ while running:
             # toggle agent driving
             elif event.key == pygame.K_a:
                 enable_agent = not enable_agent
-            
+
             # Input field handling
             elif input_active and selected_input is not None:
                 if event.key == pygame.K_RETURN:
                     try:
-                        destination[selected_input] = float(destination_input[selected_input])
+                        if selected_input == 0:
+                            destination.x = float(destination_input[selected_input])
+                        elif selected_input == 1:
+                            destination.y = float(destination_input[selected_input])
+                        elif selected_input == 2:
+                            destination.z = float(destination_input[selected_input])
+
                         if agent is not None:
                             agent.set_destination(destination)
                             set_status("Updated destination")
@@ -251,11 +217,11 @@ while running:
                 elif event.key == pygame.K_BACKSPACE:
                     destination_input[selected_input] = destination_input[selected_input][:-1]
                 else:
-                    if event.unicode.isnumeric() or event.unicode in '.-':
+                    if event.unicode.isnumeric() or event.unicode in ".-":
                         destination_input[selected_input] += event.unicode
-            
+
             # spawn ego vehicle
-            elif event.key == pygame.K_e:
+            elif event.key == pygame.K_e and ego_vehicle is None:
                 set_status("Spawning ego vehicle...")
                 ego_vehicle, agent = spawn_ego()
                 set_status("Done spawning ego vehicle")
@@ -271,7 +237,7 @@ while running:
 
             # delete vehicles
             elif event.key == pygame.K_d:
-                delete_all_vehicles_safe(world)
+                delete_all_vehicles_safe(world_manager)
                 ego_vehicle = None
 
             # follow ego
@@ -282,18 +248,28 @@ while running:
 
             # Spawn vehicle infront of us
             elif event.key == pygame.K_s:
-                spawn_background_infront(world, ego_vehicle)
+                if ego_vehicle is None:
+                    set_status("ego vehicle is none")
+                else:
+                    spawn_background_infront(world, ego_vehicle)
+                    set_status("spawned ego vehicle")
 
             # pause carla
             elif event.key == pygame.K_p:
                 pause = not pause
             elif event.key == pygame.K_l and pause:
                 world.tick()
+            elif event.key == pygame.K_i:
+                set_status("registered polygons..")
             # reset scenario
             elif event.key == pygame.K_r:
-                delete_all_vehicles_safe(world)
+                delete_all_vehicles_safe(world_manager)
                 ego_vehicle, agent = spawn_ego()
-                spawn_background_infront(world, ego_vehicle)
+                if ego_vehicle is None:
+                    set_status("ego vehicle is none")
+                else:
+                    spawn_background_infront(world, ego_vehicle)
+                    set_status("spawned ego vehicle")
                 follow_ego = True
 
         elif event.type == pygame.MOUSEBUTTONDOWN:
@@ -301,7 +277,7 @@ while running:
             # Check if click is in input field area
             input_y = HEIGHT - 150
             for i in range(3):
-                input_rect = pygame.Rect(WIDTH - 200, input_y + i*30, 150, 25)
+                input_rect = pygame.Rect(WIDTH - 200, input_y + i * 30, 150, 25)
                 if input_rect.collidepoint(mouse_pos):
                     selected_input = i
                     input_active = True
@@ -314,20 +290,32 @@ while running:
     instructions = [
         "Q: Quit",
         "A: Toggle Agent Driving",
-        "B: Set Agent Destination",
         "E: Spawn Ego Vehicle",
         "S: Spawn Infront of Ego",
         "R: Reset Scenario",
         "T: Load Town",
         "D: Delete Vehicles",
         "F: Follow Ego",
+        "I: Register Polygons",
         "P: Toggle Pause",
         "L: Run Step",
     ]
+    
+    # Create smaller font for instructions
+    instruction_font = pygame.font.SysFont(None, 20)  # Reduced from 24 to 20
+    
+    # Draw semi-transparent background for instructions
+    instructions_height = len(instructions) * 15  # Reduced line height
+    overlay = pygame.Surface((250, instructions_height + 10))
+    overlay.fill((0, 0, 0))
+    overlay.set_alpha(128)
+    screen.blit(overlay, (10, HEIGHT - instructions_height - 10))
+    
+    # Draw instructions
     for i, text in enumerate(instructions):
-        instr_surf = font.render(text, True, (200, 200, 200))
-        y = HEIGHT - 10 - (len(instructions) - 1 - i) * 20
-        instr_rect = instr_surf.get_rect(midbottom=(WIDTH // 2, y))
+        instr_surf = instruction_font.render(text, True, (200, 200, 200))
+        y = HEIGHT - 5 - (len(instructions) - 1 - i) * 15  # Reduced spacing
+        instr_rect = instr_surf.get_rect(bottomleft=(15, y))  # Changed to bottomleft
         screen.blit(instr_surf, instr_rect)
 
     # Right-side overlay: vehicle speed & position
@@ -335,7 +323,7 @@ while running:
         speed = get_vehicle_speed(ego_vehicle)
         ego_pos = get_vehicle_position(ego_vehicle)
         info_lines = [
-            f"Speed: {speed:.2f} m/s",
+            f"Speed: {speed * 3.6:.2f} km/h",
             f"Pos X: {ego_pos.x:.2f}",
             f"Pos Y: {ego_pos.y:.2f}",
             f"Pos Z: {ego_pos.z:.2f}",
@@ -352,7 +340,8 @@ while running:
     clock.tick(60)
 
     if not pause:
-        world.tick()
+        # world.tick()
+        world_manager.step()
 
 pygame.quit()
 sys.exit()

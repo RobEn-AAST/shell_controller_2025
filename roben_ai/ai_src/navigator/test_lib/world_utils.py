@@ -72,28 +72,6 @@ def set_camera_position(world, x, y, z, pitch=-90, yaw=0, roll=0):
     # Set the spectator transform  
     spectator.set_transform(transform)
 
-def delete_all_vehicles_safe(world):  
-    """Loop over all vehicles and delete them with error handling"""  
-    vehicles = world.get_actors().filter('*vehicle*')  
-    deleted_count = 0  
-      
-    for vehicle in vehicles:  
-        try:  
-            if vehicle.destroy():  
-                deleted_count += 1  
-        except Exception as e:  
-            print(f"Failed to delete vehicle {vehicle.id}: {e}")  
-      
-    print(f"Successfully deleted {deleted_count} out of {len(vehicles)} vehicles")
-
-
-def find_ego_vehicle(world):  
-    """Loop over all vehicles and delete them with error handling"""  
-    try:
-        return next(v for v in world.get_actors().filter("vehicle.*") if v.attributes.get("role_name") == "ego_vehicle")
-    except Exception:
-        return None
-
 
 def get_front_camera_image(world, vehicle, image_width=800, image_height=600, fov=90.0):  
     """Capture a front camera image from a vehicle"""  
