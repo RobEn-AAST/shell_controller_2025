@@ -94,6 +94,8 @@ def spawn_ego():
     set_camera_position(world, ego_pos.x, ego_pos.y, ego_pos.z + 40)
 
     agent = set_agent(ego_vehicle)
+    agent.ignore_traffic_lights(True)
+    agent._behavior.max_speed = 30
 
     agent.set_destination(destination)
     return ego_vehicle, agent
@@ -103,7 +105,6 @@ def apply_agent(agent: BehaviorAgent, ego_vehicle: carla.Vehicle):
     control = agent.run_step(force_lane_switch=force_lane_switch)
     if control is not None:
         ego_vehicle.apply_control(control)
-
 
 running = True
 while running:
@@ -285,7 +286,7 @@ while running:
                 if ego_vehicle is None:
                     set_status("ego vehicle is none")
                 else:
-                    # spawn_background_infront(world, ego_vehicle)
+                    spawn_background_infront(world, ego_vehicle)
                     set_status("spawned ego vehicle")
                 follow_ego = True
 
@@ -353,6 +354,30 @@ while running:
         info_surf = font.render(line, True, (255, 255, 255))
         info_rect = info_surf.get_rect(topright=(WIDTH - 10, 10 + i * 20))
         screen.blit(info_surf, info_rect)
+
+    # Bottom-right overlay: agent state information
+    if agent and ego_vehicle:
+        agent_info_lines = [
+            f"Vehicle Ahead: {'Yes' if agent.vehicle_ahead_state else 'No'}",
+            f"Distance to Vehicle: {agent.distance_ahead:.1f}m" if agent.distance_ahead else "Distance to Vehicle: N/A"
+        ]
+        
+        # Calculate dimensions for the overlay
+        agent_info_height = len(agent_info_lines) * 25
+        agent_info_width = 250
+        
+        # Create and position overlay
+        agent_overlay = pygame.Surface((agent_info_width, agent_info_height))
+        agent_overlay.fill((0, 0, 0))
+        agent_overlay.set_alpha(128)
+        screen.blit(agent_overlay, (WIDTH - agent_info_width - 10, HEIGHT - agent_info_height - 10))
+        
+        # Draw the information
+        for i, line in enumerate(agent_info_lines):
+            color = (0, 255, 0) if i == 0 and agent.vehicle_ahead_state else (255, 255, 255)
+            info_surf = font.render(line, True, color)
+            info_rect = info_surf.get_rect(bottomright=(WIDTH - 20, HEIGHT - 10 - (len(agent_info_lines) - 1 - i) * 25))
+            screen.blit(info_surf, info_rect)
 
     pygame.display.flip()
     clock.tick(60)

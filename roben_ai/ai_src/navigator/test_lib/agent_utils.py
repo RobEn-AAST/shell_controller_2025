@@ -8,7 +8,7 @@ from .car_dreamer.car_dreamer.toolkit.observer.handlers.renderer.constants impor
 
 
 def set_agent(ego_vehicle):
-    agent = BehaviorAgent(ego_vehicle, behavior="aggressive")  # cautious, normal, aggressive
+    agent = BehaviorAgent(ego_vehicle, behavior="normal")  # cautious, normal, aggressive
     agent.ignore_traffic_lights(True)
     agent._behavior.max_speed = 47
 

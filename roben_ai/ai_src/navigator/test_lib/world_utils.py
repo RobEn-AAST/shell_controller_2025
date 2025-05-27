@@ -27,7 +27,9 @@ def spawn_vehicle(world, role_name, x, y, z, roll, pitch, yaw):
     # Choose a random vehicle blueprint (you can modify this to select specific ones)
     import random
 
-    vehicle_bp = random.choice(vehicle_blueprints)
+    # vehicle_bp = random.choice(vehicle_blueprints)
+    # if role_name == "ego_vehicle":
+    vehicle_bp = blueprint_library.find("vehicle.nissan.micra")
 
     # Set the role_name attribute
     if vehicle_bp.has_attribute("role_name"):

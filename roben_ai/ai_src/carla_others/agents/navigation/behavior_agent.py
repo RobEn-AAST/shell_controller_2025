@@ -52,14 +52,22 @@ class BehaviorAgent(BasicAgent):
         self._behavior = None
         self._sampling_resolution = 4.5
 
-        self.is_overtaking = False
-        self.n_overtake_wps_to_shift = 40
-        self.n_overtake_smooth_wps = 7
-        self.n_overtake_done_margin = 0
-        self.overtake_wps_count = self.n_overtake_wps_to_shift + self.n_overtake_smooth_wps + self.n_overtake_done_margin # 5 is safety factor
-        
+        self._is_overtaking = False
+        self._n_overtake_wps_to_shift = 40
+        self._n_overtake_smooth_wps = 7
+        self._n_overtake_done_margin = 0
+        self._overtake_wps_count = self._n_overtake_wps_to_shift + self._n_overtake_smooth_wps + self._n_overtake_done_margin  # 5 is safety factor
         self._initial_queue_size = 0
+        self._normal_max_speed = 30.0
+        self._overtake_max_speed = 10.0
 
+        self.vehicle_ahead_state = False
+        self.vehicle_ahead = None
+        self.distance_ahead = float('inf')
+
+        self.ignore_traffic_lights(True)
+        self.ignore_stop_signs(True)
+        
         # Parameters for agent behavior
         if behavior == "cautious":
             self._behavior = Cautious()
@@ -69,6 +77,10 @@ class BehaviorAgent(BasicAgent):
 
         elif behavior == "aggressive":
             self._behavior = Aggressive()
+        else:
+            raise NameError("behavior type is not defined")
+
+        self._behavior.max_speed = self._normal_max_speed
 
     def _update_information(self):
         """
@@ -132,7 +144,7 @@ class BehaviorAgent(BasicAgent):
 
     def _create_traj(self, lane_direction: str):
         assert lane_direction in ["left", "right"], "lane direction can be only 'right' or 'left'"
-        
+
         current_planned_waypoints = list(self._local_planner._waypoints_queue)
         if not current_planned_waypoints:
             print("No current planned waypoints to shift.")
@@ -140,7 +152,7 @@ class BehaviorAgent(BasicAgent):
 
         modified_waypoints = []
         for i, (wp_carla, road_option) in enumerate(current_planned_waypoints):
-            if i >= self.n_overtake_wps_to_shift:
+            if i >= self._n_overtake_wps_to_shift:
                 modified_waypoints.append((wp_carla, road_option))
                 continue
 
@@ -153,11 +165,11 @@ class BehaviorAgent(BasicAgent):
 
         # smoothness:
         # Remove first 7 points and 7 points after 40th element for smoothness
-        modified_waypoints = modified_waypoints[self.n_overtake_smooth_wps:self.n_overtake_wps_to_shift] + modified_waypoints[self.n_overtake_smooth_wps + self.n_overtake_wps_to_shift:]
+        modified_waypoints = modified_waypoints[self._n_overtake_smooth_wps : self._n_overtake_wps_to_shift] + modified_waypoints[self._n_overtake_smooth_wps + self._n_overtake_wps_to_shift :]
 
         self._local_planner.set_global_plan(modified_waypoints[10:], clean_queue=True)
         self._behavior.tailgate_counter = 200
-        self.is_overtaking = True
+        self._is_overtaking = True
         self._initial_queue_size = len(self._local_planner._waypoints_queue)
 
     def _headgating(self, waypoint, vehicle_list, force_lane_switch=False):
@@ -176,7 +188,6 @@ class BehaviorAgent(BasicAgent):
                 )
                 if not new_vehicle_state:
                     self._create_traj("left")
-
 
             # Try right lane if left is not possible/clear
             elif right_wpt and right_wpt.lane_type == carla.LaneType.Driving:
@@ -287,6 +298,18 @@ class BehaviorAgent(BasicAgent):
 
         return control
 
+    def _should_overtake(self):
+        vehicle_list = self._world.get_actors().filter("*vehicle*")
+        vehicle_list = [v for v in vehicle_list if v.id != self._vehicle.id]
+        self.vehicle_ahead_state, self.vehicle_ahead, self.distance_ahead = self._vehicle_obstacle_detected(
+            vehicle_list, max(self._behavior.min_proximity_threshold, self._speed_limit / 3), up_angle_th=30, lane_offset=0  # Use a relevant threshold  # Check current lane
+        )
+
+        if self.vehicle_ahead is None:
+            return False
+
+        return self.vehicle_ahead_state and self.vehicle_ahead and get_speed(self.vehicle_ahead) < 10
+
     def run_step(self, debug=False, force_lane_switch=False):
         """
         Execute one step of navigation.
@@ -304,25 +327,26 @@ class BehaviorAgent(BasicAgent):
         ego_vehicle_loc = self._vehicle.get_location()
         ego_vehicle_wp = self._map.get_waypoint(ego_vehicle_loc)
 
-        if self.is_overtaking:
+        if self._is_overtaking:
             current_queue_size = len(self._local_planner._waypoints_queue)
-          
-            waypoints_consumed = self._initial_queue_size - current_queue_size  
+
+            waypoints_consumed = self._initial_queue_size - current_queue_size
             print(waypoints_consumed)
-            
-            if waypoints_consumed >= self.overtake_wps_count:  
-                self.is_overtaking = False  
+
+            if waypoints_consumed >= self._overtake_wps_count:
+                self._behavior.max_speed = self._normal_max_speed
+                self._is_overtaking = False
                 self._initial_queue_size = 0
-                print("Overtake completed based on waypoint consumption!")  
-                
-        if force_lane_switch and not self.is_overtaking:
+                print("Overtake completed based on waypoint consumption!")
+
+        if (force_lane_switch or self._should_overtake()) and not self._is_overtaking:
             vehicle_list = self._world.get_actors().filter("*vehicle*")
             vehicle_list = [v for v in vehicle_list if v.id != self._vehicle.id]
 
             self._headgating(ego_vehicle_wp, vehicle_list, force_lane_switch=force_lane_switch)
             control = self._local_planner.run_step(debug=debug)
             return control
-
+        
         # 2.1: Pedestrian avoidance behaviors
         walker_state, walker, w_distance = self.pedestrian_avoid_manager(ego_vehicle_wp)
 
@@ -363,6 +387,8 @@ class BehaviorAgent(BasicAgent):
             target_speed = min([self._behavior.max_speed, self._speed_limit - self._behavior.speed_lim_dist])
             self._local_planner.set_speed(target_speed)
             control = self._local_planner.run_step(debug=debug)
+
+
 
         return control
 
