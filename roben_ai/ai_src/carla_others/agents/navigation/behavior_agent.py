@@ -463,7 +463,7 @@ class BehaviorAgent(BasicAgent):
             current_queue_size = len(self._local_planner._waypoints_queue)
 
             waypoints_consumed = self._initial_queue_size - current_queue_size
-            print(waypoints_consumed)
+            print(f'wps consumed: {waypoints_consumed}')
 
             if waypoints_consumed >= self._overtake_wps_count:
                 self._behavior.max_speed = self._normal_max_speed
@@ -494,7 +494,6 @@ class BehaviorAgent(BasicAgent):
             needs_emergency_stop = (distance < self._behavior.min_proximity_threshold and self._is_overtaking and self._speed > self._overtake_max_speed) or (
                 distance < self._behavior.braking_distance and not self._is_overtaking
             )
-            print(f"overtake: {self._is_overtaking}, distance: {distance}, brake_dist: {self._behavior.braking_distance}")
             if needs_emergency_stop:
                 return self.emergency_stop()
 

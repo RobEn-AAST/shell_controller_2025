@@ -95,7 +95,6 @@ def spawn_ego():
 
     agent = set_agent(ego_vehicle)
     agent.ignore_traffic_lights(True)
-    agent._behavior.max_speed = 30
 
     agent.set_destination(destination)
     return ego_vehicle, agent
