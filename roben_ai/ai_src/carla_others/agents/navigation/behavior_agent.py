@@ -236,7 +236,7 @@ class BehaviorAgent(BasicAgent):
 
         return control
 
-    def run_step(self, debug=False):
+    def run_step(self, debug=False, force_lane_switch=False):
         """
         Execute one step of navigation.
 
@@ -272,6 +272,9 @@ class BehaviorAgent(BasicAgent):
 
         # 2.2: Car following behaviors
         vehicle_state, vehicle, distance = self.collision_and_car_avoid_manager(ego_vehicle_wp)
+
+        if self._incoming_waypoint is None:
+            return
 
         if vehicle_state:
             # Distance is computed from the center of the two cars,

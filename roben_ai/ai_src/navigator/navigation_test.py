@@ -39,12 +39,12 @@ renderer = BirdeyeRenderer(
 )
 carla_map = world.get_map()
 competition_pos = {
-    "x": 280.363708,
-    "y": 129.306351,
+    "x": 130,  # 280.363708,
+    "y": 59.5,  # 129.306351,
     "z": 0.002264,
     "roll": 0,
     "pitch": 0,
-    "yaw": 180,
+    "yaw": 0,  # 180,
 }
 destination = carla.Location(184.758713, -199.424271, 0.001680)
 
@@ -97,6 +97,11 @@ def spawn_ego():
     return ego_vehicle, agent
 
 
+def apply_agent(agent: BehaviorAgent, ego_vehicle: carla.Vehicle):
+    control = agent.run_step()
+    ego_vehicle.apply_control(control)
+
+
 running = True
 while running:
     # carla cam follow vehicle
@@ -109,13 +114,13 @@ while running:
         if agent is None:
             set_status("Agent is None, operation failed...")
         else:
-            control = agent.run_step()
-            ego_vehicle.apply_control(control)
+            apply_agent()
 
     # Draw front-camera feed or fallback background
     if ego_vehicle:
         # img = get_front_camera_image(world, ego_vehicle)  # numpy 2D array
-        img = visualize_agent_path(renderer, ego_vehicle, None, screen_size)
+        waypoints = extract_agent_wps(agent)
+        img = visualize_agent_path(renderer, ego_vehicle, waypoints, screen_size)
         surf = pygame.surfarray.make_surface(img.swapaxes(0, 1))
         surf = pygame.transform.scale(surf, (WIDTH, HEIGHT))
         screen.blit(surf, (0, 0))
@@ -240,6 +245,10 @@ while running:
                 delete_all_vehicles_safe(world_manager)
                 ego_vehicle = None
 
+            # delete all but ego
+            elif event.key == pygame.K_k:
+                delete_all_vehicles_safe(world_manager, keep_ego=True)
+
             # follow ego
             elif event.key == pygame.K_f:
                 if ego_vehicle is None:
@@ -295,22 +304,23 @@ while running:
         "R: Reset Scenario",
         "T: Load Town",
         "D: Delete Vehicles",
+        "K: Delete Vehicles But Ego",
         "F: Follow Ego",
         "I: Register Polygons",
         "P: Toggle Pause",
         "L: Run Step",
     ]
-    
+
     # Create smaller font for instructions
     instruction_font = pygame.font.SysFont(None, 20)  # Reduced from 24 to 20
-    
+
     # Draw semi-transparent background for instructions
     instructions_height = len(instructions) * 15  # Reduced line height
     overlay = pygame.Surface((250, instructions_height + 10))
     overlay.fill((0, 0, 0))
     overlay.set_alpha(128)
     screen.blit(overlay, (10, HEIGHT - instructions_height - 10))
-    
+
     # Draw instructions
     for i, text in enumerate(instructions):
         instr_surf = instruction_font.render(text, True, (200, 200, 200))

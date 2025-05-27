@@ -114,52 +114,53 @@ def update_all_vehicles_polygons(world_manager: "WorldManager"):
     # print("Finished checking and registering vehicle polygons.")
 
 
-def delete_all_vehicles_safe(world_manager: WorldManager):  
-    """  
-    Loop over all vehicles in the CARLA world and safely delete them.  
-    This function also ensures the WorldManager's internal actor tracking  
-    and polygon caches are correctly updated.  
-  
-    Args:  
-        world_manager: An instance of CarDreamer's WorldManager.  
-    """  
-    # Get all vehicles currently in the CARLA simulation, not just those managed by WorldManager  
-    vehicles_in_world = world_manager._world.get_actors().filter("*vehicle*")  
-    deleted_count = 0  
-    total_vehicles_to_delete = len(vehicles_in_world)  
-  
-    # Prepare a batch command for destruction for efficiency  
-    destroy_commands = []  
-    for vehicle in vehicles_in_world:  
-        destroy_commands.append(carla.command.DestroyActor(vehicle.id))  
-  
-    # Apply the batch destruction command  
-    try:  
-        response = world_manager._client.apply_batch_sync(destroy_commands, True)  
-        for i, res in enumerate(response):  
-            if not res.error:  
-                deleted_count += 1  
-            else:  
-                print(f"Failed to delete vehicle {vehicles_in_world[i].id}: {res.error}")  
-    except Exception as e:  
-        print(f"Error during batch deletion: {e}")  
-  
-    # Clear the WorldManager's internal actor_dict  
-    # This is the correct way to tell WorldManager that its managed actors are gone.  
-    # The actor_polygons property will then reflect this change.  
-    world_manager.actor_dict = {} # This clears the dictionary of managed actors (Shuangyu Cai (2024-05-12, cb8721cb) in car_dreamer/toolkit/carla_manager/world_manager.py:57)  
-  
-    # Optionally, clear the internal cache for actor_polygons and actor_transforms  
-    # if you are directly manipulating them or if the WorldManager's reset()  
-    # method is not called immediately after this function.  
-    # The @cached_step_wise decorator (Shuangyu Cai (2024-05-12, cb8721cb) in car_dreamer/toolkit/carla_manager/world_manager.py:12-22)  
-    # means these properties are cached per simulation step.  
-    # If you want to force an immediate refresh, you can clear the cache.  
-    if hasattr(world_manager, "_cache"):  
-        world_manager._cache = {"step": world_manager._time_step} # Reset cache for current step  
-  
+def delete_all_vehicles_safe(world_manager: WorldManager, keep_ego=False):
+    """
+    Loop over all vehicles in the CARLA world and safely delete them.
+    This function also ensures the WorldManager's internal actor tracking
+    and polygon caches are correctly updated.
+
+    Args:
+        world_manager: An instance of CarDreamer's WorldManager.
+    """
+    # Get all vehicles currently in the CARLA simulation, not just those managed by WorldManager
+    vehicles_in_world = world_manager._world.get_actors().filter("*vehicle*")
+    deleted_count = 0
+    total_vehicles_to_delete = len(vehicles_in_world)
+
+    # Prepare a batch command for destruction for efficiency
+    destroy_commands = []
+    for vehicle in vehicles_in_world:
+        if not keep_ego or vehicle.attributes.get("role_name") != "ego_vehicle":
+            destroy_commands.append(carla.command.DestroyActor(vehicle.id))
+
+    # Apply the batch destruction command
+    try:
+        response = world_manager._client.apply_batch_sync(destroy_commands, True)
+        for i, res in enumerate(response):
+            if not res.error:
+                deleted_count += 1
+            else:
+                print(f"Failed to delete vehicle {vehicles_in_world[i].id}: {res.error}")
+    except Exception as e:
+        print(f"Error during batch deletion: {e}")
+
+    # Clear the WorldManager's internal actor_dict
+    # This is the correct way to tell WorldManager that its managed actors are gone.
+    # The actor_polygons property will then reflect this change.
+    world_manager.actor_dict = {}  # This clears the dictionary of managed actors (Shuangyu Cai (2024-05-12, cb8721cb) in car_dreamer/toolkit/carla_manager/world_manager.py:57)
+
+    # Optionally, clear the internal cache for actor_polygons and actor_transforms
+    # if you are directly manipulating them or if the WorldManager's reset()
+    # method is not called immediately after this function.
+    # The @cached_step_wise decorator (Shuangyu Cai (2024-05-12, cb8721cb) in car_dreamer/toolkit/carla_manager/world_manager.py:12-22)
+    # means these properties are cached per simulation step.
+    # If you want to force an immediate refresh, you can clear the cache.
+    if hasattr(world_manager, "_cache"):
+        world_manager._cache = {"step": world_manager._time_step}  # Reset cache for current step
+
     print(f"Successfully deleted {deleted_count} out of {total_vehicles_to_delete} vehicles.")
-    
+
 
 def find_ego_vehicle(world):
     """Loop over all vehicles and delete them with error handling"""
@@ -167,3 +168,15 @@ def find_ego_vehicle(world):
         return next(v for v in world.get_actors().filter("vehicle.*") if v.attributes.get("role_name") == "ego_vehicle")
     except Exception:
         return None
+
+
+def extract_agent_wps(agent):
+    planned_waypoints = []
+
+    if hasattr(agent, "_local_planner") and hasattr(agent._local_planner, "_waypoints_queue"):
+        for waypoint_tuple in agent._local_planner._waypoints_queue:
+
+            carla_waypoint = waypoint_tuple[0]
+            planned_waypoints.append((carla_waypoint.transform.location.x, carla_waypoint.transform.location.y))
+
+    return planned_waypoints or None
