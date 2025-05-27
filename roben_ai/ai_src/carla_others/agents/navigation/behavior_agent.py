@@ -331,17 +331,115 @@ class BehaviorAgent(BasicAgent):
 
         return control
 
-    def _should_overtake(self):
+    def _should_overtake(self, check_distance_meters=50):
         vehicle_list = self._world.get_actors().filter("*vehicle*")
         vehicle_list = [v for v in vehicle_list if v.id != self._vehicle.id]
         self.vehicle_ahead_state, self.vehicle_ahead, self.distance_ahead = self._vehicle_obstacle_detected(
-            vehicle_list, max(self._behavior.min_proximity_threshold, self._speed_limit / 3), up_angle_th=30, lane_offset=0  # Use a relevant threshold  # Check current lane
+            vehicle_list, max(self._behavior.min_proximity_threshold, self._speed_limit / 3), up_angle_th=30, lane_offset=0
         )
 
         if self.vehicle_ahead is None:
             return False
 
-        return self.vehicle_ahead_state and self.vehicle_ahead and get_speed(self.vehicle_ahead) <= 2
+        # Check if there's a slow vehicle ahead that warrants overtaking
+        if not (self.vehicle_ahead_state and self.vehicle_ahead and get_speed(self.vehicle_ahead) <= 2):
+            return False
+
+        # Check if left lane is clear for overtaking
+        if not self._is_left_lane_clear(vehicle_list, check_distance_meters):
+            return False
+
+        return True
+
+    def _is_left_lane_clear(self, vehicle_list, check_distance_meters):
+        """
+        Check if the left lane is clear for overtaking, considering vehicle direction and position.
+
+        :param vehicle_list: List of vehicles to check against
+        :param check_distance_meters: Distance to check ahead in the left lane
+        :return: True if left lane is clear for overtaking, False otherwise
+        """
+        # Get current vehicle position and waypoint
+        ego_transform = self._vehicle.get_transform()
+        ego_location = ego_transform.location
+        ego_yaw = ego_transform.rotation.yaw
+        current_waypoint = self._map.get_waypoint(ego_location, project_to_road=True)
+
+        # Get the left lane waypoint
+        left_lane_waypoint = current_waypoint.get_left_lane()
+        if left_lane_waypoint is None:
+            return False  # No left lane available
+
+        # Check for vehicles in the left lane
+        for vehicle in vehicle_list:
+            vehicle_transform = vehicle.get_transform()
+            vehicle_location = vehicle_transform.location
+            vehicle_yaw = vehicle_transform.rotation.yaw
+            vehicle_waypoint = self._map.get_waypoint(vehicle_location, project_to_road=True)
+
+            if vehicle_waypoint is None:
+                continue
+
+            # Check if vehicle is in the left lane (same road and lane as left_lane_waypoint)
+            if vehicle_waypoint.road_id == left_lane_waypoint.road_id and vehicle_waypoint.lane_id == left_lane_waypoint.lane_id:
+
+                # Calculate distance and relative position
+                distance_to_vehicle = ego_location.distance(vehicle_location)
+
+                # Skip if vehicle is too far away
+                if distance_to_vehicle > check_distance_meters:
+                    continue
+
+                # Calculate yaw difference to determine if vehicles are facing each other
+                yaw_diff = abs(ego_yaw - vehicle_yaw)
+                if yaw_diff > 180:
+                    yaw_diff = 360 - yaw_diff
+
+                # Check if vehicles are facing each other (opposite directions)
+                if yaw_diff > 150:  # Around 180 degrees difference
+                    # Vehicles are facing each other - check if other vehicle is behind us
+                    # Use dot product to determine if vehicle is ahead or behind
+                    ego_forward = ego_transform.get_forward_vector()
+                    to_vehicle = carla.Location(vehicle_location.x - ego_location.x, vehicle_location.y - ego_location.y, 0)
+
+                    # If dot product is positive, vehicle is ahead of us
+                    dot_product = ego_forward.x * to_vehicle.x + ego_forward.y * to_vehicle.y
+
+                    if dot_product > 0:  # Vehicle is ahead of us and coming towards us
+                        return False  # Not safe to overtake
+
+                else:  # Vehicles are moving in roughly the same direction (yaw difference < 150)
+                    vehicle_speed = self._get_vehicle_speed_kmh(vehicle)
+
+                    if vehicle_speed > 15:
+                        # Fast vehicle - check if it has already crossed us (is behind us)
+                        ego_forward = ego_transform.get_forward_vector()
+                        to_vehicle = carla.Location(vehicle_location.x - ego_location.x, vehicle_location.y - ego_location.y, 0)
+
+                        dot_product = ego_forward.x * to_vehicle.x + ego_forward.y * to_vehicle.y
+
+                        if dot_product > 0:  # Vehicle is still ahead of us
+                            return False  # Not safe to overtake
+
+                    else:  # Slow vehicle (speed <= 15)
+                        # Check if vehicle is behind us by more than 15 meters
+                        if distance_to_vehicle <= 15:
+                            ego_forward = ego_transform.get_forward_vector()
+                            to_vehicle = carla.Location(vehicle_location.x - ego_location.x, vehicle_location.y - ego_location.y, 0)
+
+                            dot_product = ego_forward.x * to_vehicle.x + ego_forward.y * to_vehicle.y
+
+                            # If vehicle is ahead or too close behind, not safe
+                            if dot_product >= 0 or distance_to_vehicle <= 15:
+                                return False
+
+        return True  # Left lane is clear for overtaking
+
+    def _get_vehicle_speed_kmh(self, vehicle):
+        """Helper function to get vehicle speed in km/h"""
+        velocity = vehicle.get_velocity()
+        speed_ms = (velocity.x**2 + velocity.y**2 + velocity.z**2) ** 0.5
+        return speed_ms * 3.6  # Convert m/s to km/h  # Left lane is clear
 
     def run_step(self, debug=False, force_lane_switch=False):
         """
@@ -393,22 +491,15 @@ class BehaviorAgent(BasicAgent):
 
             # Emergency brake if the car is very close.
             # Emergency stop conditions
-            needs_emergency_stop = (
-                (distance < self._behavior.min_proximity_threshold and 
-                 self._is_overtaking and 
-                 self._speed > self._overtake_max_speed) or
-                (distance < self._behavior.braking_distance and 
-                 not self._is_overtaking)
+            needs_emergency_stop = (distance < self._behavior.min_proximity_threshold and self._is_overtaking and self._speed > self._overtake_max_speed) or (
+                distance < self._behavior.braking_distance and not self._is_overtaking
             )
-            print(f'overtake: {self._is_overtaking}, distance: {distance}, brake_dist: {self._behavior.braking_distance}')
+            print(f"overtake: {self._is_overtaking}, distance: {distance}, brake_dist: {self._behavior.braking_distance}")
             if needs_emergency_stop:
                 return self.emergency_stop()
 
             # Normal driving behavior
-            control = (self._local_planner.run_step(debug=debug) 
-                      if self._is_overtaking 
-                      else self.car_following_manager(vehicle, distance))
-
+            control = self._local_planner.run_step(debug=debug) if self._is_overtaking else self.car_following_manager(vehicle, distance)
 
         # 3: Intersection behavior
         elif self._incoming_waypoint.is_junction and (self._incoming_direction in [RoadOption.LEFT, RoadOption.RIGHT]):
