@@ -94,13 +94,15 @@ def spawn_ego():
     set_camera_position(world, ego_pos.x, ego_pos.y, ego_pos.z + 40)
 
     agent = set_agent(ego_vehicle)
+
     agent.set_destination(destination)
     return ego_vehicle, agent
 
 
 def apply_agent(agent: BehaviorAgent, ego_vehicle: carla.Vehicle):
     control = agent.run_step(force_lane_switch=force_lane_switch)
-    ego_vehicle.apply_control(control)
+    if control is not None:
+        ego_vehicle.apply_control(control)
 
 
 running = True

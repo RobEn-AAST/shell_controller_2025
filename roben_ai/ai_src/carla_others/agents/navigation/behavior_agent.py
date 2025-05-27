@@ -52,6 +52,14 @@ class BehaviorAgent(BasicAgent):
         self._behavior = None
         self._sampling_resolution = 4.5
 
+        self.is_overtaking = False
+        self.n_overtake_wps_to_shift = 40
+        self.n_overtake_smooth_wps = 7
+        self.n_overtake_done_margin = 0
+        self.overtake_wps_count = self.n_overtake_wps_to_shift + self.n_overtake_smooth_wps + self.n_overtake_done_margin # 5 is safety factor
+        
+        self._initial_queue_size = 0
+
         # Parameters for agent behavior
         if behavior == "cautious":
             self._behavior = Cautious()
@@ -124,7 +132,7 @@ class BehaviorAgent(BasicAgent):
 
     def _create_traj(self, lane_direction: str):
         assert lane_direction in ["left", "right"], "lane direction can be only 'right' or 'left'"
-        n_wps_to_shift = 40
+        
         current_planned_waypoints = list(self._local_planner._waypoints_queue)
         if not current_planned_waypoints:
             print("No current planned waypoints to shift.")
@@ -132,7 +140,7 @@ class BehaviorAgent(BasicAgent):
 
         modified_waypoints = []
         for i, (wp_carla, road_option) in enumerate(current_planned_waypoints):
-            if i >= n_wps_to_shift:
+            if i >= self.n_overtake_wps_to_shift:
                 modified_waypoints.append((wp_carla, road_option))
                 continue
 
@@ -143,11 +151,16 @@ class BehaviorAgent(BasicAgent):
             else:
                 modified_waypoints.append((wp_carla, road_option))
 
-        self._local_planner.set_global_plan(modified_waypoints, clean_queue=True)
+        # smoothness:
+        # Remove first 7 points and 7 points after 40th element for smoothness
+        modified_waypoints = modified_waypoints[self.n_overtake_smooth_wps:self.n_overtake_wps_to_shift] + modified_waypoints[self.n_overtake_smooth_wps + self.n_overtake_wps_to_shift:]
+
+        self._local_planner.set_global_plan(modified_waypoints[10:], clean_queue=True)
         self._behavior.tailgate_counter = 200
+        self.is_overtaking = True
+        self._initial_queue_size = len(self._local_planner._waypoints_queue)
 
     def _headgating(self, waypoint, vehicle_list, force_lane_switch=False):
-        n_waypoints_to_shift = 1000
         left_wpt = waypoint.get_left_lane()
         right_wpt = waypoint.get_right_lane()
 
@@ -284,13 +297,25 @@ class BehaviorAgent(BasicAgent):
         self._update_information()
 
         control = None
+
         if self._behavior.tailgate_counter > 0:
             self._behavior.tailgate_counter -= 1
 
         ego_vehicle_loc = self._vehicle.get_location()
         ego_vehicle_wp = self._map.get_waypoint(ego_vehicle_loc)
 
-        if force_lane_switch:
+        if self.is_overtaking:
+            current_queue_size = len(self._local_planner._waypoints_queue)
+          
+            waypoints_consumed = self._initial_queue_size - current_queue_size  
+            print(waypoints_consumed)
+            
+            if waypoints_consumed >= self.overtake_wps_count:  
+                self.is_overtaking = False  
+                self._initial_queue_size = 0
+                print("Overtake completed based on waypoint consumption!")  
+                
+        if force_lane_switch and not self.is_overtaking:
             vehicle_list = self._world.get_actors().filter("*vehicle*")
             vehicle_list = [v for v in vehicle_list if v.id != self._vehicle.id]
 
