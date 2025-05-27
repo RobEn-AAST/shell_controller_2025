@@ -287,6 +287,7 @@ while running:
                     set_status("ego vehicle is none")
                 else:
                     spawn_background_infront(world, client.get_trafficmanager(), ego_vehicle)
+                    spawn_background_infront_opposite_lane(world, client.get_trafficmanager(), ego_vehicle)
                     set_status("spawned ego vehicle")
                 follow_ego = True
 
