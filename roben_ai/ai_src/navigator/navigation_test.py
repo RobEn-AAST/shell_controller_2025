@@ -39,7 +39,7 @@ renderer = BirdeyeRenderer(
 )
 carla_map = world.get_map()
 competition_pos = {
-    "x": 130,  # 280.363708,
+    "x": 160,  # 280.363708,
     "y": 59.5,  # 129.306351,
     "z": 0.002264,
     "roll": 0,

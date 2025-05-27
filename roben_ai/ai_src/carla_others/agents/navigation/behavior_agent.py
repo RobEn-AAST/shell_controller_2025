@@ -63,11 +63,11 @@ class BehaviorAgent(BasicAgent):
 
         self.vehicle_ahead_state = False
         self.vehicle_ahead = None
-        self.distance_ahead = float('inf')
+        self.distance_ahead = float("inf")
 
         self.ignore_traffic_lights(True)
         self.ignore_stop_signs(True)
-        
+
         # Parameters for agent behavior
         if behavior == "cautious":
             self._behavior = Cautious()
@@ -176,32 +176,65 @@ class BehaviorAgent(BasicAgent):
         left_wpt = waypoint.get_left_lane()
         right_wpt = waypoint.get_right_lane()
 
-        behind_vehicle_state, behind_vehicle, _ = self._vehicle_obstacle_detected(vehicle_list, max(self._behavior.min_proximity_threshold, self._speed_limit / 2), up_angle_th=180, low_angle_th=160)
+        if left_wpt and left_wpt.lane_type == carla.LaneType.Driving:
+            new_vehicle_state, _, _ = self._vehicle_obstacle_detected(
+                vehicle_list,
+                max(self._behavior.min_proximity_threshold, self._speed_limit / 2),
+                up_angle_th=180,
+                lane_offset=-1,
+            )
+            if not new_vehicle_state:
+                self._create_traj("left")
 
-        if (behind_vehicle_state and self._speed < get_speed(behind_vehicle)) or force_lane_switch:
-            if left_wpt and left_wpt.lane_type == carla.LaneType.Driving:
-                new_vehicle_state, _, _ = self._vehicle_obstacle_detected(
-                    vehicle_list,
-                    max(self._behavior.min_proximity_threshold, self._speed_limit / 2),
-                    up_angle_th=180,
-                    lane_offset=-1,
-                )
-                if not new_vehicle_state:
-                    self._create_traj("left")
+        # Try right lane if left is not possible/clear
+        elif right_wpt and right_wpt.lane_type == carla.LaneType.Driving:
+            new_vehicle_state, _, _ = self._vehicle_obstacle_detected(
+                vehicle_list,
+                max(self._behavior.min_proximity_threshold, self._speed_limit / 2),
+                up_angle_th=180,
+                lane_offset=1,
+            )
+            if not new_vehicle_state:  # If target lane is clear
+                self._create_traj("right")
 
-            # Try right lane if left is not possible/clear
-            elif right_wpt and right_wpt.lane_type == carla.LaneType.Driving:
-                new_vehicle_state, _, _ = self._vehicle_obstacle_detected(
-                    vehicle_list,
-                    max(self._behavior.min_proximity_threshold, self._speed_limit / 2),
-                    up_angle_th=180,
-                    lane_offset=1,
-                )
-                if not new_vehicle_state:  # If target lane is clear
-                    self._create_traj("right")
+        else:
+            print("Forced lane change requested, but no valid adjacent driving lane found or clear.")
 
-            else:
-                print("Forced lane change requested, but no valid adjacent driving lane found or clear.")
+            # Fallback: try to find any adjacent lanes regardless of type
+            current_wpt = waypoint
+
+            map_obj = self._map
+            try:
+                left_lane_id = current_wpt.lane_id - 1
+                left_fallback_wpt = map_obj.get_waypoint_xodr(current_wpt.road_id, left_lane_id, current_wpt.s)
+                if left_fallback_wpt:
+                    new_vehicle_state, _, _ = self._vehicle_obstacle_detected(
+                        vehicle_list,
+                        max(self._behavior.min_proximity_threshold, self._speed_limit / 2),
+                        up_angle_th=180,
+                        lane_offset=-1,
+                    )
+                    if not new_vehicle_state:
+                        self._create_traj("left")
+                        return
+            except:
+                pass
+
+            try:
+                right_lane_id = current_wpt.lane_id + 1
+                right_fallback_wpt = map_obj.get_waypoint_xodr(current_wpt.road_id, right_lane_id, current_wpt.s)
+                if right_fallback_wpt:
+                    new_vehicle_state, _, _ = self._vehicle_obstacle_detected(
+                        vehicle_list,
+                        max(self._behavior.min_proximity_threshold, self._speed_limit / 2),
+                        up_angle_th=180,
+                        lane_offset=1,
+                    )
+                    if not new_vehicle_state:
+                        self._create_traj("right")
+                        return
+            except:
+                pass
 
     def collision_and_car_avoid_manager(self, waypoint):
         """
@@ -328,6 +361,7 @@ class BehaviorAgent(BasicAgent):
         ego_vehicle_wp = self._map.get_waypoint(ego_vehicle_loc)
 
         if self._is_overtaking:
+            self._behavior.max_speed = self._overtake_max_speed
             current_queue_size = len(self._local_planner._waypoints_queue)
 
             waypoints_consumed = self._initial_queue_size - current_queue_size
@@ -337,6 +371,7 @@ class BehaviorAgent(BasicAgent):
                 self._behavior.max_speed = self._normal_max_speed
                 self._is_overtaking = False
                 self._initial_queue_size = 0
+                self._behavior.max_speed = self._normal_max_speed
                 print("Overtake completed based on waypoint consumption!")
 
         if (force_lane_switch or self._should_overtake()) and not self._is_overtaking:
@@ -344,20 +379,6 @@ class BehaviorAgent(BasicAgent):
             vehicle_list = [v for v in vehicle_list if v.id != self._vehicle.id]
 
             self._headgating(ego_vehicle_wp, vehicle_list, force_lane_switch=force_lane_switch)
-            control = self._local_planner.run_step(debug=debug)
-            return control
-        
-        # 2.1: Pedestrian avoidance behaviors
-        walker_state, walker, w_distance = self.pedestrian_avoid_manager(ego_vehicle_wp)
-
-        if walker_state:
-            # Distance is computed from the center of the two cars,
-            # we use bounding boxes to calculate the actual distance
-            distance = w_distance - max(walker.bounding_box.extent.y, walker.bounding_box.extent.x) - max(self._vehicle.bounding_box.extent.y, self._vehicle.bounding_box.extent.x)
-
-            # Emergency brake if the car is very close.
-            if distance < self._behavior.braking_distance:
-                return self.emergency_stop()
 
         # 2.2: Car following behaviors
         vehicle_state, vehicle, distance = self.collision_and_car_avoid_manager(ego_vehicle_wp)
@@ -371,10 +392,23 @@ class BehaviorAgent(BasicAgent):
             distance = distance - max(vehicle.bounding_box.extent.y, vehicle.bounding_box.extent.x) - max(self._vehicle.bounding_box.extent.y, self._vehicle.bounding_box.extent.x)
 
             # Emergency brake if the car is very close.
-            if distance < self._behavior.braking_distance:
+            # Emergency stop conditions
+            needs_emergency_stop = (
+                (distance < self._behavior.min_proximity_threshold and 
+                 self._is_overtaking and 
+                 self._speed > self._overtake_max_speed) or
+                (distance < self._behavior.braking_distance and 
+                 not self._is_overtaking)
+            )
+
+            if needs_emergency_stop:
                 return self.emergency_stop()
-            else:
-                control = self.car_following_manager(vehicle, distance)
+
+            # Normal driving behavior
+            control = (self._local_planner.run_step(debug=debug) 
+                      if self._is_overtaking 
+                      else self.car_following_manager(vehicle, distance))
+
 
         # 3: Intersection behavior
         elif self._incoming_waypoint.is_junction and (self._incoming_direction in [RoadOption.LEFT, RoadOption.RIGHT]):
@@ -387,8 +421,6 @@ class BehaviorAgent(BasicAgent):
             target_speed = min([self._behavior.max_speed, self._speed_limit - self._behavior.speed_lim_dist])
             self._local_planner.set_speed(target_speed)
             control = self._local_planner.run_step(debug=debug)
-
-
 
         return control
 
