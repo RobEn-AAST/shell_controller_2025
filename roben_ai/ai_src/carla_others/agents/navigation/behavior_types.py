@@ -15,6 +15,7 @@ class Cautious(object):
     tailgate_counter = 0
 
 
+# this one was tuned
 class Normal(object):
     """Class for Normal agent."""
     max_speed = 50
@@ -22,7 +23,7 @@ class Normal(object):
     speed_decrease = 10
     safety_time = 3
     min_proximity_threshold = 25
-    braking_distance = 5
+    braking_distance = 10
     tailgate_counter = 0
 
 

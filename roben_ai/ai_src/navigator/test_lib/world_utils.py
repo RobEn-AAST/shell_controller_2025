@@ -112,7 +112,7 @@ def get_front_camera_image(world, vehicle, image_width=800, image_height=600, fo
     return array
 
 
-def spawn_background_infront(world, ego_vehicle, dist=70):  
+def spawn_background_infront(world, traffic_manager, ego_vehicle, dist=40, speed_kmh=2):  
     rand_str = "".join(random.choices(string.ascii_letters + string.digits, k=10))  
       
     # Get the ego vehicle's transform  
@@ -133,7 +133,8 @@ def spawn_background_infront(world, ego_vehicle, dist=70):
     spawn_rotation = ego_rotation  
       
     # Try to spawn the vehicle  
-    for i in range(100):  
+    vehicle = None
+    for i in range(10):  
         vehicle = spawn_vehicle(  
             world,   
             rand_str,   
@@ -146,3 +147,8 @@ def spawn_background_infront(world, ego_vehicle, dist=70):
         )  
         if vehicle is not None:  
             break
+    if vehicle is not None:
+        vehicle.set_autopilot(True)
+        traffic_manager.set_desired_speed(vehicle, speed_kmh) 
+
+    return vehicle

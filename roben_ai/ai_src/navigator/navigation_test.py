@@ -39,7 +39,7 @@ renderer = BirdeyeRenderer(
 )
 carla_map = world.get_map()
 competition_pos = {
-    "x": 160,  # 280.363708,
+    "x": 130,  # 280.363708,
     "y": 59.5,  # 129.306351,
     "z": 0.002264,
     "roll": 0,
@@ -269,7 +269,7 @@ while running:
                 if ego_vehicle is None:
                     set_status("ego vehicle is none")
                 else:
-                    spawn_background_infront(world, ego_vehicle)
+                    spawn_background_infront(world, client.get_trafficmanager(), ego_vehicle)
                     set_status("spawned ego vehicle")
 
             # pause carla
@@ -286,7 +286,7 @@ while running:
                 if ego_vehicle is None:
                     set_status("ego vehicle is none")
                 else:
-                    spawn_background_infront(world, ego_vehicle)
+                    spawn_background_infront(world, client.get_trafficmanager(), ego_vehicle)
                     set_status("spawned ego vehicle")
                 follow_ego = True
 
